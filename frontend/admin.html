@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Camerata 21</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --meianoite:  #1F0A33;
+            --meianoite-2:#2A1244;
+            --farol:      #FFB800;
+            --acido:      #B2FF05;
+            --cobalto:    #2E4BFF;
+            --pergaminho: #F2EDE2;
+            --tinta:      #17082A;
+            --erro:       #FF3D5A;
+            --linha:      rgba(255,184,0,0.28);
+            --linha-forte:rgba(255,184,0,0.55);
+        }
+
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+        body{
+            background:var(--meianoite);
+            color:var(--pergaminho);
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:300;
+            line-height:1.7;
+            -webkit-font-smoothing:antialiased;
+            margin:0;
+            padding:0;
+        }
+
+        .fr{font-family:'Fraunces',serif}
+
+        /* Header */
+        .header{
+            background:var(--meianoite-2);
+            padding:20px clamp(18px,5vw,72px);
+            border-bottom:1px solid var(--linha);
+            position:sticky;
+            top:0;
+            z-index:100;
+        }
+
+        .header-content{
+            max-width:1180px;
+            margin:0 auto;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            font-family:'Fraunces',serif;
+            font-weight:900;
+            font-size:24px;
+            color:var(--farol);
+            letter-spacing:-1px;
+        }
+
+        .logo span{
+            font-style:italic;
+            font-size:0.72em;
+        }
+
+        .admin-info{
+            display:flex;
+            align-items:center;
+            gap:20px;
+        }
+
+        .admin-name{
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            color:var(--pergaminho);
+        }
+
+        .logout-btn{
+            background:var(--farol);
+            color:var(--tinta);
+            border:none;
+            padding:8px 20px;
+            border-radius:6px;
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            cursor:pointer;
+            transition:all 0.3s ease;
+        }
+
+        .logout-btn:hover{
+            background:var(--acido);
+            color:var(--tinta);
+        }
+
+        /* Main Content */
+        .container{
+            max-width:1180px;
+            margin:0 auto;
+            padding:clamp(30px,5vw,60px) clamp(18px,5vw,72px);
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:24px;
+            margin-bottom:40px;
+        }
+
+        .dashboard-card{
+            background:var(--meianoite-2);
+            border:1px solid var(--linha);
+            border-radius:12px;
+            padding:24px;
+            transition:all 0.3s ease;
+        }
+
+        .dashboard-card:hover{
+            border-color:var(--farol);
+            transform:translateY(-2px);
+        }
+
+        .card-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:16px;
+        }
+
+        .card-title{
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            font-size:18px;
+            color:var(--pergaminho);
+        }
+
+        .card-value{
+            font-size:32px;
+            font-weight:700;
+            color:var(--farol);
+        }
+
+        .card-subtitle{
+            font-size:14px;
+            color:rgba(242,237,226,0.7);
+            margin-top:4px;
+        }
+
+        /* Stats */
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+            margin-bottom:40px;
+        }
+
+        .stat-item{
+            text-align:center;
+            padding:20px;
+            background:rgba(255,184,0,0.05);
+            border-radius:8px;
+            border:1px solid rgba(255,184,0,0.2);
+        }
+
+        .stat-number{
+            font-size:28px;
+            font-weight:700;
+            color:var(--acido);
+            margin-bottom:8px;
+        }
+
+        .stat-label{
+            font-size:14px;
+            color:var(--pergaminho);
+            opacity:0.8;
+        }
+
+        /* Charts Container */
+        .charts-section{
+            margin-bottom:40px;
+        }
+
+        .section-title{
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            font-size:24px;
+            color:var(--farol);
+            margin-bottom:24px;
+        }
+
+        .charts-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+            gap:24px;
+        }
+
+        .chart-container{
+            background:var(--meianoite-2);
+            border:1px solid var(--linha);
+            border-radius:12px;
+            padding:24px;
+            height:300px;
+            position:relative;
+        }
+
+        .chart-placeholder{
+            width:100%;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--pergaminho);
+            opacity:0.5;
+            font-size:16px;
+        }
+
+        /* Table */
+        .table-container{
+            background:var(--meianoite-2);
+            border:1px solid var(--linha);
+            border-radius:12px;
+            overflow:hidden;
+            margin-bottom:40px;
+        }
+
+        .table-header{
+            padding:20px 24px;
+            border-bottom:1px solid var(--linha);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .table-title{
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            font-size:18px;
+            color:var(--farol);
+        }
+
+        .export-btn{
+            background:var(--farol);
+            color:var(--tinta);
+            border:none;
+            padding:8px 16px;
+            border-radius:6px;
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:500;
+            cursor:pointer;
+            transition:all 0.3s ease;
+        }
+
+        .export-btn:hover{
+            background:var(--acido);
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            padding:16px 24px;
+            text-align:left;
+            border-bottom:1px solid var(--linha);
+        }
+
+        th{
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            font-size:14px;
+            text-transform:uppercase;
+            letter-spacing:0.1em;
+            color:var(--farol);
+        }
+
+        td{
+            color:var(--pergaminho);
+        }
+
+        tr:hover{
+            background:rgba(255,184,0,0.05);
+        }
+
+        /* Loading */
+        .loading{
+            display:none;
+            text-align:center;
+            padding:40px;
+        }
+
+        .loading.show{
+            display:block;
+        }
+
+        .spinner{
+            width:40px;
+            height:40px;
+            border:4px solid var(--linha);
+            border-top:4px solid var(--farol);
+            border-radius:50%;
+            animation:spin 1s linear infinite;
+            margin:0 auto 16px;
+        }
+
+        @keyframes spin{
+            0%{transform:rotate(0deg);}
+            100%{transform:rotate(360deg);}
+        }
+
+        /* Responsive */
+        @media (max-width:768px){
+            .header-content{
+                flex-direction:column;
+                gap:16px;
+                text-align:center;
+            }
+
+            .dashboard-grid{
+                grid-template-columns:1fr;
+            }
+
+            .charts-grid{
+                grid-template-columns:1fr;
+            }
+
+            .stats-grid{
+                grid-template-columns:repeat(2,1fr);
+            }
+
+            .table-container{
+                overflow-x:auto;
+            }
+
+            table{
+                min-width:600px;
+            }
+        }
+
+        /* Login Form */
+        .login-container{
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--meianoite);
+        }
+
+        .login-box{
+            background:var(--meianoite-2);
+            border:1px solid var(--linha);
+            border-radius:12px;
+            padding:40px;
+            max-width:400px;
+            width:100%;
+            margin:20px;
+        }
+
+        .login-title{
+            font-family:'Fraunces',serif;
+            font-weight:900;
+            font-size:32px;
+            color:var(--farol);
+            text-align:center;
+            margin-bottom:8px;
+        }
+
+        .login-subtitle{
+            text-align:center;
+            color:var(--pergaminho);
+            opacity:0.8;
+            margin-bottom:32px;
+        }
+
+        .form-group{
+            margin-bottom:20px;
+        }
+
+        .form-label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:500;
+            color:var(--pergaminho);
+        }
+
+        .form-input{
+            width:100%;
+            padding:12px;
+            background:var(--meianoite);
+            border:1px solid var(--linha);
+            border-radius:6px;
+            color:var(--pergaminho);
+            font-family:'Space Grotesk',sans-serif;
+            font-size:16px;
+        }
+
+        .form-input:focus{
+            outline:none;
+            border-color:var(--farol);
+        }
+
+        .btn-primary{
+            width:100%;
+            background:var(--farol);
+            color:var(--tinta);
+            border:none;
+            padding:12px;
+            border-radius:6px;
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            font-size:16px;
+            cursor:pointer;
+            transition:all 0.3s ease;
+        }
+
+        .btn-primary:hover{
+            background:var(--acido);
+            transform:translateY(-1px);
+        }
+
+        .btn-primary:disabled{
+            opacity:0.5;
+            cursor:not-allowed;
+            transform:none;
+        }
+
+        .otp-section{
+            display:none;
+        }
+
+        .otp-section.show{
+            display:block;
+        }
+
+        .error-message{
+            background:rgba(255,61,90,0.1);
+            border:1px solid var(--erro);
+            color:var(--erro);
+            padding:12px;
+            border-radius:6px;
+            margin-bottom:20px;
+            font-size:14px;
+        }
+
+        .success-message{
+            background:rgba(178,255,5,0.1);
+            border:1px solid var(--acido);
+            color:var(--acido);
+            padding:12px;
+            border-radius:6px;
+            margin-bottom:20px;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginSection" class="login-container">
+        <div class="login-box">
+            <h1 class="login-title">Camerata<span>21</span></h1>
+            <p class="login-subtitle">Área Administrativa</p>
+
+            <div id="errorMessage" class="error-message" style="display:none;"></div>
+            <div id="successMessage" class="success-message" style="display:none;"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">E-mail</label>
+                    <input type="email" class="form-input" id="adminEmail" required>
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    Enviar Código de Acesso
+                </button>
+            </form>
+
+            <div id="otpSection" class="otp-section">
+                <form id="otpForm">
+                    <div class="form-group">
+                        <label class="form-label">Código de 6 dígitos</label>
+                        <input type="text" class="form-input" id="otpCode" maxlength="6" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        Acessar Dashboard
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashboardSection" style="display:none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">CAMERATA<span>21</span></div>
+                <div class="admin-info">
+                    <div class="admin-name">Administrador</div>
+                    <button class="logout-btn" onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Carregando dados...</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Dashboard Cards -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-title">Total de Inscrições</div>
+                    </div>
+                    <div class="card-value" id="totalInscriptions">0</div>
+                    <div class="card-subtitle">Novas inscrições</div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-title">Meta (% Concluída)</div>
+                    </div>
+                    <div class="card-value" id="progressPercentage">0%</div>
+                    <div class="card-subtitle">Progresso geral</div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-title">Custo Estimado</div>
+                    </div>
+                    <div class="card-value" id="totalCost">R$ 0</div>
+                    <div class="card-subtitle">Total de despesas</div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="violinCount">0</div>
+                    <div class="stat-label">Violinos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="violaCount">0</div>
+                    <div class="stat-label">Violas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="celloCount">0</div>
+                    <div class="stat-label">Violoncelos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="bassCount">0</div>
+                    <div class="stat-label">Contrabaixos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="windCount">0</div>
+                    <div class="stat-label">Sopros</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="percussionCount">0</div>
+                    <div class="stat-label">Percussão</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <h2 class="section-title">Distribuição por Instrumento</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-placeholder">Gráfico de barras - Instrumentos</div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">Gráfico de pizza - Transporte</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Inscriptions -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 class="table-title">Inscrições Recentes</h3>
+                    <button class="export-btn" onclick="exportData()">Exportar CSV</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Nome</th>
+                            <th>Instrumento</th>
+                            <th>E-mail</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentInscriptions">
+                        <tr>
+                            <td colspan="5" style="text-align:center;opacity:0.5;">Carregando dados...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        let userEmail = '';
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value;
+            const btn = document.getElementById('loginBtn');
+
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            google.script.run
+                .withFailureHandler(function(error) {
+                    showError('Erro ao enviar código: ' + error.message);
+                    btn.disabled = false;
+                    btn.textContent = 'Enviar Código de Acesso';
+                })
+                .withSuccessHandler(function(response) {
+                    showSuccess('Código enviado para ' + email);
+                    userEmail = email;
+                    document.getElementById('otpSection').classList.add('show');
+                    document.getElementById('loginForm').style.display = 'none';
+                })
+                .requestOTP(email);
+        });
+
+        document.getElementById('otpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const code = document.getElementById('otpCode').value;
+
+            google.script.run
+                .withFailureHandler(function(error) {
+                    showError('Código inválido ou expirado: ' + error.message);
+                })
+                .withSuccessHandler(function(response) {
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboardSection').style.display = 'block';
+                    loadDashboardData();
+                })
+                .validateOTP(userEmail, code);
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'flex';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('otpSection').classList.remove('show');
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('otpCode').value = '';
+            userEmail = '';
+        }
+
+        function loadDashboardData() {
+            document.getElementById('loading').classList.add('show');
+
+            google.script.run
+                .withFailureHandler(function(error) {
+                    showError('Erro ao carregar dados: ' + error.message);
+                    document.getElementById('loading').classList.remove('show');
+                })
+                .withSuccessHandler(function(data) {
+                    updateDashboard(data);
+                    document.getElementById('loading').classList.remove('show');
+                })
+                .getDashboardData();
+        }
+
+        function updateDashboard(data) {
+            // Update total inscriptions
+            document.getElementById('totalInscriptions').textContent = data.total || 0;
+
+            // Update progress percentage
+            document.getElementById('progressPercentage').textContent = data.progress || '0%';
+
+            // Update total cost
+            document.getElementById('totalCost').textContent = data.totalCost || 'R$ 0';
+
+            // Update instrument counts
+            document.getElementById('violinCount').textContent = data.violinCount || 0;
+            document.getElementById('violaCount').textContent = data.violaCount || 0;
+            document.getElementById('celloCount').textContent = data.celloCount || 0;
+            document.getElementById('bassCount').textContent = data.bassCount || 0;
+            document.getElementById('windCount').textContent = data.windCount || 0;
+            document.getElementById('percussionCount').textContent = data.percussionCount || 0;
+
+            // Update recent inscriptions table
+            updateRecentTable(data.recent || []);
+        }
+
+        function updateRecentTable(recent) {
+            const tbody = document.getElementById('recentInscriptions');
+            tbody.innerHTML = '';
+
+            if (recent.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;opacity:0.5;">Nenhuma inscrição recente</td></tr>';
+                return;
+            }
+
+            recent.forEach(inscricao => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${inscricao.timestamp || ''}</td>
+                    <td>${inscricao.nome || ''}</td>
+                    <td>${inscricao.instrumento || ''}</td>
+                    <td>${inscricao.email || ''}</td>
+                    <td>${inscricao.status || ''}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportData() {
+            google.script.run
+                .withFailureHandler(function(error) {
+                    showError('Erro ao exportar dados: ' + error.message);
+                })
+                .withSuccessHandler(function(response) {
+                    showSuccess('Dados exportados com sucesso!');
+                })
+                .exportToCSV();
+        }
+
+        // Auto-refresh dashboard every 5 minutes
+        setInterval(function() {
+            if (document.getElementById('dashboardSection').style.display !== 'none') {
+                loadDashboardData();
+            }
+        }, 300000);
+    </script>
+</body>
+</html>

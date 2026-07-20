@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Camerata 21 — Brandkit Técnico · Vanguarda Afrodiaspórica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --meianoite:  #1F0A33;
+    --meianoite-2:#2A1244;
+    --farol:      #FFB800;
+    --acido:      #B2FF05;
+    --cobalto:    #2E4BFF;
+    --pergaminho: #F2EDE2;
+    --tinta:      #17082A;
+    --erro:       #FF3D5A;
+    --linha:      rgba(255,184,0,0.28);
+    --linha-forte:rgba(255,184,0,0.55);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  ::selection{background:var(--acido);color:var(--tinta)}
+  img,svg{max-width:100%;height:auto}
+
+  body{
+    background:var(--meianoite);
+    color:var(--pergaminho);
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .fr{font-family:'Fraunces',serif}
+
+  .sutura{height:0;border:none;border-top:2px dashed var(--farol);opacity:.55;margin:0}
+  .sutura.acido{border-top-color:var(--acido)}
+  hr.sutura.wrap{max-width:1180px;display:block;margin-left:auto;margin-right:auto}
+
+  .rev{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .rev.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .rev{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+    .k,.tick-track,.wall{animation:none!important}
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(18px,5vw,72px)}
+  section{padding:clamp(60px,11vw,130px) 0;position:relative}
+
+  .eyebrow{
+    display:flex;align-items:center;gap:12px;
+    font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--farol);margin-bottom:26px;
+  }
+  .eyebrow::before{content:"";width:28px;height:2px;background:var(--farol);flex-shrink:0}
+  .eyebrow .n{color:var(--acido);letter-spacing:.1em}
+
+  h2.sec{
+    font-family:'Fraunces',serif;
+    font-variation-settings:'opsz' 100,'SOFT' 0,'WONK' 1;
+    font-weight:600;
+    font-size:clamp(30px,5.6vw,62px);
+    line-height:1.04;letter-spacing:-.01em;
+    color:var(--pergaminho);margin-bottom:24px;
+    max-width:20ch;overflow-wrap:break-word;
+  }
+  h2.sec em{font-style:italic;font-weight:500;color:var(--farol)}
+  h3.sub{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(19px,2.6vw,24px);
+    font-variation-settings:'WONK' 1;color:var(--pergaminho);margin:44px 0 16px;
+  }
+  p.body{font-size:15px;line-height:1.85;max-width:60ch;color:var(--pergaminho)}
+  p.body + p.body{margin-top:16px}
+  .dim{color:rgba(242,237,226,.62)}
+  strong{font-weight:500;color:#fff}
+  a{color:var(--acido);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--acido);outline-offset:3px}
+  .note{font-size:11.5px;line-height:1.7;color:rgba(242,237,226,.55);max-width:60ch;margin-top:14px}
+  .note code, code{font-family:'Space Grotesk';color:var(--acido);font-size:.92em;letter-spacing:.04em}
+
+  /* ══════════ TICKER ══════════ */
+  .ticker{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);overflow:hidden;white-space:nowrap;padding:11px 0;background:var(--meianoite);position:relative;z-index:5}
+  .tick-track{display:inline-block;animation:tick 26s linear infinite}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tick-track span{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--pergaminho);margin-right:48px}
+  .tick-track span i{font-style:normal;color:var(--farol);margin-right:48px}
+
+  /* ══════════ HERO ══════════ */
+  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:84px 0 0;position:relative;overflow:hidden}
+  .hero-meta{
+    display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between;gap:18px 24px;
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:400;
+    color:rgba(242,237,226,.6);margin-bottom:clamp(26px,6vh,70px);
+  }
+  .hero-meta b{display:block;color:var(--farol);font-weight:500;margin-top:6px;letter-spacing:.12em}
+  @media(max-width:720px){.hero-meta{grid-template-columns:1fr 1fr}}
+
+  .hero-manifesto{
+    font-family:'Fraunces',serif;font-style:italic;
+    font-variation-settings:'opsz' 60,'SOFT' 40,'WONK' 0;
+    font-weight:400;font-size:clamp(16px,2.4vw,24px);
+    color:var(--pergaminho);max-width:34ch;line-height:1.45;
+    margin-bottom:clamp(30px,6vh,80px);
+  }
+  .hero-manifesto b{color:var(--farol);font-weight:500;font-style:italic}
+
+  .wm{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:clamp(44px,12.6vw,196px);
+    line-height:.84;letter-spacing:-.035em;
+    color:var(--pergaminho);user-select:none;
+    margin-left:-.04em;padding-bottom:.06em;
+  }
+  .wm .row{display:block;white-space:nowrap}
+  .wm .row2{display:flex;align-items:baseline;gap:.14em;flex-wrap:wrap;white-space:normal}
+  .wm .k{display:inline-block;font-variation-settings:'opsz' 144,'wght' 900,'SOFT' 0,'WONK' 0;transition:font-variation-settings .5s cubic-bezier(.3,.8,.3,1),color .3s}
+  .wm .k:hover{font-variation-settings:'opsz' 144,'wght' 340,'SOFT' 100,'WONK' 1;color:var(--farol)}
+  .wm .num{color:var(--farol);font-style:italic}
+  .wm .tail{font-size:.3em;letter-spacing:.02em}
+  .wm.playing .k{animation:crescendo 2.6s ease-in-out infinite}
+  @keyframes crescendo{
+    0%,100%{font-variation-settings:'opsz' 144,'wght' 340,'SOFT' 80,'WONK' 1}
+    50%{font-variation-settings:'opsz' 144,'wght' 900,'SOFT' 0,'WONK' 0}
+  }
+
+  .hero-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0 24px;flex-wrap:wrap}
+  .hero-sub{font-size:clamp(10px,1.5vw,13px);letter-spacing:.26em;text-transform:uppercase;font-weight:500;color:var(--pergaminho)}
+  .hero-sub i{font-style:normal;color:var(--acido)}
+  .play-btn{
+    background:none;border:2px solid var(--farol);color:var(--farol);
+    font-family:'Space Grotesk';font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    font-weight:500;padding:12px 20px;cursor:pointer;transition:.25s;min-height:44px;
+  }
+  .play-btn:hover{background:var(--farol);color:var(--meianoite)}
+  .play-btn.on{background:var(--acido);border-color:var(--acido);color:var(--tinta)}
+
+  .wall{
+    position:absolute;top:5%;right:-4%;
+    font-family:'Fraunces',serif;font-weight:900;font-style:italic;
+    font-size:clamp(110px,26vw,380px);line-height:.8;
+    color:transparent;-webkit-text-stroke:1px rgba(255,184,0,.14);
+    pointer-events:none;user-select:none;z-index:0;
+  }
+
+  /* ══════════ TABELA DE REJEIÇÃO (responsiva) ══════════ */
+  .reject{width:100%;border-collapse:collapse;margin-top:10px}
+  .reject thead{display:table-header-group}
+  .reject th,.reject td{text-align:left;padding:18px 16px 18px 0;vertical-align:top;border-bottom:1px solid var(--linha)}
+  .reject th{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:rgba(242,237,226,.55)}
+  .reject td.no{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:rgba(242,237,226,.5);text-decoration:line-through;text-decoration-color:var(--acido);text-decoration-thickness:2px;min-width:170px}
+  .reject td.yes{font-size:13.5px;line-height:1.7;color:var(--pergaminho)}
+  .reject td.ref{font-size:10.5px;letter-spacing:.08em;color:var(--farol);text-transform:uppercase;white-space:nowrap}
+  @media(max-width:760px){
+    .reject thead{display:none}
+    .reject tr{display:block;padding:20px 0;border-bottom:1px solid var(--linha)}
+    .reject td{display:block;border:none;padding:4px 0;min-width:0}
+    .reject td.no{font-size:18px;margin-bottom:6px}
+    .reject td.ref::before{content:"Ref · "}
+  }
+
+  /* ══════════ LINHAGEM ══════════ */
+  .split{display:grid;grid-template-columns:minmax(280px,.9fr) 1.4fr;gap:clamp(28px,6vw,80px);align-items:start}
+  @media(max-width:840px){.split{grid-template-columns:1fr;gap:34px}}
+  .lin{border-top:2px solid var(--linha-forte)}
+  .lin-row{display:grid;grid-template-columns:56px 1fr;gap:clamp(16px,4vw,44px);padding:28px 0;border-bottom:1px solid var(--linha);align-items:start}
+  .lin-glyph{width:56px;height:56px}
+  .lin-body h3{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(19px,2.4vw,22px);font-variation-settings:'opsz' 80,'WONK' 1;color:var(--pergaminho);line-height:1.15}
+  .lin-body h3 span{font-family:'Space Grotesk';font-weight:400;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,237,226,.5);display:block;margin-top:6px}
+  .lin-body p{font-size:13px;line-height:1.75;color:rgba(242,237,226,.78);margin-top:10px;max-width:56ch}
+  .lin-body p b{color:var(--farol);font-weight:500}
+
+  /* ══════════ LOGO TÉCNICO ══════════ */
+  .logo-versions{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:2px;border:1px solid var(--linha);background:var(--linha);margin-top:8px}
+  .lv{background:var(--meianoite);padding:clamp(20px,3vw,34px);display:flex;flex-direction:column;gap:18px;min-height:210px;justify-content:space-between}
+  .lv .demo{flex:1;display:flex;align-items:center;justify-content:flex-start}
+  .lv .cap{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,237,226,.55)}
+  .lv .cap b{display:block;color:var(--pergaminho);font-weight:500;margin-bottom:4px;letter-spacing:.12em}
+
+  .lv-wm{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.03em;line-height:.86;color:var(--pergaminho)}
+  .lv-wm i{font-style:italic;font-variation-settings:'WONK' 1;color:var(--farol)}
+
+  /* clear space diagram */
+  .clear-demo{border:2px dashed var(--acido);display:inline-block;padding:34px;position:relative;margin-top:8px;max-width:100%}
+  .clear-demo .cm{position:absolute;font-family:'Fraunces',serif;font-weight:900;font-size:15px;color:var(--acido)}
+  .clear-demo .cm.t{top:8px;left:50%;transform:translateX(-50%)}
+  .clear-demo .cm.b{bottom:8px;left:50%;transform:translateX(-50%)}
+  .clear-demo .cm.l{left:9px;top:50%;transform:translateY(-50%)}
+  .clear-demo .cm.r{right:9px;top:50%;transform:translateY(-50%)}
+  .clear-inner{border:1px solid rgba(178,255,5,.35);padding:6px 10px}
+
+  .minsize{display:flex;gap:clamp(22px,5vw,54px);align-items:flex-end;flex-wrap:wrap;margin-top:8px}
+  .minsize .ms{display:flex;flex-direction:column;gap:10px}
+  .minsize .ms .cap{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,237,226,.55)}
+  .minsize .ms .cap b{color:var(--farol);font-weight:500}
+
+  /* combinações cromáticas */
+  .combo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;border:1px solid var(--linha);background:var(--linha);margin-top:8px}
+  .combo > div{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;padding:14px}
+  .combo .cwm{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.03em;font-size:clamp(15px,2.2vw,21px);white-space:nowrap}
+  .combo .cwm i{font-style:italic;font-variation-settings:'WONK' 1}
+
+  /* ══════════ USOS PROIBIDOS ══════════ */
+  .dont-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;border:1px solid var(--linha);background:var(--linha);margin-top:8px}
+  .dont{background:var(--meianoite);position:relative;min-height:170px;display:flex;flex-direction:column}
+  .dont .stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:18px;min-height:110px;position:relative}
+  .dont .dwm{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.03em;font-size:19px;color:var(--pergaminho);white-space:nowrap}
+  .dont .dwm i{font-style:italic;color:var(--farol)}
+  .dont .x{
+    position:absolute;top:10px;right:10px;width:26px;height:26px;z-index:3;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--erro);color:#fff;font-weight:700;font-size:14px;line-height:1;
+    font-family:'Space Grotesk';border-radius:50%;
+  }
+  .dont .dcap{padding:12px 14px 16px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,226,.6);border-top:1px solid var(--linha)}
+  .dont .dcap b{color:var(--erro);font-weight:500}
+
+  /* ══════════ SISTEMA CONSTRUTIVO ══════════ */
+  .constr{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:2px;background:var(--linha);border:1px solid var(--linha);margin-top:8px}
+  .constr .cell{background:var(--meianoite);aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:18%;transition:background .3s}
+  .constr .cell:hover{background:var(--meianoite-2)}
+  .constr svg{width:100%;height:100%;overflow:visible}
+  .constr-cap{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(242,237,226,.5);margin-top:14px}
+
+  /* ══════════ CORES ══════════ */
+  .pal{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:2px;border:1px solid var(--linha);background:var(--linha)}
+  @media(max-width:820px){.pal{grid-template-columns:1fr 1fr}}
+  @media(max-width:440px){.pal{grid-template-columns:1fr}}
+  .sw{min-height:230px;display:flex;flex-direction:column;justify-content:space-between;padding:20px}
+  .sw .role{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+  .sw .name{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,2.6vw,30px);line-height:1;font-variation-settings:'WONK' 1}
+  .sw .hex{font-size:11px;letter-spacing:.1em;margin-top:8px;opacity:.78}
+  .sw .why{font-size:11.5px;line-height:1.6;margin-top:12px;opacity:.85;max-width:30ch}
+  .pal-ratio{display:flex;height:16px;margin-top:22px;border:1px solid var(--linha)}
+  .pal-cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,237,226,.5);margin-top:10px}
+
+  /* ══════════ ESCALA TIPOGRÁFICA ══════════ */
+  .scale{width:100%;border-collapse:collapse;margin-top:8px}
+  .scale th,.scale td{text-align:left;padding:16px 14px 16px 0;border-bottom:1px solid var(--linha);vertical-align:baseline}
+  .scale th{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:rgba(242,237,226,.55)}
+  .scale td.sample{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px}
+  .scale td.specs{font-size:11.5px;line-height:1.8;color:rgba(242,237,226,.72);min-width:210px}
+  .scale td.specs code{display:block}
+  .scale td.use{font-size:11.5px;line-height:1.7;color:rgba(242,237,226,.62)}
+  .s-display{font-family:'Fraunces';font-weight:900;font-size:clamp(30px,4.6vw,52px);letter-spacing:-.03em;line-height:.9;color:var(--pergaminho)}
+  .s-h1{font-family:'Fraunces';font-weight:600;font-variation-settings:'WONK' 1;font-size:clamp(24px,3.4vw,36px);line-height:1.05;color:var(--pergaminho)}
+  .s-h2{font-family:'Fraunces';font-weight:600;font-size:clamp(19px,2.4vw,24px);line-height:1.2;color:var(--pergaminho)}
+  .s-lead{font-family:'Fraunces';font-style:italic;font-weight:400;font-size:clamp(16px,2vw,20px);color:var(--pergaminho)}
+  .s-body{font-size:15px;font-weight:300;color:var(--pergaminho)}
+  .s-label{font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--pergaminho)}
+  .s-caption{font-size:11px;font-weight:300;color:rgba(242,237,226,.6)}
+  @media(max-width:760px){
+    .scale thead{display:none}
+    .scale tr{display:block;padding:18px 0;border-bottom:1px solid var(--linha)}
+    .scale td{display:block;border:none;padding:5px 0;max-width:100%!important;min-width:0!important}
+  }
+
+  .type-block{border-top:1px solid var(--linha);padding:32px 0}
+  .type-tag{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--acido);font-weight:500;margin-bottom:16px}
+  .spec-fraunces{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(32px,7vw,84px);line-height:.95;letter-spacing:-.02em;color:var(--pergaminho)}
+  .spec-fraunces .w0{font-variation-settings:'opsz' 144,'WONK' 0,'SOFT' 0}
+  .spec-fraunces .w1{font-variation-settings:'opsz' 144,'WONK' 1,'SOFT' 100;font-style:italic;color:var(--farol)}
+  .axis-note{font-size:12px;color:rgba(242,237,226,.6);margin-top:14px;max-width:58ch;line-height:1.7}
+  .spec-grotesk{font-size:clamp(15px,2vw,19px);font-weight:400;line-height:1.7;max-width:52ch;color:var(--pergaminho)}
+  .spec-caps{font-size:12px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--pergaminho);margin-top:12px}
+
+  /* ══════════ FOTO ══════════ */
+  .duo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;border:1px solid var(--linha);background:var(--linha)}
+  .duo-card{background:var(--meianoite);display:flex;flex-direction:column}
+  .duo-visual{aspect-ratio:4/3;position:relative;overflow:hidden}
+  .duo-meta{padding:16px 16px 20px}
+  .duo-meta h4{font-family:'Fraunces',serif;font-size:16px;font-weight:600;font-variation-settings:'WONK' 1;color:var(--pergaminho)}
+  .duo-meta p{font-size:11.5px;line-height:1.6;color:rgba(242,237,226,.66);margin-top:8px}
+
+  /* ══════════ APLICAÇÕES ══════════ */
+  .apps{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(18px,4vw,40px);align-items:start}
+  @media(max-width:840px){.apps{grid-template-columns:1fr}}
+  .poster{
+    aspect-ratio:3/4;background:var(--farol);color:var(--tinta);
+    display:flex;flex-direction:column;justify-content:space-between;
+    padding:clamp(16px,3vw,32px);position:relative;overflow:hidden;
+  }
+  .poster .p-top{display:flex;justify-content:space-between;align-items:flex-start;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;gap:10px}
+  .poster .p-wm{font-family:'Fraunces',serif;font-weight:900;line-height:.86;letter-spacing:-.03em;font-size:clamp(34px,7.4vw,86px);color:var(--tinta);overflow-wrap:break-word}
+  .poster .p-wm i{font-style:italic;font-variation-settings:'WONK' 1;color:var(--cobalto)}
+  .poster .p-info{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:2}
+  .poster .p-sutura{border-top:2px dashed var(--tinta);opacity:.5;margin:12px 0}
+  .app-cap{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,237,226,.5);margin-top:12px}
+
+  .ig{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+  .ig .tile{aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:10%;position:relative;overflow:hidden}
+  .ig .t-type{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(14px,3vw,34px);line-height:.92;letter-spacing:-.02em}
+
+  /* ══════════ VOZ ══════════ */
+  .voz{display:grid;grid-template-columns:1fr 1fr;gap:2px;border:1px solid var(--linha);background:var(--linha)}
+  @media(max-width:720px){.voz{grid-template-columns:1fr}}
+  .voz > div{background:var(--meianoite);padding:clamp(20px,3.4vw,38px)}
+  .voz h4{font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;margin-bottom:18px}
+  .voz .sim h4{color:var(--acido)}
+  .voz .nao h4{color:rgba(242,237,226,.45)}
+  .voz p{font-family:'Fraunces',serif;font-size:clamp(16px,2.2vw,22px);line-height:1.45;font-weight:500}
+  .voz .sim p{font-variation-settings:'WONK' 1;color:var(--pergaminho)}
+  .voz .nao p{font-style:italic;color:rgba(242,237,226,.4);text-decoration:line-through;text-decoration-color:var(--acido);text-decoration-thickness:1.5px}
+  .voz p + p{margin-top:16px}
+
+  /* ══════════ COLOPHON ══════════ */
+  .colophon{padding:clamp(56px,10vw,110px) 0 84px}
+  .col-wm{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.03em;line-height:.86;font-size:clamp(36px,8vw,96px);color:var(--pergaminho)}
+  .col-wm i{font-style:italic;font-variation-settings:'WONK' 1;color:var(--farol)}
+  .col-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px 30px;margin-top:40px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,237,226,.55);line-height:2}
+  .col-grid b{color:var(--pergaminho);font-weight:500}
+  .col-note{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(242,237,226,.55);margin-top:40px;max-width:62ch;line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- ════════ TICKER ════════ -->
+<div class="ticker" aria-hidden="true">
+  <div class="tick-track">
+    <span>Camerata 21 <i>●</i> Orquestra Afro-Brasileira <i>●</i> Universidade Zumbi dos Palmares <i>●</i> São Paulo → Mundo <i>●</i> A orquestra que você ajuda a construir <i>●</i></span><span>Camerata 21 <i>●</i> Orquestra Afro-Brasileira <i>●</i> Universidade Zumbi dos Palmares <i>●</i> São Paulo → Mundo <i>●</i> A orquestra que você ajuda a construir <i>●</i></span>
+  </div>
+</div>
+
+<!-- ════════ HERO ════════ -->
+<header class="hero">
+  <div class="wall" aria-hidden="true">21</div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="hero-meta rev">
+      <div>Brandkit Técnico<b>Vanguarda Afrodiaspórica</b></div>
+      <div>Idealizada<b>04.12.2024</b></div>
+      <div>Consagrada<b>16.08.2026</b></div>
+      <div>Direção<b>Maestro João Rocha</b></div>
+    </div>
+
+    <p class="hero-manifesto rev">A música de concerto sempre foi nossa. O que muda agora é <b>quem assina a marca</b> — e para quem ela fala: um público global, intergeracional, dono da própria casa.</p>
+
+    <div class="wm rev" id="wm" aria-label="Camerata 21">
+      <span class="row"><span class="k">C</span><span class="k">A</span><span class="k">M</span><span class="k">E</span><span class="k">R</span><span class="k">A</span><span class="k">T</span><span class="k">A</span></span>
+      <span class="row row2"><span><span class="k num">2</span><span class="k num">1</span></span><span class="tail">→ séc.&thinsp;XXI</span></span>
+    </div>
+
+    <div class="hero-foot rev">
+      <div class="hero-sub">Orquestra Afro-Brasileira <i>·</i> Universidade Zumbi dos Palmares</div>
+      <button class="play-btn" id="play" aria-pressed="false">▶ &nbsp;Ouvir a marca</button>
+    </div>
+  </div>
+  <hr class="sutura">
+</header>
+
+<!-- ════════ 01 · POSICIONAMENTO ════════ -->
+<section>
+  <div class="wrap">
+    <div class="split">
+      <div class="rev">
+        <div class="eyebrow"><span class="n">01</span> Posicionamento</div>
+        <h2 class="sec">Não é uma marca de nicho. É uma <em>love brand</em> global.</h2>
+      </div>
+      <div class="rev">
+        <p class="body">A Camerata 21 recusa duas caixas: a do "museu de conservação sonora" e a do "projeto social de assistencialismo". Ela é um <strong>movimento cultural</strong> — excelência sinfônica de padrão internacional, assinada pela alta classe criativa negra brasileira do século XXI, construída em <strong>co-propriedade com seu público</strong>: donos e donas, não plateia.</p>
+        <p class="body">A marca funciona em Santo Amaro e em Londres, num Reel de celular e no foyer de uma sala europeia. Fala a língua visual da vanguarda global — <strong>Chineke!, San Francisco Symphony, Southbank Centre</strong> — com um sotaque que nenhuma delas tem: o construtivismo afro-brasileiro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 02 · RUPTURA ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">02</span> Estratégia de Ruptura</div>
+      <h2 class="sec">O que a elite global <em>abandonou</em> — e nós também.</h2>
+    </div>
+    <table class="reject rev">
+      <thead><tr><th>Anti-padrão</th><th>Substituído por</th><th>Referência</th></tr></thead>
+      <tbody>
+        <tr><td class="no">Dourado sobre preto</td><td class="yes">Roxo meia-noite + amarelo cádmio. O ouro-sobre-preto sinaliza aristocratismo oitocentista. O roxo profundo valoriza tons de pele negros; o cádmio é farol de atenção nas redes.</td><td class="ref">Southbank · Chineke!</td></tr>
+        <tr><td class="no">Emblema figurativo</td><td class="yes">Wordmark tipográfico massivo. A iconografia fica a cargo da fotografia e do motion.</td><td class="ref">SFS · ACO · Manchester</td></tr>
+        <tr><td class="no">Simetria centralizada</td><td class="yes">Grid brutalista assimétrico, alinhamento à esquerda, espaço negativo agressivo.</td><td class="ref">Barbican · North Design</td></tr>
+        <tr><td class="no">Marca estática</td><td class="yes">Sistema nativo em movimento: tipografia variável que engrossa no crescendo e afina no pianíssimo.</td><td class="ref">SFS "Symphosizer"</td></tr>
+        <tr><td class="no">Estética de projeto estatal</td><td class="yes">Independência estética absoluta. Excelência primeiro; o impacto é consequência visível.</td><td class="ref">Anti-padrão El Sistema</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 03 · LINHAGEM ════════ -->
+<section>
+  <div class="wrap">
+    <div class="split">
+      <div class="rev">
+        <div class="eyebrow"><span class="n">03</span> Linhagem</div>
+        <h2 class="sec">O sotaque que só nós temos: <em>construtivismo afro-brasileiro</em>.</h2>
+        <p class="body dim">Nenhuma obra é copiada: cada artista cede uma <strong>lógica de sistema</strong>.</p>
+      </div>
+      <div class="lin rev">
+        <div class="lin-row">
+          <svg class="lin-glyph" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="26" width="52" height="12" fill="var(--farol)"/><polygon points="32,6 20,26 44,26" fill="var(--cobalto)"/><circle cx="32" cy="50" r="9" fill="none" stroke="var(--farol)" stroke-width="3"/></svg>
+          <div class="lin-body">
+            <h3>Rubem Valentim<span>Salvador 1922 — SP 1991</span></h3>
+            <p>Reduziu símbolos sagrados a geometria construtiva pura. Cede a <b>gramática modular</b>: triângulo, círculo, barra — peças que se recombinam infinitamente.</p>
+          </div>
+        </div>
+        <div class="lin-row">
+          <svg class="lin-glyph" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="8" width="22" height="48" fill="var(--farol)"/><rect x="36" y="20" width="22" height="36" fill="var(--cobalto)"/></svg>
+          <div class="lin-body">
+            <h3>Emanoel Araújo<span>Santo Amaro, BA 1940 — 2022</span></h3>
+            <p>Relevos geométricos monumentais em alto contraste. Cede o <b>grid em relevo</b>: assimetria como estrutura, deslocamento como ritmo.</p>
+          </div>
+        </div>
+        <div class="lin-row">
+          <svg class="lin-glyph" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="8" width="48" height="48" fill="var(--cobalto)"/><rect x="26" y="8" width="14" height="48" fill="var(--meianoite)"/></svg>
+          <div class="lin-body">
+            <h3>Dalton Paula<span>Brasília 1982</span></h3>
+            <p>Retratos que devolvem nome e rosto a quem foi apagado. Cede o <b>azul e o silêncio</b>: o cobalto como fricção e o espaço negativo como conteúdo.</p>
+          </div>
+        </div>
+        <div class="lin-row">
+          <svg class="lin-glyph" viewBox="0 0 64 64" aria-hidden="true"><line x1="4" y1="32" x2="60" y2="32" stroke="var(--farol)" stroke-width="3" stroke-dasharray="8 6"/><circle cx="14" cy="32" r="4" fill="var(--acido)"/><circle cx="50" cy="32" r="4" fill="var(--acido)"/></svg>
+          <div class="lin-body">
+            <h3>Rosana Paulino<span>São Paulo 1966</span></h3>
+            <p>A costura como gesto que une histórias fragmentadas. Cede a <b>linha de sutura</b>: o tracejado que costura todo o sistema. A assinatura silenciosa da marca.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 04 · O LOGOTIPO — ESPECIFICAÇÃO TÉCNICA ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">04</span> Logotipo · Especificação</div>
+      <h2 class="sec">Três versões. Regras <em>não-negociáveis</em>.</h2>
+    </div>
+
+    <h3 class="sub rev">4.1 · Versões oficiais</h3>
+    <div class="logo-versions rev">
+      <div class="lv">
+        <div class="demo"><div class="lv-wm" style="font-size:clamp(24px,3.2vw,34px)">CAMERATA <i>21</i></div></div>
+        <div class="cap"><b>V1 · Horizontal (primária)</b>Uso padrão em todos os materiais. O "21" sempre em itálico WONK, cor Farol (sobre escuro) ou Cobalto (sobre Farol).</div>
+      </div>
+      <div class="lv">
+        <div class="demo"><div class="lv-wm" style="font-size:clamp(28px,3.6vw,40px)">CAME<br>RATA<br><i>21</i></div></div>
+        <div class="cap"><b>V2 · Empilhada</b>Formatos verticais e quadrados: cartaz 3:4, story, perfil. Quebra silábica CAME/RATA permitida apenas nesta versão.</div>
+      </div>
+      <div class="lv">
+        <div class="demo">
+          <svg style="width:clamp(64px,8vw,92px)" viewBox="0 0 120 84" aria-label="Monograma 21"><path d="M10 24 A20 20 0 0 1 50 24 L50 34 L24 60 L52 60 L52 74 L8 74 L8 62 L36 34 L36 26 A8 8 0 0 0 22 26 Z" fill="var(--farol)"/><rect x="66" y="10" width="16" height="64" fill="var(--farol)"/><polygon points="66,10 52,26 66,26" fill="var(--farol)"/><rect x="56" y="66" width="38" height="8" fill="var(--acido)"/></svg>
+        </div>
+        <div class="cap"><b>V3 · Monograma "21"</b>Uso mínimo: favicon, avatar, selo, carimbo, marca-d'água. Nunca substitui V1/V2 em materiais principais.</div>
+      </div>
+    </div>
+
+    <h3 class="sub rev">4.2 · Área de proteção</h3>
+    <p class="body dim rev">Margem mínima em todos os lados = <strong>altura da letra "C"</strong> do próprio logotipo (unidade <code>C</code>). Nenhum texto, imagem ou borda invade essa área. Para o monograma, a unidade é a largura do "2".</p>
+    <div class="rev" style="margin-top:20px">
+      <div class="clear-demo">
+        <span class="cm t">C</span><span class="cm b">C</span><span class="cm l">C</span><span class="cm r">C</span>
+        <div class="clear-inner"><div class="lv-wm" style="font-size:clamp(22px,4vw,38px);white-space:nowrap">CAMERATA <i>21</i></div></div>
+      </div>
+    </div>
+
+    <h3 class="sub rev">4.3 · Tamanhos mínimos</h3>
+    <div class="minsize rev">
+      <div class="ms">
+        <div class="lv-wm" style="font-size:17px;white-space:nowrap">CAMERATA <i>21</i></div>
+        <div class="cap"><b>V1 digital:</b> 120 px de largura<br><b>V1 impresso:</b> 35 mm</div>
+      </div>
+      <div class="ms">
+        <div class="lv-wm" style="font-size:15px;line-height:.9">CAME<br>RATA<br><i>21</i></div>
+        <div class="cap"><b>V2 digital:</b> 64 px de largura<br><b>V2 impresso:</b> 20 mm</div>
+      </div>
+      <div class="ms">
+        <svg style="width:26px" viewBox="0 0 120 84"><path d="M10 24 A20 20 0 0 1 50 24 L50 34 L24 60 L52 60 L52 74 L8 74 L8 62 L36 34 L36 26 A8 8 0 0 0 22 26 Z" fill="var(--farol)"/><rect x="66" y="10" width="16" height="64" fill="var(--farol)"/><polygon points="66,10 52,26 66,26" fill="var(--farol)"/><rect x="56" y="66" width="38" height="8" fill="var(--acido)"/></svg>
+        <div class="cap"><b>V3 digital:</b> 24 px<br><b>V3 impresso:</b> 8 mm</div>
+      </div>
+    </div>
+
+    <h3 class="sub rev">4.4 · Combinações cromáticas aprovadas</h3>
+    <div class="combo rev">
+      <div style="background:var(--meianoite);border:1px solid var(--linha)"><div class="cwm" style="color:var(--pergaminho)">CAMERATA <i style="color:var(--farol)">21</i></div></div>
+      <div style="background:var(--farol)"><div class="cwm" style="color:var(--tinta)">CAMERATA <i style="color:var(--cobalto)">21</i></div></div>
+      <div style="background:var(--cobalto)"><div class="cwm" style="color:var(--pergaminho)">CAMERATA <i style="color:var(--farol)">21</i></div></div>
+      <div style="background:#000"><div class="cwm" style="color:#fff">CAMERATA <i style="color:#fff">21</i></div></div>
+      <div style="background:#fff"><div class="cwm" style="color:#000">CAMERATA <i style="color:#000">21</i></div></div>
+    </div>
+    <p class="note rev">As duas últimas são as versões monocromáticas (P&B) para imprensa, gravação a laser, carimbo e contextos de cor única. Qualquer outra combinação é proibida.</p>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 05 · USOS PROIBIDOS ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">05</span> Usos Proibidos</div>
+      <h2 class="sec">O que <em>nunca</em> se faz com a marca.</h2>
+      <p class="body dim" style="margin-bottom:30px">Demonstrado ao vivo para não restar dúvida. Cada violação abaixo invalida o material.</p>
+    </div>
+
+    <div class="dont-grid rev">
+      <div class="dont">
+        <div class="stage"><div class="dwm" style="transform:rotate(-10deg)">CAMERATA <i>21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> rotacionar ou inclinar</div>
+      </div>
+      <div class="dont">
+        <div class="stage"><div class="dwm" style="transform:scaleX(1.55);transform-origin:left center">CAMERATA <i>21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> esticar ou condensar</div>
+      </div>
+      <div class="dont">
+        <div class="stage" style="background:#000"><div class="dwm" style="color:#c09a50"><span style="color:#c09a50">CAMERATA</span> <i style="color:#c09a50">21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> aplicar dourado sobre preto</div>
+      </div>
+      <div class="dont">
+        <div class="stage"><div class="dwm" style="text-shadow:3px 3px 0 var(--cobalto),6px 6px 12px rgba(0,0,0,.8)">CAMERATA <i>21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> aplicar sombras ou efeitos 3D</div>
+      </div>
+      <div class="dont">
+        <div class="stage"><div class="dwm" style="color:transparent;-webkit-text-stroke:1px var(--pergaminho)">CAMERATA <i style="color:transparent;-webkit-text-stroke:1px var(--farol)">21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> vazar (outline) o logotipo</div>
+      </div>
+      <div class="dont">
+        <div class="stage" style="background:radial-gradient(circle at 30% 30%,#ff8ac2,#7db5ff 45%,#ffe37d 80%)"><div class="dwm" style="color:#fff">CAMERATA <i style="color:#fff">21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> aplicar sobre fundo sem contraste ou fora do duotone</div>
+      </div>
+      <div class="dont">
+        <div class="stage"><div class="dwm" style="color:#ff5fa2">CAMERATA <i style="color:#31e0c0">21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> recolorir fora da paleta</div>
+      </div>
+      <div class="dont">
+        <div class="stage"><div class="dwm" style="font-family:Arial,Helvetica,sans-serif;font-weight:700;letter-spacing:0">CAMERATA <i style="font-style:normal">21</i></div><span class="x">✕</span></div>
+        <div class="dcap"><b>Não</b> substituir a tipografia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 06 · SISTEMA CONSTRUTIVO ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">06</span> Sistema Construtivo</div>
+      <h2 class="sec">Não um ornamento. Um <em>alfabeto</em> que se recombina.</h2>
+      <p class="body dim" style="margin-bottom:30px">Seis módulos derivados da gramática Valentim–Araújo. Nunca formam figuras literais (claves, violinos): geram padrões, molduras, aberturas de vídeo e fundos — operáveis até no Canva.</p>
+    </div>
+    <div class="constr rev" aria-label="Módulos do sistema construtivo">
+      <div class="cell"><svg viewBox="0 0 40 40"><polygon points="20,4 4,36 36,36" fill="var(--farol)"/></svg></div>
+      <div class="cell"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="var(--cobalto)"/></svg></div>
+      <div class="cell"><svg viewBox="0 0 40 40"><rect x="4" y="14" width="32" height="12" fill="var(--farol)"/></svg></div>
+      <div class="cell"><svg viewBox="0 0 40 40"><path d="M4 36 A16 16 0 0 1 36 36 Z" fill="var(--acido)"/></svg></div>
+      <div class="cell"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="none" stroke="var(--farol)" stroke-width="4"/></svg></div>
+      <div class="cell"><svg viewBox="0 0 40 40"><line x1="2" y1="20" x2="38" y2="20" stroke="var(--farol)" stroke-width="3.4" stroke-dasharray="7 5"/></svg></div>
+    </div>
+    <div class="constr-cap rev">Triângulo · Círculo · Barra · Meia-lua · Anel · Sutura — proporções livres dentro do grid; cores só da paleta</div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 07 · CORES ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">07</span> Arquitetura de Cor</div>
+      <h2 class="sec">Um farol sobre a <em>meia-noite</em>.</h2>
+    </div>
+    <div class="pal rev">
+      <div class="sw" style="background:var(--meianoite);color:var(--pergaminho)">
+        <div class="role" style="color:var(--farol)">Fundamentação</div>
+        <div>
+          <div class="name">Meia-Noite</div>
+          <div class="hex">#1F0A33 · RGB 31/10/51 · CMYK 39/80/0/80</div>
+          <div class="why">Sofisticação profunda; contraste ideal com tons de pele negros. Nunca preto puro.</div>
+        </div>
+      </div>
+      <div class="sw" style="background:var(--farol);color:var(--tinta)">
+        <div class="role">Principal</div>
+        <div>
+          <div class="name">Farol</div>
+          <div class="hex">#FFB800 · RGB 255/184/0 · CMYK 0/28/100/0</div>
+          <div class="why">Energia intelectual; sinalizador urbano de longo alcance.</div>
+        </div>
+      </div>
+      <div class="sw" style="background:var(--cobalto);color:var(--pergaminho)">
+        <div class="role" style="color:var(--farol)">Fricção</div>
+        <div>
+          <div class="name">Cobalto</div>
+          <div class="hex">#2E4BFF · RGB 46/75/255 · CMYK 82/71/0/0</div>
+          <div class="why">Atrito intelectual; o azul da memória de Dalton Paula.</div>
+        </div>
+      </div>
+      <div class="sw" style="background:var(--acido);color:var(--tinta)">
+        <div class="role">Ação · Digital</div>
+        <div>
+          <div class="name">Ácido</div>
+          <div class="hex">#B2FF05 · RGB 178/255/5 · só tela</div>
+          <div class="why">Cirúrgico: botões e CTAs. Nunca em superfícies grandes; nunca em impresso.</div>
+        </div>
+      </div>
+    </div>
+    <div class="rev">
+      <div class="pal-ratio">
+        <div style="flex:60;background:var(--meianoite)"></div>
+        <div style="flex:25;background:var(--farol)"></div>
+        <div style="flex:10;background:var(--cobalto)"></div>
+        <div style="flex:3;background:var(--acido)"></div>
+        <div style="flex:2;background:var(--pergaminho)"></div>
+      </div>
+      <div class="pal-cap">Proporção de uso · 60 Meia-Noite / 25 Farol / 10 Cobalto / 3 Ácido / 2 Pergaminho</div>
+      <p class="note">Texto corrido sempre em Pergaminho <code>#F2EDE2</code> sobre escuros, ou Tinta <code>#17082A</code> sobre Farol/Ácido. Contraste mínimo WCAG AA (4.5:1) para corpo de texto.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 08 · TIPOGRAFIA + ESCALA ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">08</span> Tipografia · Escala</div>
+      <h2 class="sec">Uma serifa clássica com <em>sotaque</em>. E números exatos.</h2>
+    </div>
+
+    <div class="type-block rev">
+      <div class="type-tag">Display · Fraunces Variable</div>
+      <div class="spec-fraunces"><span class="w0">Excelência</span> <span class="w1">com wonk.</span></div>
+      <p class="axis-note">Serifa "old style" variável. O eixo <code>WONK</code> torce deliberadamente as letras clássicas: o cânone, reescrito com sotaque próprio. Eixos: <code>opsz 9–144 · wght 100–900 · SOFT 0–100 · WONK 0–1</code>.</p>
+    </div>
+
+    <div class="type-block rev">
+      <div class="type-tag">Utilidade · Space Grotesk</div>
+      <p class="spec-grotesk">Corpo de texto, interfaces, legendas e dados — desenhada para telas, onde a marca vive 80% do tempo.</p>
+      <div class="spec-caps">Rótulos em caixa-alta · tracking largo · peso 500</div>
+    </div>
+
+    <h3 class="sub rev">8.1 · Escala tipográfica oficial <span style="font-family:'Space Grotesk';font-size:11px;font-weight:400;letter-spacing:.1em;color:rgba(242,237,226,.5)">(desktop → mobile via clamp)</span></h3>
+    <table class="scale rev">
+      <thead><tr><th>Amostra</th><th>Especificação</th><th>Uso</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample"><span class="s-display">Aa Display</span></td>
+          <td class="specs"><code>Fraunces 900 · opsz 144</code><code>96–196 px · lh 0.84 · ls −3.5%</code><code>mobile: 44–56 px</code></td>
+          <td class="use">Wordmark, capas, aberturas de vídeo. Sempre caixa-alta.</td>
+        </tr>
+        <tr>
+          <td class="sample"><span class="s-h1">Aa Título H1</span></td>
+          <td class="specs"><code>Fraunces 600 · WONK 1</code><code>44–62 px · lh 1.04 · ls −1%</code><code>mobile: 30–34 px</code></td>
+          <td class="use">Títulos de seção e de programa. Palavra-chave em itálico Farol.</td>
+        </tr>
+        <tr>
+          <td class="sample"><span class="s-h2">Aa Subtítulo H2</span></td>
+          <td class="specs"><code>Fraunces 600 · WONK 1</code><code>22–24 px · lh 1.2</code><code>mobile: 19 px</code></td>
+          <td class="use">Subtítulos, nomes de obras e artistas.</td>
+        </tr>
+        <tr>
+          <td class="sample"><span class="s-lead">Aa Lead editorial</span></td>
+          <td class="specs"><code>Fraunces 400 itálico · SOFT 40</code><code>18–24 px · lh 1.45</code></td>
+          <td class="use">Manifestos, citações, notas de programa.</td>
+        </tr>
+        <tr>
+          <td class="sample"><span class="s-body">Aa Corpo de texto</span></td>
+          <td class="specs"><code>Space Grotesk 300</code><code>15 px · lh 1.85 · máx 60ch</code></td>
+          <td class="use">Texto corrido, biografias, release.</td>
+        </tr>
+        <tr>
+          <td class="sample"><span class="s-label">AA RÓTULO</span></td>
+          <td class="specs"><code>Space Grotesk 500 · caps</code><code>10–11 px · tracking .24–.32em</code></td>
+          <td class="use">Eyebrows, datas, navegação, metadados.</td>
+        </tr>
+        <tr>
+          <td class="sample"><span class="s-caption">Aa Legenda</span></td>
+          <td class="specs"><code>Space Grotesk 300</code><code>11 px · lh 1.6 · 60% opacidade</code></td>
+          <td class="use">Créditos de foto, notas de rodapé.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note rev">Regra de textura: palavras-chave (SOM, FUTURO, NOSSA) em corpo 300 pt+, vazando as margens, são a única textura gráfica permitida além do sistema construtivo.</p>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 09 · FOTOGRAFIA ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">09</span> Fotografia</div>
+      <h2 class="sec">Esforço atlético, não <em>formalidade pálida</em>.</h2>
+      <p class="body dim" style="margin-bottom:30px">Músicos em movimento, suor, bastidor. O verniz vem de um único filtro que unifica qualquer origem de imagem: o <strong>duotone da casa</strong>.</p>
+    </div>
+    <div class="duo-grid rev">
+      <div class="duo-card">
+        <div class="duo-visual" style="background:radial-gradient(ellipse 70% 90% at 30% 80%, var(--farol) 0%, transparent 55%),radial-gradient(ellipse 60% 70% at 75% 25%, #7a4fd0 0%, transparent 60%),linear-gradient(160deg, var(--meianoite-2), var(--meianoite))"></div>
+        <div class="duo-meta"><h4>Duotone da casa</h4><p>Sombras → Meia-Noite <code>#1F0A33</code> · Luzes → Farol <code>#FFB800</code>. Um clique no Canva unifica todo o feed.</p></div>
+      </div>
+      <div class="duo-card">
+        <div class="duo-visual" style="background:radial-gradient(ellipse 80% 80% at 70% 75%, var(--cobalto) 0%, transparent 60%),linear-gradient(200deg, var(--meianoite-2), var(--meianoite))"></div>
+        <div class="duo-meta"><h4>Variação cobalto</h4><p>Repertório de memória e projetos autorais. Sombras → Meia-Noite · Luzes → Cobalto <code>#2E4BFF</code>.</p></div>
+      </div>
+      <div class="duo-card">
+        <div class="duo-visual" style="background:linear-gradient(135deg, #111 0%, #3a3a3a 45%, #d9d9d9 100%)"><div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 62%,var(--acido) 62%,var(--acido) 66%,transparent 66%)"></div></div>
+        <div class="duo-meta"><h4>P&B de alto contraste</h4><p>Retratos editoriais e imprensa internacional: granulado, interrompido por um corte ácido.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 10 · APLICAÇÕES ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">10</span> Aplicações</div>
+      <h2 class="sec">O sistema em campo: <em>cartaz e feed</em>.</h2>
+    </div>
+    <div class="apps rev">
+      <div>
+        <div class="poster">
+          <div class="p-top">
+            <span>Camerata 21<br>Orq. Afro-Brasileira · UZP</span>
+            <svg width="38" height="28" viewBox="0 0 120 84" aria-hidden="true"><path d="M10 24 A20 20 0 0 1 50 24 L50 34 L24 60 L52 60 L52 74 L8 74 L8 62 L36 34 L36 26 A8 8 0 0 0 22 26 Z" fill="var(--tinta)"/><rect x="66" y="10" width="16" height="64" fill="var(--tinta)"/><polygon points="66,10 52,26 66,26" fill="var(--tinta)"/><rect x="56" y="66" width="38" height="8" fill="var(--cobalto)"/></svg>
+          </div>
+          <div><div class="p-wm">CONCERTO<br>DE LANÇA<i>—</i><br>MENTO<i>.</i></div></div>
+          <div>
+            <div class="p-sutura"></div>
+            <div class="p-info">Mês da Consciência Negra · Novembro 2026<br>Universidade Zumbi dos Palmares — São Paulo<br>Regência · João Rocha</div>
+          </div>
+        </div>
+        <div class="app-cap">Cartaz · grid brutalista, tipografia quebrada como ritmo</div>
+      </div>
+      <div>
+        <div class="ig">
+          <div class="tile" style="background:var(--farol)"><div class="t-type" style="color:var(--tinta)">SOM<br>NOSSO<i style="color:var(--cobalto)">.</i></div></div>
+          <div class="tile" style="background:linear-gradient(160deg,var(--meianoite-2),var(--meianoite))"><svg style="width:60%" viewBox="0 0 40 40"><polygon points="20,4 4,36 36,36" fill="var(--farol)"/></svg></div>
+          <div class="tile" style="background:var(--cobalto)"><div class="t-type" style="color:var(--pergaminho);font-style:italic">ensaio<br>aberto</div></div>
+          <div class="tile" style="background:linear-gradient(200deg,#3a2a55,var(--meianoite))"><div class="t-type" style="color:var(--farol)">16.08</div></div>
+          <div class="tile" style="background:var(--meianoite);border:1px solid var(--linha)"><svg style="width:52%" viewBox="0 0 120 84"><path d="M10 24 A20 20 0 0 1 50 24 L50 34 L24 60 L52 60 L52 74 L8 74 L8 62 L36 34 L36 26 A8 8 0 0 0 22 26 Z" fill="var(--farol)"/><rect x="66" y="10" width="16" height="64" fill="var(--farol)"/><polygon points="66,10 52,26 66,26" fill="var(--farol)"/><rect x="56" y="66" width="38" height="8" fill="var(--acido)"/></svg></div>
+          <div class="tile" style="background:var(--farol)"><svg style="width:60%" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="var(--cobalto)"/></svg></div>
+          <div class="tile" style="background:var(--cobalto)"><svg style="width:64%" viewBox="0 0 40 40"><line x1="2" y1="20" x2="38" y2="20" stroke="var(--farol)" stroke-width="3" stroke-dasharray="7 5"/></svg></div>
+          <div class="tile" style="background:linear-gradient(150deg,#33205a,var(--meianoite))"><div class="t-type" style="color:var(--pergaminho)">VOCÊ<br>É<br>DONA<i style="color:var(--acido)">.</i></div></div>
+          <div class="tile" style="background:var(--acido)"><div class="t-type" style="color:var(--tinta)">→ 21</div></div>
+        </div>
+        <div class="app-cap">Feed · alternância tipo massivo / módulo / duotone</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sutura wrap">
+
+<!-- ════════ 11 · VOZ ════════ -->
+<section>
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow"><span class="n">11</span> Voz</div>
+      <h2 class="sec">Sofisticada. <em>Descontraída.</em> Convocatória.</h2>
+    </div>
+    <div class="voz rev">
+      <div class="sim">
+        <h4>A marca diz</h4>
+        <p>"Esse som também é seu. Vem construir com a gente."</p>
+        <p>"Mozart e a matriz afro-brasileira, no mesmo palco, no mesmo nível."</p>
+        <p>"Do campus da Zumbi para o mundo."</p>
+      </div>
+      <div class="nao">
+        <h4>A marca nunca diz</h4>
+        <p>"Levando cultura erudita às comunidades carentes."</p>
+        <p>"Apreciada obra do repertório universal em fá sustenido menor."</p>
+        <p>"Um projeto de inclusão social através da música."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ COLOPHON ════════ -->
+<hr class="sutura acido" style="opacity:.8">
+<footer class="colophon">
+  <div class="wrap">
+    <div class="col-wm rev">CAMERATA <i>21</i></div>
+    <div class="col-grid rev">
+      <div><b>Idealizada</b> 04.12.2024<br><b>Consagrada</b> 16.08.2026</div>
+      <div><b>Direção Artística e Executiva</b><br>Maestro João Rocha</div>
+      <div><b>Casa</b> Universidade Zumbi dos Palmares<br>São Paulo → Mundo</div>
+      <div><b>Estrutura</b> Studio Kephra</div>
+    </div>
+    <p class="col-note rev">Sistema desenhado sobre a gramática construtiva de Rubem Valentim e Emanoel Araújo, o azul e o silêncio de Dalton Paula e a linha de sutura de Rosana Paulino — nenhuma obra reproduzida, toda a lógica herdada. Formato calibrado pelo benchmark global da música de concerto contemporânea (2021–2026).</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.08,rootMargin:'0px 0px -5% 0px'});
+    document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
+
+    var wm = document.getElementById('wm'), btn = document.getElementById('play');
+    if(btn){
+      btn.addEventListener('click', function(){
+        var on = wm.classList.toggle('playing');
+        btn.classList.toggle('on', on);
+        btn.setAttribute('aria-pressed', on);
+        btn.textContent = on ? '■  Pausar' : '▶  Ouvir a marca';
+        if(on){
+          wm.querySelectorAll('.k').forEach(function(k,i){ k.style.animationDelay = (i*0.09)+'s'; });
+        }
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

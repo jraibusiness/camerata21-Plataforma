@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Camerata 21 — Inscrição de Instrumentistas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --meianoite:  #1F0A33;
+            --meianoite-2:#2A1244;
+            --farol:      #FFB800;
+            --acido:      #B2FF05;
+            --cobalto:    #2E4BFF;
+            --pergaminho: #F2EDE2;
+            --tinta:      #17082A;
+            --erro:       #FF3D5A;
+            --linha:      rgba(255,184,0,0.28);
+            --linha-forte:rgba(255,184,0,0.55);
+        }
+
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+        ::selection{background:var(--acido);color:var(--tinta)}
+        img,svg{max-width:100%;height:auto}
+
+        body{
+            background:var(--meianoite);
+            color:var(--pergaminho);
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:300;
+            line-height:1.7;
+            -webkit-font-smoothing:antialiased;
+            overflow-x:hidden;
+        }
+
+        .fr{font-family:'Fraunces',serif}
+
+        .sutura{height:0;border:none;border-top:2px dashed var(--farol);opacity:.55;margin:0}
+        .sutura.acido{border-top-color:var(--acido)}
+        hr.sutura.wrap{max-width:1180px;display:block;margin-left:auto;margin-right:auto}
+
+        .rev{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+        .rev.in{opacity:1;transform:none}
+        @media (prefers-reduced-motion:reduce){
+            .rev{opacity:1;transform:none;transition:none}
+            html{scroll-behavior:auto}
+        }
+
+        .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(18px,5vw,72px)}
+        section{padding:clamp(60px,11vw,130px) 0;position:relative}
+
+        .eyebrow{
+            display:flex;align-items:center;gap:12px;
+            font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;
+            color:var(--farol);margin-bottom:26px;
+        }
+        .eyebrow::before{content:"";width:28px;height:2px;background:var(--farol);flex-shrink:0}
+        .eyebrow .n{color:var(--acido);letter-spacing:.1em}
+
+        h2.sec{
+            font-family:'Fraunces',serif;
+            font-variation-settings:'opsz' 100,'SOFT' 0,'WONK' 1;
+            font-weight:600;
+            font-size:clamp(30px,5.6vw,62px);
+            line-height:1.04;letter-spacing:-.01em;
+            color:var(--pergaminho);margin-bottom:24px;
+            max-width:20ch;overflow-wrap:break-word;
+        }
+        h2.sec em{font-style:italic;font-weight:500;color:var(--farol)}
+        h3.sub{
+            font-family:'Fraunces',serif;font-weight:600;font-size:clamp(19px,2.6vw,24px);
+            font-variation-settings:'WONK' 1;color:var(--pergaminho);margin:44px 0 16px;
+        }
+        p.body{font-size:15px;line-height:1.85;max-width:60ch;color:var(--pergaminho)}
+        p.body + p.body{margin-top:16px}
+        .dim{color:rgba(242,237,226,.62)}
+        strong{font-weight:500;color:#fff}
+        a{color:var(--acido);text-decoration:none}
+        a:focus-visible,button:focus-visible{outline:2px solid var(--acido);outline-offset:3px}
+        .note{font-size:11.5px;line-height:1.7;color:rgba(242,237,226,.55);max-width:60ch;margin-top:14px}
+        .note code, code{font-family:'Space Grotesk';color:var(--acido);font-size:.92em;letter-spacing:.04em}
+
+        /* ══════════ TICKER ══════════ */
+        .ticker{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);overflow:hidden;white-space:nowrap;padding:11px 0;background:var(--meianoite);position:relative;z-index:5}
+        .tick-track{display:inline-block;animation:tick 26s linear infinite}
+        @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        .tick-track span{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--pergaminho);margin-right:48px}
+        .tick-track span i{font-style:normal;color:var(--farol);margin-right:48px}
+
+        /* ══════════ HERO ══════════ */
+        .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:84px 0 0;position:relative;overflow:hidden}
+        .hero-meta{
+            display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between;gap:18px 24px;
+            font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:400;
+            color:rgba(242,237,226,.6);margin-bottom:clamp(26px,6vh,70px);
+        }
+        .hero-meta b{display:block;color:var(--farol);font-weight:500;margin-top:6px;letter-spacing:.12em}
+        @media(max-width:720px){.hero-meta{grid-template-columns:1fr 1fr}}
+
+        .hero-manifesto{
+            font-family:'Fraunces',serif;font-style:italic;
+            font-variation-settings:'opsz' 60,'SOFT' 40,'WONK' 0;
+            font-weight:400;font-size:clamp(16px,2.4vw,24px);
+            color:var(--pergaminho);max-width:34ch;line-height:1.45;
+            margin-bottom:clamp(30px,6vh,80px);
+        }
+        .hero-manifesto b{color:var(--farol);font-weight:500;font-style:italic}
+
+        .disclaimer-banner {
+            background:var(--farol);
+            color:var(--tinta);
+            padding: clamp(12px,3vw,24px);
+            text-align: center;
+            font-size: clamp(12px,1.5vw,16px);
+            font-weight:500;
+            letter-spacing:.1em;
+            font-family:'Space Grotesk',sans-serif;
+        }
+
+        .cta-button {
+            display:inline-block;
+            background:var(--farol);
+            color:var(--tinta);
+            font-family:'Space Grotesk',font-size:clamp(14px,2vw,20px);
+            letter-spacing:.22em;text-transform:uppercase;
+            font-weight:500;padding:clamp(18px,4vw,32px) clamp(32px,6vw,64px);
+            cursor:pointer;transition:.25s;min-height:44px;
+            border:none;
+            margin:clamp(24px,5vh,48px) auto;
+            display:inline-block;
+        }
+
+        .cta-button:hover{
+            background:var(--acido);
+            color:var(--tinta)
+        }
+
+        .cta-button:focus-visible{outline:2px solid var(--acido);outline-offset:3px}
+
+        .section-info {
+            background:var(--meianoite);
+            border:1px solid var(--linha);
+            border-radius:8px;
+            padding:clamp(24px,4vw,48px);
+            margin:clamp(32px,6vh,64px) 0;
+        }
+
+        .section-info h3 {
+            font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3vw,32px);
+            font-variation-settings:'WONK' 1;color:var(--pergaminho);
+            margin-bottom:clamp(16px,4vh,32px);
+        }
+
+        .info-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:clamp(24px,4vw,48px);
+            margin-top:clamp(24px,4vh,48px);
+        }
+
+        .info-card {
+            padding:clamp(16px,3vw,24px);
+            border-top:2px solid var(--farol);
+        }
+
+        .info-card h4 {
+            font-family:'Fraunces',serif;font-size:clamp(18px,2.5vw,24px);
+            font-weight:600;margin-bottom:clamp(12px,3vh,24px);
+        }
+
+        .info-card p {
+            font-size:clamp(14px,1.5vw,18px);
+            line-height:1.7;
+        }
+
+        .wall{
+            position:absolute;top:5%;right:-4%;
+            font-family:'Fraunces',serif;font-weight:900;font-style:italic;
+            font-size:clamp(110px,26vw,380px);line-height:.8;
+            color:transparent;-webkit-text-stroke:1px rgba(255,184,0,.14);
+            pointer-events:none;user-select:none;z-index:0;
+        }
+
+        /* Navigation */
+        .main-nav{
+            background:var(--meianoite-2);
+            backdrop-filter:blur(10px);
+            border-bottom:1px solid var(--linha);
+            position:sticky;
+            top:0;
+            z-index:100;
+            transition:all 0.3s ease;
+        }
+
+        .nav-container{
+            max-width:1180px;
+            margin:0 auto;
+            padding:0 clamp(18px,5vw,72px);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            height:70px;
+        }
+
+        .nav-logo span{
+            font-family:'Fraunces',serif;
+            font-weight:900;
+            letter-spacing:-1px;
+        }
+
+        .nav-menu{
+            display:flex;
+            list-style:none;
+            gap:32px;
+            margin:0;
+            padding:0;
+        }
+
+        .nav-link{
+            color:var(--pergaminho);
+            text-decoration:none;
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:400;
+            font-size:15px;
+            transition:color 0.3s ease;
+            position:relative;
+        }
+
+        .nav-link:hover{
+            color:var(--farol);
+        }
+
+        .nav-link::after{
+            content:'';
+            position:absolute;
+            bottom:-2px;
+            left:0;
+            width:0;
+            height:2px;
+            background:var(--farol);
+            transition:width 0.3s ease;
+        }
+
+        .nav-link:hover::after{
+            width:100%;
+        }
+
+        .admin-btn{
+            background:var(--farol);
+            color:var(--tinta);
+            padding:10px 20px;
+            border-radius:6px;
+            text-decoration:none;
+            font-family:'Fraunces',serif;
+            font-weight:600;
+            font-size:14px;
+            transition:all 0.3s ease;
+            display:inline-block;
+        }
+
+        .admin-btn:hover{
+            background:var(--acido);
+            transform:translateY(-1px);
+        }
+
+        .nav-toggle{
+            display:none;
+            flex-direction:column;
+            justify-content:center;
+            width:30px;
+            height:20px;
+            background:transparent;
+            border:none;
+            cursor:pointer;
+            z-index:1001;
+        }
+
+        .hamburger{
+            width:100%;
+            height:2px;
+            background:var(--farol);
+            margin:2px 0;
+            transition:all 0.3s ease;
+        }
+
+        .nav-toggle.active .hamburger:nth-child(1){
+            transform:rotate(45deg) translate(5px,5px);
+        }
+
+        .nav-toggle.active .hamburger:nth-child(2){
+            opacity:0;
+        }
+
+        .nav-toggle.active .hamburger:nth-child(3){
+            transform:rotate(-45deg) translate(7px,-6px);
+        }
+
+        /* Mobile Navigation */
+        @media (max-width:768px){
+            .nav-container{
+                height:60px;
+                padding:0 20px;
+            }
+
+            .nav-menu{
+                position:fixed;
+                left:0;
+                top:70px;
+                flex-direction:column;
+                background:var(--meianoite-2);
+                width:100%;
+                text-align:center;
+                padding:20px 0;
+                transform:translateY(-100%);
+                transition:transform 0.3s ease;
+                box-shadow:0 10px 27px rgba(0,0,0,0.05);
+                z-index:999;
+                gap:0;
+            }
+
+            .nav-menu.active{
+                transform:translateY(0);
+            }
+
+            .nav-item{
+                margin:10px 0;
+            }
+
+            .nav-link{
+                display:block;
+                padding:15px 0;
+                font-size:16px;
+                border-bottom:1px solid var(--linha);
+            }
+
+            .nav-link::after{
+                display:none;
+            }
+
+            .admin-btn{
+                display:block;
+                width:200px;
+                margin:20px auto;
+            }
+
+            .nav-toggle{
+                display:flex;
+            }
+
+            .nav-admin{
+                display:block;
+                margin:20px auto 0;
+            }
+
+            .nav-admin .admin-btn{
+                width:100%;
+            }
+        }
+
+        @media (max-width:480px){
+            .nav-container{
+                padding:0 16px;
+            }
+
+            .nav-menu{
+                padding:16px 0;
+            }
+
+            .nav-link{
+                padding:12px 0;
+                font-size:14px;
+            }
+
+            .admin-btn{
+                width:160px;
+                padding:12px 16px;
+                font-size:13px;
+            }
+        }
+
+        /* Smooth scrolling */
+        html{
+            scroll-behavior:smooth;
+        }
+
+        /* Active navigation highlight */
+        .nav-item a[href^="#"]:target{
+            color:var(--farol);
+        }
+
+        /* Accessibility */
+        .nav-toggle:focus,
+        .nav-link:focus{
+            outline:2px solid var(--acido);
+            outline-offset:2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ════════ DISCLAIMER ════════ -->
+    <div class="disclaimer-banner">
+        Esta é uma plataforma provisória de recrutamento e logística da Camerata 21.
+    </div>
+
+    <!-- ════════ TICKER ════════ -->
+    <div class="ticker" aria-hidden="true">
+        <div class="tick-track">
+            <span>Camerata 21 <i>●</i> Orquestra Afro-Brasileira <i>●</i> Universidade Zumbi dos Palmares <i>●</i> São Paulo → Mundo <i>●</i> A orquestra que você ajuda a construir <i>●</i></span>
+            <span>Camerata 21 <i>●</i> Orquestra Afro-Brasileira <i>●</i> Universidade Zumbi dos Palmares <i>●</i> São Paulo → Mundo <i>●</i> A orquestra que você ajuda a construir <i>●</i></span>
+        </div>
+    </div>
+
+    <!-- ════════ MENU ════════ -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="fr" style="color:var(--farol);font-size:20px;font-weight:900;">CAMERATA<span style="font-style:italic;font-size:0.7em;">21</span></span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#cadastro" class="nav-link">Cadastro de Instrumentistas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#proposta" class="nav-link">A Proposta</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#uzp" class="nav-link">A UZP</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#direcao" class="nav-link">Direção Artística</a>
+                </li>
+            </ul>
+            <div class="nav-admin">
+                <a href="/admin" class="admin-btn">Área Administrativa</a>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span class="hamburger"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ════════ HERO ════════ -->
+    <header class="hero">
+        <div class="wall" aria-hidden="true">21</div>
+        <div class="wrap" style="position:relative;z-index:2">
+            <div class="hero-meta rev">
+                <div>Plataforma de Inscrições<b>Acesso para Instrumentistas</b></div>
+                <div>Abertura<b>16.08.2026</div>
+                <div>Concerto Final<b>20.11.2026</b></div>
+                <div>Direção<b>Maestro João Rocha</b></div>
+            </div>
+
+            <p class="hero-manifesto rev">
+                A música de concerto sempre foi nossa. O que muda agora é <b>quem assina a marca</b> — e para quem ela fala: você, músico, dono e dona da própria casa.
+            </p>
+
+            <div style="text-align:center;">
+                <h1 class="rev" style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(44px,8vw,120px);line-height:1.1;letter-spacing:-.03em;color:var(--pergaminho);margin-bottom:clamp(24px,5vh,48px)">
+                    CAMERATA <i style="font-style:italic;font-variation-settings:'WONK' 1;color:var(--farol);font-size:0.8em">21</i>
+                </h1>
+
+                <button class="cta-button rev" onclick="window.location.href='#cadastro'">
+                    Inscreva-se como Instrumentista
+                </button>
+            </div>
+
+            <hr class="sutura">
+        </div>
+    </header>
+
+    <!-- ════════ SEÇÃO A ORQUESTRA ════════ -->
+    <section>
+        <div class="wrap">
+            <div class="rev">
+                <div class="eyebrow"><span class="n">01</span> A Orquestra</div>
+                <h2 class="sec">Não é uma marca de nicho. É uma <em>love brand</em> global.</h2>
+            </div>
+
+            <div class="section-info rev">
+                <p class="body">
+                    A Camerata 21 recusa duas caixas: a do "museu de conservação sonora" e a do "projeto social de assistencialismo". Ela é um <strong>movimento cultural</strong> — excelência sinfônica de padrão internacional, assinada pela alta classe criativa negra brasileira do século XXI, construída em <strong>co-propriedade com seu público</strong>.
+                </p>
+                <p class="body">
+                    Nossa casa é a Universidade Zumbi dos Palmares, mas nossa voz ecoa do campus para o mundo. Somos orquestra e movimento, tradição e vanguarda.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ SEÇÃO O ENSAIO ABERTO ════════ -->
+    <section>
+        <div class="wrap">
+            <div class="rev">
+                <div class="eyebrow"><span class="n">02</span> O Ensaio Aberto</div>
+                <h2 class="sec">Venha construir a <em>orquestra do futuro</em> conosco.</h2>
+            </div>
+
+            <div class="section-info rev">
+                <h3 class="sub">16 de Agosto de 2026</h3>
+                <p class="body">
+                    Na primeira etapa, abrimos as portas da Zumbi dos Palmares para músicos de todo o Brasil. Será mais que um ensaio — será um encontro de corações, mentes e arpeggios onde você será protagonista da nossa história.
+                </p>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4 class="fr">Local</h4>
+                        <p>Universidade Zumbi dos Palmares<br>
+                        Av. André Cavalcanti, 90 - Cidade Universitária<br>
+                        Vila Clementino, São Paulo - SP</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4 class="fr">Horário</h4>
+                        <p>17h00 - 20h00 (Intervalo de segurança)<br>
+                        Ensaio principal: 19h00 - 20h30<br>
+                        <em>Detalhes finais a confirmar</em></p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4 class="fr">Programa</h4>
+                        <p>Repertório em construção coletiva<br>
+                        Com foco na matriz afro-brasileira<br>
+                        Tradição e contemporaneidade no mesmo palco</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ SEÇÃO O GRANDE CONCERTO ════════ -->
+    <section>
+        <div class="wrap">
+            <div class="rev">
+                <div class="eyebrow"><span class="n">03</span> O Grande Concerto</div>
+                <h2 class="sec">Homenagem a <em>Arlindo Cruz</em> no Troféu Raça Negra</h2>
+            </div>
+
+            <div class="section-info rev">
+                <h3 class="sub">20 de Novembro de 2026</h3>
+                <p class="body">
+                    Em um marco histórico, a Camerata 21 se apresenta no Troféu Raça Negra, honrando a memória e a obra de Arlindo Cruz. A performance será um diálogo entre a sinfonia de concerto e as raízes da música brasileira.
+                </p>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4 class="fr">Local</h4>
+                        <p>Espaço Unimed<br>
+                        Av. Ipiranga, 390 - Paraíso<br>
+                        São Paulo - SP</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4 class="fr">Celebração</h4>
+                        <p>Consciência Negra<br>
+                        Troféu Raça Negra 2026<br>
+                        Homenagem a Arlindo Cruz</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h4 class="fr">Expectativa</h4>
+                        <p>Orquestra completa<br>
+                        15 integrantes por naipe<br>
+                        Excelência técnica e afeto</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ CHAMADA PARA AÇÃO ════════ -->
+    <section id="cadastro">
+        <div class="wrap">
+            <div class="rev" style="text-align:center;">
+                <div class="eyebrow"><span class="n">04</span> Inscrição</div>
+                <h2 class="sec">Sua música faz <em>diferença</em>. Construa conosco.</h2>
+                <p class="body" style="max-width:60ch;margin:0 auto 40px">
+                    O processo de inscrição é simples e levando 3 minutos. Responda algumas perguntas sobre sua experiência, disponibilidade e preferências. Sua voz será essencial para o repertório e organização da orquestra.
+                </p>
+
+                <div class="section-info" style="background:var(--farol);color:var(--tinta)">
+                    <p class="body" style="color:var(--tinta)">
+                        <strong>Atenção:</strong> Este cadastro não salva o progresso pela metade. Reserve 3 minutos para ir até o final, caso contrário, seus dados serão perdidos.
+                    </p>
+                </div>
+
+                <button class="cta-button" style="background:var(--tinta);color:var(--farol);font-size:clamp(16px,2vw,24px;padding:clamp(24px,5vw,48px);">
+                    Iniciar Cadastro
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function(){
+            var io = new IntersectionObserver(function(es){
+                es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+            },{threshold:.08,rootMargin:'0px 0px -5% 0px'});
+            document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
+        })();
+
+        // Mobile Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.querySelector('.nav-menu');
+
+            navToggle.addEventListener('click', function() {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link or admin button
+            document.querySelectorAll('.nav-link, .admin-btn').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const nav = document.querySelector('.main-nav');
+                if (!nav.contains(event.target) && navMenu.classList.contains('active')) {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+
+            // Active navigation highlight based on scroll
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('.nav-link');
+
+                let current = '';
+                sections.forEach(function(section) {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= (sectionTop - 100)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').slice(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
