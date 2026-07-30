@@ -41,29 +41,37 @@ Esta plataforma foi desenvolvida para captar inscrições de músicos de forma �
 ## 📁 Estrutura do Projeto
 
 ```
-├── Code.gs.final           # Código principal do GAS (copiar para Code.gs)
+├── backend/
+│   └── Code.gs              # Backend GAS: roteamento, gravação, logística, e-mails, OTP
 ├── frontend/
-│   ├── index.html          # Landing institucional
-│   ├── cadastro.html       # Formulário de inscrição
-│   └── admin.html          # Dashboard administrativo
-├── _redirects              # Redirecionamentos Netlify
-├── DEPLOY_GUIDE.md        # Guia completo de deployment
-└── README.md              # Este arquivo
+│   ├── index.html           # Landing institucional
+│   ├── cadastro.html        # Formulário de inscrição (wizard)
+│   └── admin.html           # Dashboard administrativo (login OTP)
+├── reference/
+│   ├── editais/              # PDFs de editais e regulamentos (Rouanet, Petrobras, Caixa)
+│   └── branding/              # Brandkit e pesquisa de branding
+├── assets/
+│   └── fotos/                # Fotos institucionais (reserva para uso gráfico futuro)
+├── docs/
+│   ├── HANDOFF.md            # Documento técnico de handoff (arquitetura, planilha, pendências)
+│   └── ARQUITETURA_E_ESCOPO.md
+├── _redirects                # Redirecionamentos Netlify (aponta para o deployment GAS ativo)
+└── README.md                 # Este arquivo
 ```
 
 ## 🚀 Guia de Deployment
 
 ### 1. Google Apps Script
 
-1. Acesse: https://script.google.com/u/0/home/projects/1Bggk25qYr4sd6qdIkiK2cTIqIMFqLnXtO0LDCveTRTwoofGKbXoZb7cQ
-2. Substitua o conteúdo de `Code.gs` pelo conteúdo de `Code.gs.final`
-3. **IMPORTANTE:** Adicione o base64 real do logo da UZP na variável `LOGO_UZP_B64`
-4. Publique → New deployment → Web app
+1. Acesse o projeto GAS "Inscrições Camerata 21"
+2. Cole o conteúdo de `backend/Code.gs` no `Code.gs` do editor
+3. Cole `frontend/index.html`, `frontend/cadastro.html`, `frontend/admin.html` como arquivos HTML no mesmo projeto (nomes em minúsculas: `index`, `cadastro`, `admin`)
+4. Publique → New deployment → Web app → Execute as: Me → Who has access: Anyone
 5. Copie a nova URL
 
 ### 2. Netlify
 
-1. Atualize `_redirects` com a nova URL:
+1. Atualize `_redirects` com a nova URL, mantendo o formato:
    ```
    /inscricao   [NOVA_URL]/exec?page=cadastro   302
    /admin       [NOVA_URL]/exec?page=admin      302
@@ -75,6 +83,8 @@ Esta plataforma foi desenvolvida para captar inscrições de músicos de forma �
 - [ ] Dashboard admin
 - [ ] Dispositivos móveis
 - [ ] E-mails de confirmação
+
+Para detalhes técnicos completos (estrutura da planilha, funções do backend, pendências conhecidas), veja `docs/HANDOFF.md`.
 
 ## 📊 Metas Orquestrais
 
