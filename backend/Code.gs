@@ -133,7 +133,10 @@ function seedPreCadastro() {
 // Normalização de dados
 function normalizeName(name) {
   if (!name) return "";
-  return name.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+  var minus = ["de","da","do","das","dos","e","di","du","del"];
+  return String(name).trim().replace(/\s+/g, " ").toLowerCase().split(" ").map(function(w, i) {
+    return (i > 0 && minus.indexOf(w) !== -1) ? w : w.charAt(0).toUpperCase() + w.slice(1);
+  }).join(" ");
 }
 
 function normalizeEmail(email) {
@@ -275,8 +278,10 @@ function prepareSheetRow(d, log) {
 }
 
 function getInstrumentName(k) {
-  var n = { violin:"Violino", viola:"Viola", cello:"Violoncelo", bass:"Contrabaixo",
-    flute:"Flauta", oboe:"Oboé", clarinet:"Clarinete", bassoon:"Fagote",
+  var n = { violin:"Violino", violin1:"Violino 1", violin2:"Violino 2",
+    viola:"Viola", cello:"Violoncelo", bass:"Contrabaixo",
+    flute:"Flauta", piccolo:"Flauta Piccolo", oboe:"Oboé", englishhorn:"Corne Inglês",
+    clarinet:"Clarinete", clarion:"Clarinete Baixo", bassoon:"Fagote",
     horn:"Trompa", trumpet:"Trompete", trombone:"Trombone", tuba:"Tuba", percussion:"Percussão" };
   return n[k] || k;
 }
