@@ -1195,7 +1195,7 @@
                 <p class="screen-subtitle">De qual naipe você faz parte?</p>
             </div>
             <div class="instrument-grid" id="naipeGrid">
-                <div class="instrument-card" data-naipe="cordas"><div class="instrument-icon">&#127928;</div><div class="instrument-name">Cordas</div></div>
+                <div class="instrument-card" data-naipe="cordas"><div class="instrument-icon">&#127931;</div><div class="instrument-name">Cordas</div></div>
                 <div class="instrument-card" data-naipe="madeiras"><div class="instrument-icon">&#127926;</div><div class="instrument-name">Madeiras</div></div>
                 <div class="instrument-card" data-naipe="metais"><div class="instrument-icon">&#127930;</div><div class="instrument-name">Metais</div></div>
                 <div class="instrument-card" data-naipe="percussao"><div class="instrument-icon">&#129345;</div><div class="instrument-name">Tímpanos e Percussão</div></div>
@@ -1377,39 +1377,7 @@
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="goToScreen(5)">Voltar</button>
-                <button type="button" class="btn btn-primary" id="continueRepertoire" onclick="goToScreen(7)" disabled>Continuar</button>
-            </div>
-        </div>
-
-        <!-- Tela 07: Votação de Repertório -->
-        <div class="screen" id="screen07">
-            <div class="screen-header">
-                <h1 class="screen-title">Escolha seu Repertório</h1>
-                <p class="screen-subtitle">
-                    Ordene suas músicas favoritas (a mais importante primeiro)
-                </p>
-            </div>
-            <div class="ranking-container" id="rankingContainer">
-                <div class="ranking-item" draggable="true" data-id="1">
-                    <div class="ranking-handle">⋮⋮</div>
-                    <div class="ranking-text">MENDELSSOHN — Sinfonia n.º 3, Op. 56</div>
-                </div>
-                <div class="ranking-item" draggable="true" data-id="2">
-                    <div class="ranking-handle">⋮⋮</div>
-                    <div class="ranking-text">BEETHOVEN — Sinfonia n.º 5, Op. 67 (1º mov.)</div>
-                </div>
-                <div class="ranking-item" draggable="true" data-id="3">
-                    <div class="ranking-handle">⋮⋮</div>
-                    <div class="ranking-text">MOZART — Sinfonia n.º 40 em Sol menor, K. 550 (1º mov.)</div>
-                </div>
-                <div class="ranking-item" draggable="true" data-id="4">
-                    <div class="ranking-handle">⋮⋮</div>
-                    <div class="ranking-text">BOLOGNE — Concerto para Violino n.º 2, Op. 2</div>
-                </div>
-</div>
-            <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(6)">Voltar</button>
-                <button type="button" class="btn btn-primary" id="continueRanking" onclick="goToScreen(8)" disabled>Continuar</button>
+                <button type="button" class="btn btn-primary" id="continueRepertoire" onclick="goToScreen(8)" disabled>Continuar</button>
             </div>
         </div>
 
@@ -1435,7 +1403,7 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(7)">Voltar</button>
+                <button type="button" class="btn btn-secondary" onclick="goToScreen(6)">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueMaterial" onclick="goToScreen(9)" disabled>Continuar</button>
             </div>
         </div>
@@ -1600,7 +1568,7 @@
                     Em instantes você recebe um <strong>e-mail de confirmação</strong> com todos os detalhes.
                 </p>
                 <div class="button-group" style="justify-content:center">
-                    <button type="button" class="btn btn-secondary" onclick="reiniciarCadastro()">Voltar ao início</button>
+                    <a href="https://camerata21.com" target="_top" class="btn btn-secondary">Voltar ao início</a>
                 </div>
             </div>
         </div>
@@ -1660,7 +1628,7 @@
         let additionalInstruments = {};
 
         // Ordem canônica das telas (usada para a barra de progresso)
-        const SCREEN_ORDER = ['00','01','02','03','04','04i','04b','04c','04d','04e','05','06','07','08','09','10','11','12','13','Success'];
+        const SCREEN_ORDER = ['00','01','02','03','04','04i','04b','04c','04d','04e','05','06','08','09','10','11','12','13','Success'];
 
         // Converte 3 -> "03", '04b' -> '04b', 'Success' -> 'Success'
         function screenKey(n) {
@@ -1789,23 +1757,6 @@
             const cg = document.getElementById('caronaGroup');
             if (value === 'car') { cg.style.display = 'block'; }
             else { cg.style.display = 'none'; delete formData.carona; }
-        }
-
-        // Recomeçar do zero a partir da tela de sucesso
-        function reiniciarCadastro() {
-            formData = {};
-            document.querySelectorAll('.radio-option.selected, .instrument-card.selected')
-                .forEach(function (e) { e.classList.remove('selected'); });
-            document.querySelectorAll('input').forEach(function (e) { e.value = ''; });
-            const cb = document.getElementById('check1');
-            if (cb) { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); }
-            const cg = document.getElementById('caronaGroup');
-            if (cg) cg.style.display = 'none';
-            const av = document.getElementById('revisaoAviso');
-            if (av) av.innerHTML = '';
-            document.getElementById('instrumentGrid').innerHTML = '';
-            document.querySelectorAll('[id^="continue"]').forEach(function (b) { b.disabled = true; });
-            goToScreen(0);
         }
 
         // Telas adicionais por família de instrumento
@@ -1950,158 +1901,6 @@
             goToScreen(13);
         });
 
-        // Drag and drop para ranking - Desktop e Mobile
-        let draggedElement = null;
-        let touchItem = null;
-        let touchOffset = { x: 0, y: 0 };
-
-        function setupRanking() {
-            const items = document.querySelectorAll('.ranking-item');
-
-            // Desktop - Drag events
-            items.forEach(item => {
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragend', handleDragEnd);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('drop', handleDrop);
-
-                // Mobile - Touch events
-                item.addEventListener('touchstart', handleTouchStart, { passive: false });
-                item.addEventListener('touchmove', handleTouchMove, { passive: false });
-                item.addEventListener('touchend', handleTouchEnd);
-
-                // Make items draggable
-                item.draggable = true;
-            });
-        }
-
-        function handleDragStart(e) {
-            draggedElement = this;
-            this.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-        }
-
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-            draggedElement = null;
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-
-            const afterElement = getDragAfterElement(this.parentNode, e.clientY);
-            if (afterElement == null) {
-                this.parentNode.appendChild(draggedElement);
-            } else {
-                this.parentNode.insertBefore(draggedElement, afterElement);
-            }
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            updateRankingOrder();
-        }
-
-        // Touch handlers for mobile
-        function handleTouchStart(e) {
-            touchItem = this;
-            const touch = e.touches[0];
-            const rect = this.getBoundingClientRect();
-
-            touchOffset = {
-                x: touch.clientX - rect.left,
-                y: touch.clientY - rect.top
-            };
-
-            this.style.position = 'fixed';
-            this.style.zIndex = '1000';
-            this.style.pointerEvents = 'none';
-            this.classList.add('dragging');
-
-            e.preventDefault();
-        }
-
-        function handleTouchMove(e) {
-            if (!touchItem) return;
-
-            const touch = e.touches[0];
-            touchItem.style.left = (touch.clientX - touchOffset.x) + 'px';
-            touchItem.style.top = (touch.clientY - touchOffset.y) + 'px';
-
-            e.preventDefault();
-        }
-
-        function handleTouchEnd(e) {
-            if (!touchItem) return;
-
-            touchItem.style.position = '';
-            touchItem.style.zIndex = '';
-            touchItem.style.pointerEvents = '';
-            touchItem.style.left = '';
-            touchItem.style.top = '';
-            touchItem.classList.remove('dragging');
-
-            // Find the element below and insert
-            const touch = e.changedTouches[0];
-            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-
-            if (elementBelow && elementBelow.classList.contains('ranking-item') && elementBelow !== touchItem) {
-                const container = touchItem.parentNode;
-                const items = Array.from(container.children);
-                const draggedIndex = items.indexOf(touchItem);
-                const targetIndex = items.indexOf(elementBelow);
-
-                if (draggedIndex < targetIndex) {
-                    container.insertBefore(touchItem, elementBelow.nextSibling);
-                } else {
-                    container.insertBefore(touchItem, elementBelow);
-                }
-            }
-
-            touchItem = null;
-            updateRankingOrder();
-
-            e.preventDefault();
-        }
-
-        function getDragAfterElement(container, y) {
-            const draggableElements = [...container.querySelectorAll('.ranking-item:not(.dragging)')];
-
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
-        }
-
-        // Atualizar ranking quando muda
-        function updateRankingOrder() {
-            const ranking = document.querySelectorAll('.ranking-item');
-            const rankingOrder = [];
-            ranking.forEach(item => {
-                rankingOrder.push({
-                    id: item.dataset.id,
-                    title: item.querySelector('.ranking-text').textContent
-                });
-            });
-            formData.ranking = rankingOrder;
-
-            // Habilitar botão de continuar
-            document.getElementById('continueRanking').disabled = false;
-        }
-
-        // Inicializar setupRanking quando a página carrega
-        document.addEventListener('DOMContentLoaded', function() {
-            setupRanking();
-            updateRankingOrder();
-        });
-
         // ---- Revisão: TODOS os campos, corrigíveis no lugar (sem voltar telas) ----
         function simNao(v) { return v === true ? 'Sim' : (v === false ? 'Não' : '—'); }
 
@@ -2157,13 +1956,6 @@
                 row.querySelector('.rev-edit').addEventListener('click', function () { abrirEdicao(row, c); });
                 body.appendChild(row);
             });
-            if ((formData.ranking || []).length) {
-                const r = document.createElement('div');
-                r.className = 'summary-item rev-row';
-                r.innerHTML = '<span class="summary-label">Ordem de preferência</span><span class="summary-value">' +
-                    formData.ranking.map(function (o, n) { return (n + 1) + 'º ' + o.title; }).join('<br>') + '</span>';
-                body.appendChild(r);
-            }
         }
 
         function abrirEdicao(row, c) {
@@ -2229,7 +2021,6 @@
                 carona: formData.carona,
                 dispEnsaio: formData.dispEnsaio === true,
                 aceiteRepertorio: formData.check1 === true,
-                ranking: (formData.ranking || []).map(function (r) { return r.title; }),
                 material: formData.material || 'tablet',
                 estante: formData.estante === true,
                 dispConcerto: formData.dispConcerto === true,
