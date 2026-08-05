@@ -291,7 +291,7 @@ function prepareSheetRow(d, log) {
     d.claroneRequinta || "—",
     d.dispEnsaio ? "Sim" : "Não",
     d.aceiteRepertorio ? "Sim" : "Não",
-    (d.ranking || []).join(" > "),
+    "—",  // ordenação de repertório descontinuada
     d.material === "tablet" ? "Tablet" : "Impresso",
     d.estante ? "Sim" : "Não",
     d.dispConcerto ? "Sim" : "Não",
@@ -423,7 +423,6 @@ function sendConfirmationEmail(d, log) {
       extra("Contrafagote", d.contrafagote) +
       linha("Ensaio aberto 16/Ago", d.dispEnsaio ? "Sim" : "Não") +
       linha("Ciência do repertório", d.aceiteRepertorio ? "Sim" : "Não") +
-      linha("Ordem de preferência", (d.ranking || []).map(function(o,i){return (i+1)+"º "+o;}).join("<br>")) +
       linha("Material", d.material === "tablet" ? "Tablet próprio" : "Partitura impressa") +
       linha("Concerto final", d.dispConcerto ? "Sim" : "Não") +
       linha("Ensaios na semana do concerto", d.dispSemana ? "Sim" : "Não") +
