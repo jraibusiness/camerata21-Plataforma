@@ -1043,6 +1043,43 @@
             .cal-dia { font-size:16px; }
             .rep-list li { font-size:14.5px; }
         }
+
+        /* ===== Revisão editável ===== */
+        .rev-dica { font-size:12.5px; color:rgba(242,237,226,.65); margin:-6px 0 16px; }
+        .rev-row .summary-value { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+        .rev-row--vazio .summary-value { color:rgba(242,237,226,.45); }
+        .rev-edit {
+            background:transparent; border:1px solid var(--linha-forte); color:var(--farol);
+            font-family:'Space Grotesk',sans-serif; font-size:10.5px; letter-spacing:.1em;
+            text-transform:uppercase; padding:4px 10px; border-radius:20px; cursor:pointer;
+            transition:background .2s ease, transform .15s ease;
+        }
+        .rev-edit:hover { background:rgba(255,184,0,.16); transform:translateY(-1px); }
+        .rev-editor {
+            display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+            padding:12px 0 16px; margin-bottom:4px;
+            border-bottom:1px solid var(--linha);
+        }
+        .rev-editor .form-input { flex:1 1 190px; padding:11px 13px; font-size:15px; }
+        .rev-ok { padding:11px 20px !important; font-size:13px !important; }
+        .rev-chip {
+            background:rgba(255,184,0,.07); border:1px solid var(--linha-forte);
+            color:var(--pergaminho); font-family:'Space Grotesk',sans-serif; font-size:13.5px;
+            padding:10px 16px; border-radius:22px; cursor:pointer;
+            transition:background .2s ease, border-color .2s ease, transform .15s ease;
+        }
+        .rev-chip:hover { transform:translateY(-2px); border-color:var(--farol); }
+        .rev-chip.selected { background:var(--farol); color:var(--meianoite); border-color:var(--farol); font-weight:600; }
+        .rev-aviso {
+            background:rgba(178,255,5,.08); border:1px solid rgba(178,255,5,.45);
+            border-radius:14px; padding:16px 18px; margin-bottom:20px;
+        }
+        .rev-aviso strong { color:var(--acido); }
+        .rev-aviso p { color:var(--pergaminho); font-size:14px; line-height:1.65; margin:6px 0 0; }
+        @media (max-width:768px) {
+            .rev-row .summary-value { justify-content:flex-start; }
+            .rev-chip { flex:1 1 auto; text-align:center; }
+        }
     </style>
 </head>
 <body>
@@ -1154,79 +1191,31 @@
         <!-- Tela 04: Naipe/Instrumento principal -->
         <div class="screen" id="screen04">
             <div class="screen-header">
-                <h1 class="screen-title">Seu Instrumento</h1>
-                <p class="screen-subtitle">
-                    Qual seu principal instrumento na orquestra?
-                </p>
+                <h1 class="screen-title">Seu Naipe</h1>
+                <p class="screen-subtitle">De qual naipe você faz parte?</p>
             </div>
-            <div class="instrument-grid" id="instrumentGrid">
-                <div class="instrument-card" data-instrument="violin1">
-                    <div class="instrument-icon">🎻</div>
-                    <div class="instrument-name">Violino 1</div>
-                </div>
-                <div class="instrument-card" data-instrument="violin2">
-                    <div class="instrument-icon">🎻</div>
-                    <div class="instrument-name">Violino 2</div>
-                </div>
-                <div class="instrument-card" data-instrument="viola">
-                    <div class="instrument-icon">🎻</div>
-                    <div class="instrument-name">Viola</div>
-                </div>
-                <div class="instrument-card" data-instrument="cello">
-                    <div class="instrument-icon">🎻</div>
-                    <div class="instrument-name">Violoncelo</div>
-                </div>
-                <div class="instrument-card" data-instrument="bass">
-                    <div class="instrument-icon">🎻</div>
-                    <div class="instrument-name">Contrabaixo</div>
-                </div>
-                <div class="instrument-card" data-instrument="flute">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Flauta</div>
-                </div>
-                <div class="instrument-card" data-instrument="piccolo">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Flauta Piccolo</div>
-                </div>
-                <div class="instrument-card" data-instrument="oboe">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Oboé</div>
-                </div>
-                <div class="instrument-card" data-instrument="englishhorn">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Corne Inglês</div>
-                </div>
-                <div class="instrument-card" data-instrument="clarinet">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Clarinete</div>
-                </div>
-                <div class="instrument-card" data-instrument="clarion">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Clarinete Baixo</div>
-                </div>
-                <div class="instrument-card" data-instrument="bassoon">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Fagote</div>
-                </div>
-                <div class="instrument-card" data-instrument="horn">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Trompa</div>
-                </div>
-                <div class="instrument-card" data-instrument="trumpet">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Trompete</div>
-                </div>
-                <div class="instrument-card" data-instrument="trombone">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Trombone</div>
-                </div>
-                <div class="instrument-card" data-instrument="tuba">
-                    <div class="instrument-icon">🎵</div>
-                    <div class="instrument-name">Tuba</div>
-                </div>
+            <div class="instrument-grid" id="naipeGrid">
+                <div class="instrument-card" data-naipe="cordas"><div class="instrument-icon">&#127928;</div><div class="instrument-name">Cordas</div></div>
+                <div class="instrument-card" data-naipe="madeiras"><div class="instrument-icon">&#127926;</div><div class="instrument-name">Madeiras</div></div>
+                <div class="instrument-card" data-naipe="metais"><div class="instrument-icon">&#127930;</div><div class="instrument-name">Metais</div></div>
+                <div class="instrument-card" data-naipe="percussao"><div class="instrument-icon">&#129345;</div><div class="instrument-name">Tímpanos e Percussão</div></div>
+                <div class="instrument-card" data-naipe="teclas"><div class="instrument-icon">&#127929;</div><div class="instrument-name">Teclados e Harpa</div></div>
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="goToScreen(3)">Voltar</button>
+                <button type="button" class="btn btn-primary" id="continueNaipe" onclick="goToScreen('04i')" disabled>Continuar</button>
+            </div>
+        </div>
+
+        <!-- Tela 04i: Instrumento dentro do naipe -->
+        <div class="screen" id="screen04i">
+            <div class="screen-header">
+                <h1 class="screen-title">Seu Instrumento</h1>
+                <p class="screen-subtitle" id="naipeSub">Qual instrumento você toca?</p>
+            </div>
+            <div class="instrument-grid" id="instrumentGrid"></div>
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" onclick="goToScreen(4)">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueInstrument" onclick="continueFromInstrument()" disabled>Continuar</button>
             </div>
         </div>
@@ -1250,7 +1239,7 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(4)">Voltar</button>
+                <button type="button" class="btn btn-secondary" onclick="goToScreen('04i')">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueFlute" onclick="goToScreen(5)">Continuar</button>
             </div>
         </div>
@@ -1274,7 +1263,7 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(4)">Voltar</button>
+                <button type="button" class="btn btn-secondary" onclick="goToScreen('04i')">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueOboe" onclick="goToScreen(5)">Continuar</button>
             </div>
         </div>
@@ -1298,7 +1287,7 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(4)">Voltar</button>
+                <button type="button" class="btn btn-secondary" onclick="goToScreen('04i')">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueClarinet" onclick="goToScreen(5)">Continuar</button>
             </div>
         </div>
@@ -1318,7 +1307,7 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(4)">Voltar</button>
+                <button type="button" class="btn btn-secondary" onclick="goToScreen('04i')">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueBassoon" onclick="goToScreen(5)">Continuar</button>
             </div>
         </div>
@@ -1349,7 +1338,7 @@
                 </div>
             </div>
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="goToScreen(4)">Voltar</button>
+                <button type="button" class="btn btn-secondary" onclick="goToScreen('04i')">Voltar</button>
                 <button type="button" class="btn btn-primary" id="continueAvailability" onclick="goToScreen(6)" disabled>Continuar</button>
             </div>
         </div>
@@ -1482,7 +1471,7 @@
             <div class="destaque">
                 <div class="destaque-linha"><span class="destaque-rot">Data</span><span class="destaque-val">20 de Novembro de 2026</span></div>
                 <div class="destaque-linha"><span class="destaque-rot">Ocasião</span><span class="destaque-val">Troféu Raça Negra</span></div>
-                <div class="destaque-linha"><span class="destaque-rot">Local</span><span class="destaque-val">Sala São Paulo</span></div>
+                <div class="destaque-linha"><span class="destaque-rot">Local</span><span class="destaque-val">Espaço Unimed</span></div>
                 <div class="destaque-linha"><span class="destaque-rot">Horário</span><span class="destaque-val destaque-val--fraco">A confirmar — provável noite</span></div>
             </div>
             <div class="radio-group" id="dispConcerto">
@@ -1589,36 +1578,11 @@
                     Confira suas informações antes de finalizar
                 </p>
             </div>
+            <div id="revisaoAviso"></div>
             <div class="summary-card">
                 <h3 class="summary-title">Resumo da Inscrição</h3>
-                <div class="summary-item">
-                    <span class="summary-label">Nome Completo</span>
-                    <span class="summary-value" id="summaryName">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">E-mail</span>
-                    <span class="summary-value" id="summaryEmail">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Telefone/WhatsApp</span>
-                    <span class="summary-value" id="summaryPhone">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Instrumento Principal</span>
-                    <span class="summary-value" id="summaryInstrument">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Disponibilidade Ensaio 16/Ago</span>
-                    <span class="summary-value" id="summaryAvailability">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Disponibilidade Concerto Final</span>
-                    <span class="summary-value" id="summaryFinalConcert">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Material de Apoio</span>
-                    <span class="summary-value" id="summaryMaterial">-</span>
-                </div>
+                <p class="rev-dica">Toque em <strong>corrigir</strong> em qualquer campo — sem voltar telas.</p>
+                <div id="summaryBody"></div>
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="goToScreen(12)">Voltar</button>
@@ -1696,7 +1660,7 @@
         let additionalInstruments = {};
 
         // Ordem canônica das telas (usada para a barra de progresso)
-        const SCREEN_ORDER = ['00','01','02','03','04','04b','04c','04d','04e','05','06','07','08','09','10','11','12','13','Success'];
+        const SCREEN_ORDER = ['00','01','02','03','04','04i','04b','04c','04d','04e','05','06','07','08','09','10','11','12','13','Success'];
 
         // Converte 3 -> "03", '04b' -> '04b', 'Success' -> 'Success'
         function screenKey(n) {
@@ -1772,42 +1736,76 @@
             }
         }
 
-        // Selecionar instrumento (apenas seleciona; navegação fica no botão Continuar)
-        document.querySelectorAll('.instrument-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('.instrument-card').forEach(c => {
-                    c.classList.remove('selected');
-                });
+        // Naipes e seus instrumentos. Violinos ficam numa opção só —
+        // a divisão entre 1o e 2o é decidida depois, pela direção.
+        const NAIPES = {
+            cordas:    { rot:'Cordas', itens:[['violin','\uD83C\uDFBB','Violino'],['viola','\uD83C\uDFBB','Viola'],['cello','\uD83C\uDFBB','Violoncelo'],['bass','\uD83C\uDFBB','Contrabaixo']] },
+            madeiras:  { rot:'Madeiras', itens:[['flute','\uD83C\uDFB6','Flauta'],['oboe','\uD83C\uDFB6','Oboé'],['clarinet','\uD83C\uDFB6','Clarinete'],['bassoon','\uD83C\uDFB6','Fagote']] },
+            metais:    { rot:'Metais', itens:[['horn','\uD83C\uDFBA','Trompa'],['trumpet','\uD83C\uDFBA','Trompete'],['trombone','\uD83C\uDFBA','Trombone'],['tuba','\uD83C\uDFBA','Tuba']] },
+            percussao: { rot:'Tímpanos e Percussão', itens:[['timpani','\uD83E\uDD41','Tímpanos'],['percussion','\uD83E\uDD41','Percussão']] },
+            teclas:    { rot:'Teclados e Harpa', itens:[['harp','\uD83C\uDFBC','Harpa'],['keyboard','\uD83C\uDFB9','Teclado / Piano']] }
+        };
+
+        document.querySelectorAll('#naipeGrid .instrument-card').forEach(function (card) {
+            card.addEventListener('click', function () {
+                document.querySelectorAll('#naipeGrid .instrument-card').forEach(function (c) { c.classList.remove('selected'); });
                 this.classList.add('selected');
-                formData.instrument = this.dataset.instrument;
-                document.getElementById('continueInstrument').disabled = false;
+                formData.naipe = this.dataset.naipe;
+                document.getElementById('continueNaipe').disabled = false;
+                renderInstrumentos(this.dataset.naipe);
             });
         });
 
-        // Recomeçar do zero a partir da tela de sucesso
-        function reiniciarCadastro() {
-            formData = {};
-            document.querySelectorAll('.radio-option.selected, .instrument-card.selected')
-                .forEach(function (e) { e.classList.remove('selected'); });
-            document.querySelectorAll('#cadastroWizard input').forEach(function (e) { e.value = ''; });
-            const cb = document.getElementById('check1');
-            if (cb) { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); }
-            const cg = document.getElementById('caronaGroup');
-            if (cg) cg.style.display = 'none';
-            document.querySelectorAll('[id^="continue"]').forEach(function (b) {
-                if (b.id !== 'continueMaterial') b.disabled = true;
+        function renderInstrumentos(naipe) {
+            const grupo = NAIPES[naipe];
+            if (!grupo) return;
+            document.getElementById('naipeSub').textContent = grupo.rot + ' — qual instrumento você toca?';
+            const grid = document.getElementById('instrumentGrid');
+            grid.innerHTML = grupo.itens.map(function (it) {
+                return '<div class="instrument-card" data-instrument="' + it[0] + '">' +
+                       '<div class="instrument-icon">' + it[1] + '</div>' +
+                       '<div class="instrument-name">' + it[2] + '</div></div>';
+            }).join('');
+            if (formData.instrument && !grupo.itens.some(function (it) { return it[0] === formData.instrument; })) {
+                delete formData.instrument;
+                ['piccolo','corneIngles','claroneRequinta','contrafagote'].forEach(function (k) { delete formData[k]; });
+            }
+            document.getElementById('continueInstrument').disabled = !formData.instrument;
+            grid.querySelectorAll('.instrument-card').forEach(function (card) {
+                if (card.dataset.instrument === formData.instrument) card.classList.add('selected');
+                card.addEventListener('click', function () {
+                    grid.querySelectorAll('.instrument-card').forEach(function (c) { c.classList.remove('selected'); });
+                    this.classList.add('selected');
+                    formData.instrument = this.dataset.instrument;
+                    document.getElementById('continueInstrument').disabled = false;
+                });
             });
-            document.getElementById('continueMaterial').disabled = true;
-            goToScreen(0);
         }
 
-        // Transporte por botões (sem digitação) + pergunta condicional de carona
+        // Transporte por botões + pergunta condicional de carona
         function selectTransport(el, value) {
             selectRadio(el, value);
             formData.transport = value;
             const cg = document.getElementById('caronaGroup');
             if (value === 'car') { cg.style.display = 'block'; }
             else { cg.style.display = 'none'; delete formData.carona; }
+        }
+
+        // Recomeçar do zero a partir da tela de sucesso
+        function reiniciarCadastro() {
+            formData = {};
+            document.querySelectorAll('.radio-option.selected, .instrument-card.selected')
+                .forEach(function (e) { e.classList.remove('selected'); });
+            document.querySelectorAll('input').forEach(function (e) { e.value = ''; });
+            const cb = document.getElementById('check1');
+            if (cb) { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); }
+            const cg = document.getElementById('caronaGroup');
+            if (cg) cg.style.display = 'none';
+            const av = document.getElementById('revisaoAviso');
+            if (av) av.innerHTML = '';
+            document.getElementById('instrumentGrid').innerHTML = '';
+            document.querySelectorAll('[id^="continue"]').forEach(function (b) { b.disabled = true; });
+            goToScreen(0);
         }
 
         // Telas adicionais por família de instrumento
@@ -1885,12 +1883,10 @@
                     // Se houver erro, continua normalmente
                     goToScreen(2);
                 })
-                .withSuccessHandler(function(existingData) {
-                    if (existingData && existingData.length > 0) {
-                        // Mostrar modal com dados existentes
-                        showModal(existingData[0]);
+                .withSuccessHandler(function (res) {
+                    if (res && res.exists && res.registro) {
+                        carregarInscricaoExistente(res.registro);
                     } else {
-                        // Continuar para a próxima tela
                         goToScreen(2);
                     }
                 })
@@ -2106,15 +2102,125 @@
             updateRankingOrder();
         });
 
-        // Coletar todos os dados do formulário (contrato alinhado ao Code.gs)
+        // ---- Revisão: TODOS os campos, corrigíveis no lugar (sem voltar telas) ----
         function simNao(v) { return v === true ? 'Sim' : (v === false ? 'Não' : '—'); }
 
+        const SIM_NAO = [[true, 'Sim'], [false, 'Não']];
+        const CAMPOS_REVISAO = [
+            { k:'firstName', rot:'Nome',              tipo:'texto' },
+            { k:'lastName',  rot:'Sobrenome',         tipo:'texto' },
+            { k:'email',     rot:'E-mail',            tipo:'texto' },
+            { k:'phone',     rot:'Telefone/WhatsApp', tipo:'tel' },
+            { k:'naipe',     rot:'Naipe',             tipo:'opcoes', ops:function () {
+                  return Object.keys(NAIPES).map(function (n) { return [n, NAIPES[n].rot]; }); } },
+            { k:'instrument', rot:'Instrumento',      tipo:'opcoes', ops:function () {
+                  var g = NAIPES[formData.naipe];
+                  return g ? g.itens.map(function (it) { return [it[0], it[2]]; }) : []; } },
+            { k:'piccolo',         rot:'Flauta Piccolo',   tipo:'opcoes', ops:SIM_NAO, se:function(){ return formData.instrument === 'flute'; } },
+            { k:'corneIngles',     rot:'Corne Inglês',     tipo:'opcoes', ops:SIM_NAO, se:function(){ return formData.instrument === 'oboe'; } },
+            { k:'claroneRequinta', rot:'Clarone/Requinta', tipo:'opcoes', ops:SIM_NAO, se:function(){ return formData.instrument === 'clarinet'; } },
+            { k:'contrafagote',    rot:'Contrafagote',     tipo:'opcoes', ops:SIM_NAO, se:function(){ return formData.instrument === 'bassoon'; } },
+            { k:'dispEnsaio',   rot:'Ensaio aberto — 16/Ago', tipo:'opcoes', ops:SIM_NAO },
+            { k:'check1',       rot:'Ciência do repertório',  tipo:'opcoes', ops:SIM_NAO },
+            { k:'material',     rot:'Material de apoio',      tipo:'opcoes', ops:[['tablet','Tablet próprio'],['impresso','Partitura impressa']] },
+            { k:'dispConcerto', rot:'Concerto — 20/Nov',      tipo:'opcoes', ops:SIM_NAO },
+            { k:'dispSemana',   rot:'Ensaios da semana',      tipo:'opcoes', ops:SIM_NAO },
+            { k:'cep',          rot:'CEP de partida',         tipo:'texto' },
+            { k:'transport',    rot:'Transporte',             tipo:'opcoes', ops:[['public','Transporte público'],['car','Carro próprio'],['uber','Aplicativo'],['other','Outro']] },
+            { k:'carona',       rot:'Oferece carona',         tipo:'opcoes', ops:SIM_NAO, se:function(){ return formData.transport === 'car'; } }
+        ];
+
+        function valorLegivel(c) {
+            const v = formData[c.k];
+            if (v === undefined || v === '') return '—';
+            if (c.tipo === 'opcoes') {
+                const ops = typeof c.ops === 'function' ? c.ops() : c.ops;
+                const achou = ops.filter(function (o) { return o[0] === v; })[0];
+                return achou ? achou[1] : String(v);
+            }
+            return String(v);
+        }
+
+        function renderSummary() {
+            const body = document.getElementById('summaryBody');
+            if (!body) return;
+            body.innerHTML = '';
+            CAMPOS_REVISAO.forEach(function (c) {
+                if (c.se && !c.se()) return;
+                const vazio = formData[c.k] === undefined || formData[c.k] === '';
+                const row = document.createElement('div');
+                row.className = 'summary-item rev-row' + (vazio ? ' rev-row--vazio' : '');
+                row.innerHTML =
+                    '<span class="summary-label">' + c.rot + '</span>' +
+                    '<span class="summary-value">' + valorLegivel(c) +
+                    '<button type="button" class="rev-edit">' + (vazio ? 'preencher' : 'corrigir') + '</button></span>';
+                row.querySelector('.rev-edit').addEventListener('click', function () { abrirEdicao(row, c); });
+                body.appendChild(row);
+            });
+            if ((formData.ranking || []).length) {
+                const r = document.createElement('div');
+                r.className = 'summary-item rev-row';
+                r.innerHTML = '<span class="summary-label">Ordem de preferência</span><span class="summary-value">' +
+                    formData.ranking.map(function (o, n) { return (n + 1) + 'º ' + o.title; }).join('<br>') + '</span>';
+                body.appendChild(r);
+            }
+        }
+
+        function abrirEdicao(row, c) {
+            const anterior = document.querySelector('.rev-editor');
+            if (anterior) anterior.remove();
+            const editor = document.createElement('div');
+            editor.className = 'rev-editor';
+            if (c.tipo === 'opcoes') {
+                const ops = typeof c.ops === 'function' ? c.ops() : c.ops;
+                if (!ops.length) { editor.innerHTML = '<p class="rev-dica">Escolha antes o naipe.</p>'; }
+                ops.forEach(function (o) {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'rev-chip' + (formData[c.k] === o[0] ? ' selected' : '');
+                    b.textContent = o[1];
+                    b.addEventListener('click', function () {
+                        formData[c.k] = o[0];
+                        if (c.k === 'naipe') { delete formData.instrument; }
+                        if (c.k === 'instrument') {
+                            ['piccolo','corneIngles','claroneRequinta','contrafagote'].forEach(function (x) { delete formData[x]; });
+                        }
+                        if (c.k === 'transport' && o[0] !== 'car') { delete formData.carona; }
+                        renderSummary();
+                    });
+                    editor.appendChild(b);
+                });
+            } else {
+                const inp = document.createElement('input');
+                inp.className = 'form-input';
+                inp.type = (c.tipo === 'tel') ? 'tel' : 'text';
+                inp.value = formData[c.k] || '';
+                const ok = document.createElement('button');
+                ok.type = 'button';
+                ok.className = 'btn btn-primary rev-ok';
+                ok.textContent = 'Salvar';
+                ok.addEventListener('click', function () {
+                    formData[c.k] = (c.tipo === 'tel')
+                        ? fmtPhone(inp.value, formData.ddd || '+55')
+                        : inp.value.trim();
+                    renderSummary();
+                });
+                editor.appendChild(inp);
+                editor.appendChild(ok);
+            }
+            row.after(editor);
+            const foco = editor.querySelector('input');
+            if (foco) foco.focus();
+        }
+
+        // Contrato alinhado ao Code.gs
         function collectFormData() {
             return {
                 email: formData.email,
                 firstName: formData.firstName,
                 lastName: formData.lastName,
-                phone: [formData.ddd, formData.phone].filter(Boolean).join(' '),
+                phone: (String(formData.phone||'').trim().charAt(0) === '+') ? formData.phone : ((formData.ddd || '+55') + ' ' + (formData.phone || '')).trim(),
+                naipe: formData.naipe,
                 instrument: formData.instrument,
                 piccolo: simNao(formData.piccolo),
                 corneIngles: simNao(formData.corneIngles),
@@ -2123,7 +2229,7 @@
                 carona: formData.carona,
                 dispEnsaio: formData.dispEnsaio === true,
                 aceiteRepertorio: formData.check1 === true,
-                ranking: (formData.ranking || []).map(r => r.title),
+                ranking: (formData.ranking || []).map(function (r) { return r.title; }),
                 material: formData.material || 'tablet',
                 estante: formData.estante === true,
                 dispConcerto: formData.dispConcerto === true,
@@ -2135,27 +2241,65 @@
             };
         }
 
-        // Preencher resumo (tela 13)
-        function renderSummary() {
-            const d = collectFormData();
-            document.getElementById('summaryName').textContent = (d.firstName || '') + ' ' + (d.lastName || '');
-            document.getElementById('summaryEmail').textContent = d.email || '—';
-            document.getElementById('summaryPhone').textContent = d.phone || '—';
-            document.getElementById('summaryInstrument').textContent = getInstrumentName(d.instrument);
-            document.getElementById('summaryAvailability').textContent = simNao(formData.dispEnsaio);
-            document.getElementById('summaryFinalConcert').textContent = simNao(formData.dispConcerto);
-            document.getElementById('summaryMaterial').textContent = d.material === 'tablet' ? 'Tablet' : 'Impresso';
-            const extras = { piccolo: 'Flauta Piccolo', corneIngles: 'Corne Inglês', claroneRequinta: 'Clarone/Requinta', contrafagote: 'Contrafagote' };
-            document.querySelectorAll('.summary-extra').forEach(e => e.remove());
-            const card = document.querySelector('#screen13 .summary-card');
-            Object.keys(extras).forEach(k => {
-                if (typeof formData[k] === 'boolean') {
-                    const row = document.createElement('div');
-                    row.className = 'summary-item summary-extra';
-                    row.innerHTML = '<span class="summary-label">' + extras[k] + '</span><span class="summary-value">' + simNao(formData[k]) + '</span>';
-                    card.appendChild(row);
-                }
+        // ---- E-mail já cadastrado: leva direto à revisão, sem travar ----
+        const MAPA_PLANILHA = {
+            'Nome Completo':'nomeCompleto', 'E-mail':'email', 'Telefone':'phone',
+            'Instrumento':'instrumentoNome', 'Flauta Piccolo':'piccolo', 'Corne Inglês':'corneIngles',
+            'Clarone/Requinta':'claroneRequinta', 'Disponibilidade Ensaio 1':'dispEnsaio',
+            'Aceite Repertório':'check1', 'Material':'material', 'Estante':'estante',
+            'Disponibilidade Concerto':'dispConcerto', 'Disponibilidade Semana':'dispSemana',
+            'CEP':'cep', 'Transporte':'transport', 'Oferece Carona':'carona'
+        };
+        const TRANSPORTE_INV = { 'Transporte Público':'public', 'Carro Próprio':'car', 'Uber/App':'uber', 'Outro':'other' };
+
+        function carregarInscricaoExistente(reg) {
+            function bool(v) { return String(v).trim().toLowerCase() === 'sim'; }
+            const nome = String(reg['Nome Completo'] || '').trim().split(' ');
+            if (nome.length) {
+                formData.firstName = nome[0];
+                formData.lastName = nome.slice(1).join(' ');
+            }
+            formData.email = reg['E-mail'] || formData.email;
+            formData.phone = String(reg['Telefone'] || '').replace(/^'/, '');
+            // instrumento: casa o nome legível de volta com a chave e descobre o naipe
+            const alvo = String(reg['Instrumento'] || '').trim().toLowerCase();
+            Object.keys(NAIPES).forEach(function (n) {
+                NAIPES[n].itens.forEach(function (it) {
+                    if (it[2].toLowerCase() === alvo) { formData.naipe = n; formData.instrument = it[0]; }
+                });
             });
+            ['piccolo','corneIngles','claroneRequinta'].forEach(function (k) {
+                const col = { piccolo:'Flauta Piccolo', corneIngles:'Corne Inglês', claroneRequinta:'Clarone/Requinta' }[k];
+                const v = String(reg[col] || '').trim();
+                if (v && v !== '—') formData[k] = bool(v);
+            });
+            formData.dispEnsaio   = bool(reg['Disponibilidade Ensaio 1']);
+            formData.check1       = bool(reg['Aceite Repertório']);
+            formData.dispConcerto = bool(reg['Disponibilidade Concerto']);
+            formData.dispSemana   = bool(reg['Disponibilidade Semana']);
+            formData.estante      = bool(reg['Estante']);
+            formData.material     = String(reg['Material'] || '').toLowerCase().indexOf('tablet') !== -1 ? 'tablet' : 'impresso';
+            formData.cep          = reg['CEP'] || '';
+            formData.transport    = TRANSPORTE_INV[String(reg['Transporte'] || '').trim()] || formData.transport;
+            const car = String(reg['Oferece Carona'] || '').trim();
+            if (car && car !== '—') formData.carona = bool(car);
+
+            const faltando = CAMPOS_REVISAO.filter(function (c) {
+                if (c.se && !c.se()) return false;
+                return formData[c.k] === undefined || formData[c.k] === '';
+            }).map(function (c) { return c.rot; });
+
+            const aviso = document.getElementById('revisaoAviso');
+            aviso.innerHTML = '<div class="rev-aviso">' +
+                '<strong>Você já tem inscrição com este e-mail.</strong>' +
+                '<p>Recuperamos o que está registrado. ' +
+                (faltando.length
+                    ? 'Faltam <strong>' + faltando.join('</strong>, <strong>') + '</strong> — e você pode corrigir qualquer outro campo aqui mesmo.'
+                    : 'Confira se está tudo certo e confirme — nada será duplicado.') +
+                '</p></div>';
+
+            renderSummary();
+            goToScreen(13);
         }
 
         // Funções do Modal de Email Duplicado
@@ -2221,9 +2365,9 @@
                     console.error('Erro ao verificar e-mail:', error);
                     goToScreen(2);
                 })
-                .withSuccessHandler(function(existingData) {
-                    if (existingData && existingData.length > 0) {
-                        showModal(existingData[0]);
+                .withSuccessHandler(function (res) {
+                    if (res && res.exists && res.registro) {
+                        carregarInscricaoExistente(res.registro);
                     } else {
                         goToScreen(2);
                     }
