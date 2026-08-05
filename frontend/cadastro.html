@@ -1007,7 +1007,7 @@
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="goToScreen(3)">Voltar</button>
-                <button type="button" class="btn btn-primary" id="continueInstrument" onclick="goToScreen(5)" disabled>Continuar</button>
+                <button type="button" class="btn btn-primary" id="continueInstrument" onclick="continueFromInstrument()" disabled>Continuar</button>
             </div>
         </div>
 
@@ -1019,7 +1019,7 @@
                     Você também toca flauta piccolo?
                 </p>
             </div>
-            <div class="radio-group">
+            <div class="radio-group" id="piccolo">
                 <div class="radio-option" onclick="selectRadio(this, true)">
                     <div class="radio-input"></div>
                     <span>Sim, toco flauta piccolo</span>
@@ -1043,7 +1043,7 @@
                     Você também toca corne inglês?
                 </p>
             </div>
-            <div class="radio-group">
+            <div class="radio-group" id="corneIngles">
                 <div class="radio-option" onclick="selectRadio(this, true)">
                     <div class="radio-input"></div>
                     <span>Sim, toco corne inglês</span>
@@ -1067,7 +1067,7 @@
                     Você também toca clarinete baixo?
                 </p>
             </div>
-            <div class="radio-group">
+            <div class="radio-group" id="claroneRequinta">
                 <div class="radio-option" onclick="selectRadio(this, true)">
                     <div class="radio-input"></div>
                     <span>Sim, toco clarinete baixo</span>
@@ -1094,7 +1094,7 @@
                     Este é apenas um intervalo de segurança. O ensaio em si ocorrerá sem intervalos, provavelmente entre 19h00 e 20h30.
                 </p>
             </div>
-            <div class="radio-group">
+            <div class="radio-group" id="dispEnsaio">
                 <div class="radio-option" onclick="selectRadio(this, true)">
                     <div class="radio-input"></div>
                     <span>Sim, estou disponível</span>
@@ -1123,7 +1123,7 @@
             </p>
             <div class="checklist">
                 <div class="checklist-item">
-                    <div class="checkbox" id="check1"></div>
+                    <div class="checkbox" id="check1" role="checkbox" tabindex="0" aria-checked="false"></div>
                     <span>Li e compreendo a proposta de repertório da Camerata 21</span>
                 </div>
             </div>
@@ -1180,19 +1180,19 @@
             <p class="note" style="margin-top:24px;">
                 Priorizamos o uso de tablets por consciência ambiental e redução de custos, mas providenciaremos impressões com o maior prazer caso seja sua necessidade.
             </p>
-            <div class="radio-group">
-                <div class="radio-option" onclick="selectRadio(this, 1)">
+            <div class="radio-group" id="material">
+                <div class="radio-option" onclick="selectRadio(this, 'tablet')">
                     <div class="radio-input"></div>
                     <span>Uso Tablet/iPad próprio (Recomendado)</span>
                 </div>
-                <div class="radio-option" onclick="selectRadio(this, 2)">
+                <div class="radio-option" onclick="selectRadio(this, 'impresso')">
                     <div class="radio-input"></div>
                     <span>Preciso de partitura impressa</span>
                 </div>
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="goToScreen(7)">Voltar</button>
-                <button type="button" class="btn btn-primary" id="continueMaterial" onclick="goToScreen(9)">Continuar</button>
+                <button type="button" class="btn btn-primary" id="continueMaterial" onclick="goToScreen(9)" disabled>Continuar</button>
             </div>
         </div>
 
@@ -1229,7 +1229,7 @@
                     Horário a confirmar, premissa de período noturno.
                 </p>
             </div>
-            <div class="radio-group">
+            <div class="radio-group" id="dispConcerto">
                 <div class="radio-option" onclick="selectRadio(this, true)">
                     <div class="radio-input"></div>
                     <span>Sim, estarei disponível</span>
@@ -1256,7 +1256,7 @@
                     Local e horários a confirmar, provável noite.
                 </p>
             </div>
-            <div class="radio-group">
+            <div class="radio-group" id="dispSemana">
                 <div class="radio-option" onclick="selectRadio(this, true)">
                     <div class="radio-input"></div>
                     <span>Sim, estarei disponível</span>
@@ -1285,8 +1285,8 @@
                     <label class="form-label">CEP de onde você provavelmente sairá *</label>
                     <input type="text" class="form-input" id="cep" placeholder="00000-000" maxlength="9" required>
                     <div class="cep-info" id="cepInfo">
-                        <p><strong>Distância calculada:</strong> <span id="distance">-</span></p>
-                        <p><strong>Tempo estimado:</strong> <span id="time">-</span></p>
+                        <p><strong>Localidade:</strong> <span id="distance">-</span></p>
+                        <p><strong>Logística:</strong> <span id="time">-</span></p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -1368,37 +1368,100 @@
         </div>
     </div>
 
+    <!-- Modal de Email Duplicado -->
+    <div class="modal-overlay" id="emailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">E-mail Já Cadastrado</h2>
+                <p class="modal-subtitle">
+                    Encontramos um registro com este e-mail. Deseja continuar com este cadastro ou criar um novo?
+                </p>
+            </div>
+            <div class="modal-content">
+                <div class="data-row">
+                    <span class="data-label">Nome Completo:</span>
+                    <span class="data-value" id="modalName">-</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">E-mail:</span>
+                    <span class="data-value" id="modalEmail">-</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Telefone:</span>
+                    <span class="data-value" id="modalPhone">-</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Instrumento:</span>
+                    <span class="data-value" id="modalInstrument">-</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Inscrição:</span>
+                    <span class="data-value" id="modalTimestamp">-</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn btn-edit" onclick="editExistingRegistration()">
+                    Editar Inscrição
+                </button>
+                <button class="modal-btn btn-new" onclick="createNewRegistration()">
+                    Criar Nova Inscrição
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
         // Variáveis globais
         let currentScreen = 0;
         let formData = {};
         let additionalInstruments = {};
 
+        // Ordem canônica das telas (usada para a barra de progresso)
+        const SCREEN_ORDER = ['00','01','02','03','04','04b','04c','04d','05','06','07','08','09','10','11','12','13','Success'];
+
+        // Converte 3 -> "03", '04b' -> '04b', 'Success' -> 'Success'
+        function screenKey(n) {
+            if (typeof n === 'number') return n < 10 ? '0' + n : String(n);
+            const s = String(n);
+            return (/^\d$/.test(s)) ? '0' + s : s;
+        }
+
         // Atualizar barra de progresso
         function updateProgress() {
             const progressFill = document.getElementById('progressFill');
-            const progress = ((currentScreen + 1) / 14) * 100;
+            if (!progressFill) return;
+            const idx = SCREEN_ORDER.indexOf(screenKey(currentScreen));
+            const progress = ((idx < 0 ? 0 : idx) + 1) / SCREEN_ORDER.length * 100;
             progressFill.style.width = progress + '%';
         }
 
         // Navegar entre telas
         function goToScreen(screenNumber) {
+            const key = screenKey(screenNumber);
+            const target = document.getElementById('screen' + key);
+            if (!target) {
+                console.error('Tela inexistente: screen' + key);
+                return;
+            }
+
             // Esconder tela atual
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
             });
 
             // Mostrar nova tela
-            document.getElementById(`screen${screenNumber}`).classList.add('active');
-            currentScreen = screenNumber;
+            target.classList.add('active');
+            currentScreen = key;
 
             // Atualizar progresso
             updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Foco no primeiro input quando disponível
+            // Foco no primeiro input quando disponível (não em mobile, evita teclado indesejado)
             setTimeout(() => {
-                const inputs = document.querySelector(`#screen${screenNumber} input, #screen${screenNumber} select`);
-                if (inputs) inputs.focus();
+                if (window.matchMedia('(min-width: 768px)').matches) {
+                    const input = target.querySelector('input, select');
+                    if (input) input.focus();
+                }
             }, 300);
         }
 
@@ -1423,44 +1486,73 @@
             }
         }
 
-        // Selecionar instrumento
+        // Selecionar instrumento (apenas seleciona; navegação fica no botão Continuar)
         document.querySelectorAll('.instrument-card').forEach(card => {
             card.addEventListener('click', function() {
-                // Remover seleção anterior
                 document.querySelectorAll('.instrument-card').forEach(c => {
                     c.classList.remove('selected');
                 });
-
-                // Selecionar atual
                 this.classList.add('selected');
-
-                // Armazenar instrumento
                 formData.instrument = this.dataset.instrument;
-
-                // Habilitar botão de continuar
                 document.getElementById('continueInstrument').disabled = false;
-
-                // Verificar se é necessário tela adicional
-                const instrument = this.dataset.instrument;
-                if (instrument === 'flute') {
-                    goToScreen(4);
-                } else if (instrument === 'oboe') {
-                    goToScreen(4);
-                } else if (instrument === 'clarinet') {
-                    goToScreen(4);
-                }
             });
         });
 
-        // Validação de CEP
-        document.getElementById('cep').addEventListener('blur', function() {
-            const cep = this.value.replace(/\D/g, '');
-            if (cep.length === 8) {
-                // Simulação de API de CEP
-                document.getElementById('cepInfo').classList.add('show');
-                document.getElementById('distance').textContent = '12.5 km';
-                document.getElementById('time').textContent = '45 min (Metrô)';
+        // Telas adicionais por família de instrumento
+        const EXTRA_SCREEN = { flute: '04b', oboe: '04c', clarinet: '04d' };
+
+        function continueFromInstrument() {
+            if (!formData.instrument) return;
+            goToScreen(EXTRA_SCREEN[formData.instrument] || 5);
+        }
+
+        // Checkbox de ciência do repertório
+        (function () {
+            const box = document.getElementById('check1');
+            if (!box) return;
+            function toggle() {
+                const on = box.classList.toggle('checked');
+                box.setAttribute('aria-checked', on ? 'true' : 'false');
+                formData.check1 = on;
+                document.getElementById('continueRepertoire').disabled = !on;
             }
+            box.addEventListener('click', toggle);
+            box.parentNode.addEventListener('click', function (e) {
+                if (e.target !== box) toggle();
+            });
+            box.addEventListener('keydown', function (e) {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+            });
+        })();
+
+        // Máscara + consulta de CEP (ViaCEP)
+        const cepInput = document.getElementById('cep');
+        cepInput.addEventListener('input', function () {
+            let v = this.value.replace(/\D/g, '').slice(0, 8);
+            if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+            this.value = v;
+        });
+        cepInput.addEventListener('blur', function () {
+            const cep = this.value.replace(/\D/g, '');
+            const info = document.getElementById('cepInfo');
+            if (cep.length !== 8) { info.classList.remove('show'); return; }
+            fetch('https://viacep.com.br/ws/' + cep + '/json/')
+                .then(r => r.json())
+                .then(d => {
+                    if (d.erro) {
+                        document.getElementById('distance').textContent = 'CEP não encontrado';
+                        document.getElementById('time').textContent = '—';
+                    } else {
+                        formData.cidade = d.localidade;
+                        formData.uf = d.uf;
+                        document.getElementById('distance').textContent =
+                            [d.bairro, d.localidade, d.uf].filter(Boolean).join(' — ');
+                        document.getElementById('time').textContent =
+                            'Distância e custo calculados no envio';
+                    }
+                    info.classList.add('show');
+                })
+                .catch(() => { info.classList.remove('show'); });
         });
 
         // Form handlers
@@ -1546,6 +1638,7 @@
             e.preventDefault();
             formData.cep = document.getElementById('cep').value;
             formData.transport = document.getElementById('transport').value;
+            renderSummary();
             goToScreen(13);
         });
 
@@ -1701,49 +1794,43 @@
             updateRankingOrder();
         });
 
-        // Coletar todos os dados do formulário
+        // Coletar todos os dados do formulário (contrato alinhado ao Code.gs)
+        function simNao(v) { return v === true ? 'Sim' : (v === false ? 'Não' : '—'); }
+
         function collectFormData() {
-            const data = {
+            return {
                 email: formData.email,
                 firstName: formData.firstName,
                 lastName: formData.lastName,
-                phone: formData.ddd + ' ' + formData.phone,
+                phone: [formData.ddd, formData.phone].filter(Boolean).join(' '),
                 instrument: formData.instrument,
-                availability: formData.availability,
-                finalConcert: formData.finalConcert,
-                weekAvailability: formData.weekAvailability,
-                transport: formData.transport,
+                piccolo: simNao(formData.piccolo),
+                corneIngles: simNao(formData.corneIngles),
+                claroneRequinta: simNao(formData.claroneRequinta),
+                dispEnsaio: formData.dispEnsaio === true,
+                aceiteRepertorio: formData.check1 === true,
+                ranking: (formData.ranking || []).map(r => r.title),
+                material: formData.material || 'tablet',
+                estante: formData.estante === true,
+                dispConcerto: formData.dispConcerto === true,
+                dispSemana: formData.dispSemana === true,
                 cep: formData.cep,
-                material: formData.material,
-                ranking: formData.ranking || []
+                cidade: formData.cidade || '',
+                uf: formData.uf || '',
+                transport: formData.transport
             };
+        }
 
-            // Adicionar instrumentos adicionais
-            if (additionalInstruments.flute) {
-                data.piccolo = additionalInstruments.flute;
-            }
-            if (additionalInstruments.oboe) {
-                data.cornIngles = additionalInstruments.oboe;
-            }
-            if (additionalInstruments.clarinet) {
-                data.clarineteBaixo = additionalInstruments.clarinet;
-            }
-
-            // Adicionar dados de repertório
-            if (formData.check1) {
-                data.aceiteRepertorio = true;
-            }
-
-            // Preencher resumo na tela 13
-            document.getElementById('summaryName').textContent = data.firstName + ' ' + data.lastName;
-            document.getElementById('summaryEmail').textContent = data.email;
-            document.getElementById('summaryPhone').textContent = data.phone;
-            document.getElementById('summaryInstrument').textContent = getInstrumentName(data.instrument);
-            document.getElementById('summaryAvailability').textContent = data.availability ? 'Sim' : 'Não';
-            document.getElementById('summaryFinalConcert').textContent = data.finalConcert ? 'Sim' : 'Não';
-            document.getElementById('summaryMaterial').textContent = data.material === 1 ? 'Tablet' : 'Impresso';
-
-            return data;
+        // Preencher resumo (tela 13)
+        function renderSummary() {
+            const d = collectFormData();
+            document.getElementById('summaryName').textContent = (d.firstName || '') + ' ' + (d.lastName || '');
+            document.getElementById('summaryEmail').textContent = d.email || '—';
+            document.getElementById('summaryPhone').textContent = d.phone || '—';
+            document.getElementById('summaryInstrument').textContent = getInstrumentName(d.instrument);
+            document.getElementById('summaryAvailability').textContent = simNao(formData.dispEnsaio);
+            document.getElementById('summaryFinalConcert').textContent = simNao(formData.dispConcerto);
+            document.getElementById('summaryMaterial').textContent = d.material === 'tablet' ? 'Tablet' : 'Impresso';
         }
 
         // Funções do Modal de Email Duplicado
@@ -1865,10 +1952,12 @@
                     document.getElementById('loading').classList.remove('show');
                 })
                 .withSuccessHandler(function(response) {
-                    console.log('Sucesso:', response);
-                    // Mostrar tela de sucesso
-                    goToScreen('Success');
                     document.getElementById('loading').classList.remove('show');
+                    if (response && response.success === false) {
+                        alert(response.message || 'Não foi possível concluir a inscrição.');
+                        return;
+                    }
+                    goToScreen('Success');
                 })
                 .processRegistration(submissionData);
         });
@@ -1876,7 +1965,11 @@
         // Funções de normalização (executadas no frontend)
         function normalizeName(name) {
             if (!name) return "";
-            return name.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+            const minus = ['de','da','do','das','dos','e','di','du','del'];
+            return String(name).trim().replace(/\s+/g, ' ').toLowerCase()
+                .split(' ')
+                .map((w, i) => (i > 0 && minus.indexOf(w) !== -1) ? w : w.charAt(0).toUpperCase() + w.slice(1))
+                .join(' ');
         }
 
         function normalizeEmail(email) {
@@ -1926,46 +2019,5 @@
         updateProgress();
     </script>
 
-    <!-- Modal de Email Duplicado -->
-    <div class="modal-overlay" id="emailModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">E-mail Já Cadastrado</h2>
-                <p class="modal-subtitle">
-                    Encontramos um registro com este e-mail. Deseja continuar com este cadastro ou criar um novo?
-                </p>
-            </div>
-            <div class="modal-content">
-                <div class="data-row">
-                    <span class="data-label">Nome Completo:</span>
-                    <span class="data-value" id="modalName">-</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">E-mail:</span>
-                    <span class="data-value" id="modalEmail">-</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Telefone:</span>
-                    <span class="data-value" id="modalPhone">-</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Instrumento:</span>
-                    <span class="data-value" id="modalInstrument">-</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">Inscrição:</span>
-                    <span class="data-value" id="modalTimestamp">-</span>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <button class="modal-btn btn-edit" onclick="editExistingRegistration()">
-                    Editar Inscrição
-                </button>
-                <button class="modal-btn btn-new" onclick="createNewRegistration()">
-                    Criar Nova Inscrição
-                </button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
