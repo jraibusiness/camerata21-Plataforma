@@ -17,7 +17,7 @@ const METAS = { "Violino":14, "Viola":4, "Violoncelo":4, "Contrabaixo":2,
 const REPERTORIO = [
   "MENDELSSOHN, Felix — Sinfonia n.º 3 em Lá menor, Op. 56 (leitura completa)",
   "BEETHOVEN, Ludwig van — Sinfonia n.º 5 em Dó menor, Op. 67 (1º mov.)",
-  "MOZART, Wolfgang Amadeus — Sinfonia n.º 49 em Sol menor (1º mov.)",
+  "MOZART, Wolfgang Amadeus — Sinfonia n.º 40 em Sol menor, K. 550 (1º mov.)",
   "BOLOGNE, Joseph — Concerto para Violino e Orquestra n.º 2 em Lá Maior, Op. 2"
 ];
 
@@ -52,6 +52,7 @@ function doGet(e) {
   else if (page === "admin") { file = "admin"; title = "Dashboard — Camerata 21"; }
 
   var t = HtmlService.createTemplateFromFile(file);
+  t.execUrl = ScriptApp.getService().getUrl();  // links internos funcionam dentro do GAS
   t.baseUrl = ScriptApp.getService().getUrl();
   return t.evaluate()
     .setTitle(title)
@@ -433,7 +434,6 @@ function sendConfirmationEmail(d, log) {
       '<div style="text-align:center;margin:24px 0">' +
       '<a href="' + gcalLink() + '" style="' + btn + ';background:#FFB800;color:#17082A">Adicionar à minha agenda</a>' +
       '<a href="' + PASTA_PARTES + '" style="' + btn + ';background:transparent;color:#B2FF05;border:1px solid #B2FF05">Acessar as partes da orquestra</a>' +
-      '<p style="color:#F2EDE2;font-size:12px;opacity:.7;margin-top:10px;line-height:1.6">O convite em anexo (.ics) já traz os lembretes automáticos programados.</p>' +
       '</div>' +
       '<div style="background:rgba(255,184,0,.1);border-left:3px solid #FFB800;border-radius:6px;padding:14px 16px;margin:18px 0">' +
       '<p style="color:#F2EDE2;font-size:14px;line-height:1.7;margin:0"><strong style="color:#FFB800">Cordas, atenção:</strong> as partes com arcadas ainda receberão atualizações. Confira a pasta novamente na véspera do ensaio e baixe sempre a versão mais recente.</p>' +
@@ -448,7 +448,7 @@ function sendConfirmationEmail(d, log) {
       '<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#2A1244;border:1px solid rgba(255,184,0,.35);border-radius:12px;overflow:hidden">' +
       '<div style="padding:36px 24px 20px;text-align:center">' +
       '<div style="font-family:Georgia,serif;font-weight:900;font-size:40px;color:#FFB800;letter-spacing:-1px">CAMERATA<span style="font-style:italic;font-size:.72em">21</span></div>' +
-      '<div style="font-size:11px;letter-spacing:3px;color:#F2EDE2;opacity:.75;text-transform:uppercase;margin-top:4px">Orquestra Afro-Brasileira</div>' +
+      '<div style="font-size:11px;letter-spacing:1.6px;color:#F2EDE2;opacity:.75;text-transform:uppercase;margin-top:6px;line-height:1.5;padding:0 12px">Orquestra Sinfônica da Universidade Zumbi dos Palmares</div>' +
       '</div>' +
       '<div style="padding:8px 24px 32px">' +
       '<h2 style="font-family:Georgia,serif;color:#FFB800;font-size:26px;margin:0 0 14px;text-align:center">Inscrição confirmada.</h2>' +
@@ -464,7 +464,7 @@ function sendConfirmationEmail(d, log) {
       '</div>' +
       '<p style="color:#F2EDE2;font-size:14px;line-height:1.7;opacity:.85">Notou algo errado? Responda este e-mail com a correção — este registro vale para você e para a nossa produção.</p>' +
       '<div style="text-align:center;margin-top:26px;padding-top:22px;border-top:1px dashed rgba(255,184,0,.4)">' +
-      '<p style="color:#F2EDE2;font-size:12px;opacity:.65;line-height:1.7;margin:0">Camerata 21<br>' + NOME_OFICIAL + '<br>São Paulo &#8594; Mundo</p>' +
+      '<p style="color:#F2EDE2;font-size:12px;opacity:.65;line-height:1.7;margin:0">Camerata 21<br>' + NOME_OFICIAL + '</p>' +
       '</div></div></div></div>';
 
     MailApp.sendEmail({
