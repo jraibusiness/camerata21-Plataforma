@@ -177,14 +177,22 @@ function checkEmail(email) {
     var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = ss.getSheetByName("Inscrições");
     if (!sheet || sheet.getLastRow() < 2) return { exists: false };
-    var emails = sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues().flat()
-      .map(function(x){ return normalizeEmail(String(x)); });
-    return { exists: emails.indexOf(email) !== -1 };
+    var valores = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
+    var cabecalho = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    for (var i = valores.length - 1; i >= 0; i--) {          // do mais recente para o mais antigo
+      if (normalizeEmail(String(valores[i][3])) === email) {
+        var reg = {};
+        cabecalho.forEach(function (c, k) { reg[c] = String(valores[i][k]); });
+        return { exists: true, linha: i + 2, registro: reg };
+      }
+    }
+    return { exists: false };
   } catch (e) {
     Logger.log("Erro checkEmail: " + e);
     return { exists: false }; // não travar o fluxo por erro interno
   }
 }
+
 
 // Buscar pré-cadastro por telefone (para pré-preenchimento)
 function findPreCadastroByPhone(phone) {
@@ -239,7 +247,14 @@ function processRegistration(formData) {
     }
 
     var logistics = calculateLogistics(formData.cep);
-    sheet.appendRow(prepareSheetRow(formData, logistics));
+    var linhaNova = prepareSheetRow(formData, logistics);
+    var existente = checkEmail(formData.email);
+    if (existente.exists && existente.linha) {
+      // Mesmo e-mail: atualiza o registro em vez de criar duplicata
+      sheet.getRange(existente.linha, 1, 1, linhaNova.length).setValues([linhaNova]);
+    } else {
+      sheet.appendRow(linhaNova);
+    }
     sendConfirmationEmail(formData, logistics);
     notifyAdmin(formData);
 
@@ -309,7 +324,7 @@ function getInstrumentName(k) {
   var n = { violin:"Violino", violin1:"Violino 1", violin2:"Violino 2",
     viola:"Viola", cello:"Violoncelo", bass:"Contrabaixo",
     flute:"Flauta", piccolo:"Flauta Piccolo", oboe:"Oboé", englishhorn:"Corne Inglês",
-    clarinet:"Clarinete", clarion:"Clarinete Baixo", bassoon:"Fagote",
+    clarinet:"Clarinete", clarion:"Clarinete Baixo", bassoon:"Fagote", timpani:"Tímpanos", harp:"Harpa", keyboard:"Teclado / Piano",
     horn:"Trompa", trumpet:"Trompete", trombone:"Trombone", tuba:"Tuba", percussion:"Percussão" };
   return n[k] || k;
 }
