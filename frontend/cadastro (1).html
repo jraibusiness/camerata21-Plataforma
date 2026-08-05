@@ -828,6 +828,221 @@
                 min-width: 44px;
             }
         }
+
+        /* ============ REFINAMENTO DE INTERFACE — v3 ============ */
+        body { background:
+            radial-gradient(1100px 620px at 12% -8%, rgba(255,184,0,.10), transparent 60%),
+            radial-gradient(900px 520px at 92% 108%, rgba(178,255,5,.07), transparent 62%),
+            var(--meianoite); }
+
+        .wizard-container { justify-content:flex-start; padding-top:64px; padding-bottom:64px; }
+
+        /* Painel: dá corpo e foco a cada etapa */
+        .screen.active {
+            background: linear-gradient(168deg, rgba(42,18,68,.92), rgba(31,10,51,.78));
+            border:1px solid var(--linha);
+            border-radius:20px;
+            padding:44px 40px;
+            box-shadow: 0 26px 70px -28px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        /* Cabeçalho alinhado ao conteúdo: título centralizado sobre campos
+           à esquerda era a causa da diagramação desencontrada. */
+        .screen-header { margin-bottom:28px; text-align:left; }
+        #screen00 .screen-header, #screen09 .screen-header, #screenSuccess .screen-header { text-align:center; }
+        #screen00 .screen-title::after, #screen09 .screen-title::after { margin-left:auto; margin-right:auto; }
+        .wizard-container { max-width:700px; }
+        .screen-title { line-height:1.08; }
+        .screen-title::after {
+            content:''; display:block; width:52px; height:3px; margin-top:16px; border-radius:2px;
+            background:linear-gradient(90deg, var(--farol), rgba(255,184,0,0));
+        }
+        .screen-subtitle { line-height:1.6; max-width:52ch; }
+
+        /* Transição entre etapas + entrada escalonada dos elementos */
+        .screen { animation:none; }
+        .screen.active > * { animation: c21Rise .5s cubic-bezier(.2,.7,.25,1) backwards; }
+        .screen.active > *:nth-child(1){animation-delay:.02s}
+        .screen.active > *:nth-child(2){animation-delay:.08s}
+        .screen.active > *:nth-child(3){animation-delay:.14s}
+        .screen.active > *:nth-child(4){animation-delay:.20s}
+        .screen.active > *:nth-child(5){animation-delay:.26s}
+        .screen.active > *:nth-child(n+6){animation-delay:.30s}
+        @keyframes c21Rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+        /* Barra de progresso com trilho e brilho */
+        .progress-bar { background:rgba(242,237,226,.10); height:4px; }
+        .progress-fill {
+            background:linear-gradient(90deg, var(--farol), var(--acido));
+            box-shadow:0 0 16px rgba(255,184,0,.55);
+            transition:width .55s cubic-bezier(.2,.7,.25,1);
+        }
+        .step-counter {
+            font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:.18em;
+            text-transform:uppercase; color:var(--farol); opacity:.85; margin-bottom:20px;
+        }
+
+        /* Botões com peso e resposta tátil */
+        .btn {
+            font-family:'Space Grotesk',sans-serif; letter-spacing:.09em; border-radius:11px;
+            transition:transform .16s cubic-bezier(.2,.7,.25,1), box-shadow .22s ease, background .22s ease, opacity .22s ease;
+        }
+        .btn-primary { box-shadow:0 10px 26px -12px rgba(255,184,0,.9); }
+        .btn:not(:disabled):hover { transform:translateY(-2px); }
+        .btn-primary:not(:disabled):hover { box-shadow:0 16px 34px -12px rgba(255,184,0,1); }
+        .btn:not(:disabled):active { transform:translateY(0) scale(.985); }
+        .btn:disabled { opacity:.32; box-shadow:none; }
+        .button-group { margin-top:34px; gap:12px; }
+
+        /* Opções: alvo grande, estado claro, sem parecer formulário genérico */
+        .radio-option, .instrument-card {
+            border-radius:13px; position:relative; overflow:hidden;
+            transition:transform .16s cubic-bezier(.2,.7,.25,1), border-color .22s ease, background .22s ease;
+        }
+        .radio-option:hover, .instrument-card:hover { transform:translateY(-2px); border-color:var(--linha-forte); }
+        .radio-option:active, .instrument-card:active { transform:scale(.985); }
+        .radio-option.selected, .instrument-card.selected {
+            background:rgba(255,184,0,.12); border-color:var(--farol);
+            box-shadow:inset 0 0 0 1px rgba(255,184,0,.45), 0 12px 30px -18px rgba(255,184,0,.8);
+        }
+        .instrument-card.selected .instrument-icon { transform:scale(1.14); }
+        .instrument-icon { transition:transform .22s cubic-bezier(.2,.7,.25,1); }
+        .radio-option.selected::before {
+            content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--farol);
+        }
+
+        /* Campos: foco visível, sem borda dura padrão */
+        .form-input {
+            border-radius:11px;
+            transition:border-color .22s ease, box-shadow .22s ease, background .22s ease;
+        }
+        .form-input:focus {
+            outline:none; border-color:var(--farol);
+            box-shadow:0 0 0 4px rgba(255,184,0,.16);
+        }
+        .form-label { letter-spacing:.02em; }
+
+        /* Cartões de resumo com hierarquia */
+        .summary-card { border-radius:15px; }
+        .summary-item { transition:background .2s ease; }
+        .summary-item:hover { background:rgba(255,184,0,.05); }
+
+        /* Ranking arrastável: deixar óbvio que é arrastável */
+        .ranking-item {
+            border-radius:12px; cursor:grab;
+            transition:transform .16s cubic-bezier(.2,.7,.25,1), border-color .2s ease, box-shadow .2s ease;
+        }
+        .ranking-item:hover { transform:translateX(4px); border-color:var(--linha-forte); }
+        .ranking-item.dragging { opacity:.5; cursor:grabbing; }
+        .ranking-handle { opacity:.55; }
+
+        .checkbox { transition:background .2s ease, border-color .2s ease, transform .16s ease; cursor:pointer; }
+        .checkbox:active { transform:scale(.9); }
+        .checklist-item { cursor:pointer; border-radius:11px; padding:14px; transition:background .2s ease; }
+        .checklist-item:hover { background:rgba(255,184,0,.06); }
+
+        .disclaimer-banner { letter-spacing:.03em; }
+
+        @media (max-width:768px) {
+            .wizard-container { padding-top:32px; padding-bottom:40px; }
+            .screen.active { padding:28px 20px; border-radius:16px; }
+            .button-group { flex-direction:column-reverse; }
+            .button-group .btn { width:100%; }
+        }
+        @media (max-width:360px) { .screen.active { padding:22px 16px; } }
+        @media (prefers-reduced-motion:reduce) {
+            .screen.active > *, .progress-fill { animation:none !important; transition:none !important; }
+        }
+
+        /* ===== v4: listas, destaques, calendário, loading, resumo mobile ===== */
+        .rep-list { list-style:none; margin:0 0 22px; padding:0; }
+        .rep-list li {
+            position:relative; padding:12px 14px 12px 30px; margin-bottom:8px;
+            border-radius:11px; background:rgba(255,184,0,.06);
+            border:1px solid var(--linha); color:var(--pergaminho);
+            font-size:15px; line-height:1.55;
+        }
+        .rep-list li::before {
+            content:'◆'; position:absolute; left:12px; top:12px;
+            color:var(--farol); font-size:10px;
+        }
+        .rep-list--simples li { background:transparent; border:none; padding:5px 0 5px 22px; }
+        .rep-list--simples li::before { content:'—'; top:5px; left:0; opacity:.75; }
+        .rep-nota {
+            display:inline-block; margin-left:6px; padding:2px 8px; border-radius:20px;
+            background:rgba(178,255,5,.14); color:var(--acido);
+            font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:.05em;
+        }
+
+        /* Bloco de destaque para dados-chave */
+        .destaque {
+            background:rgba(255,184,0,.08); border:1px solid rgba(255,184,0,.45);
+            border-radius:15px; padding:20px; margin-bottom:24px;
+        }
+        .destaque-linha {
+            display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+            padding:9px 0; border-bottom:1px solid rgba(255,184,0,.16);
+        }
+        .destaque-linha:last-child { border-bottom:none; }
+        .destaque-rot {
+            font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:.14em;
+            text-transform:uppercase; color:var(--farol); flex-shrink:0;
+        }
+        .destaque-val { color:var(--pergaminho); font-size:17px; font-weight:600; text-align:right; }
+        .destaque-val--fraco { font-size:14px; font-weight:400; opacity:.72; }
+
+        /* Calendário da semana do concerto */
+        .cal {
+            background:rgba(255,184,0,.06); border:1px solid var(--linha);
+            border-radius:15px; padding:20px; margin-bottom:24px;
+        }
+        .cal-mes {
+            font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:.18em;
+            text-transform:uppercase; color:var(--farol); text-align:center; margin-bottom:16px;
+        }
+        .cal-grade { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
+        .cal-dow {
+            font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:.1em;
+            text-transform:uppercase; color:rgba(242,237,226,.5); text-align:center; padding-bottom:4px;
+        }
+        .cal-dia {
+            aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+            border-radius:11px; font-family:'Space Grotesk',sans-serif;
+            font-size:19px; font-weight:600;
+        }
+        .cal-dia--ensaio { background:rgba(255,184,0,.16); border:1px solid rgba(255,184,0,.5); color:var(--farol); }
+        .cal-dia--concerto {
+            background:var(--acido); color:var(--meianoite);
+            box-shadow:0 8px 22px -10px rgba(178,255,5,.9);
+        }
+        .cal-legenda {
+            display:flex; flex-wrap:wrap; gap:8px 18px; justify-content:center;
+            margin-top:16px; font-size:12.5px; color:rgba(242,237,226,.82);
+        }
+        .cal-chip { display:inline-block; width:11px; height:11px; border-radius:3px; vertical-align:-1px; margin-right:5px; }
+        .cal-chip--ensaio { background:rgba(255,184,0,.7); }
+        .cal-chip--concerto { background:var(--acido); }
+        .cal-nota { text-align:center; font-size:12px; color:rgba(242,237,226,.6); margin-top:12px; }
+
+        /* Loading em tela cheia: no celular o antigo ficava abaixo da dobra */
+        .loading {
+            display:none; position:fixed; inset:0; z-index:900;
+            background:rgba(23,8,42,.93); backdrop-filter:blur(6px);
+            padding:24px; text-align:center;
+        }
+        .loading.show { display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        .loading p { color:var(--pergaminho); font-size:15px; margin-top:18px; }
+        .loading .spinner { margin:0 auto; }
+
+        /* Resumo: no celular, rótulo e valor empilhados e alinhados à esquerda */
+        @media (max-width:768px) {
+            .summary-item { flex-direction:column; align-items:flex-start; gap:3px; padding:13px 0; }
+            .summary-value { text-align:left !important; font-size:15.5px; }
+            .summary-label { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--farol); opacity:.9; }
+            .destaque-linha { flex-direction:column; align-items:flex-start; gap:2px; }
+            .destaque-val { text-align:left; }
+            .cal-dia { font-size:16px; }
+            .rep-list li { font-size:14.5px; }
+        }
     </style>
 </head>
 <body>
@@ -840,6 +1055,7 @@
     </div>
 
     <div class="wizard-container">
+        <div class="step-counter" id="stepCounter"></div>
         <!-- Tela 00: Poka-Yoke de Abandono -->
         <div class="screen active" id="screen00">
             <div class="screen-header">
@@ -850,7 +1066,7 @@
             </div>
             <div class="button-group">
                 <div></div>
-                <button class="btn btn-primary" onclick="goToScreen(1)">Iniciar Cadastro</button>
+                <button class="btn btn-primary" style="margin:0 auto;min-width:260px" onclick="goToScreen(1)">Iniciar Cadastro</button>
             </div>
         </div>
 
@@ -1146,15 +1362,24 @@
                     Nosso programa mistura tradição e inovação
                 </p>
             </div>
-            <p class="body">
-                O programa do Ensaio Aberto #1 dialoga entre a matriz afro-brasileira e a sinfonia de concerto:
+            <p class="body" style="margin-bottom:18px">
+                Este é o programa do <strong>Ensaio Aberto #1</strong>:
             </p>
-            <div class="summary-card" style="margin:16px 0">
-                <div class="summary-item"><span class="summary-value" style="text-align:left">MENDELSSOHN — Sinfonia n.º 3 em Lá menor, Op. 56 <em>(leitura completa)</em></span></div>
-                <div class="summary-item"><span class="summary-value" style="text-align:left">BEETHOVEN — Sinfonia n.º 5 em Dó menor, Op. 67 <em>(1º mov.)</em></span></div>
-                <div class="summary-item"><span class="summary-value" style="text-align:left">MOZART — Sinfonia n.º 40 em Sol menor, K. 550 <em>(1º mov.)</em></span></div>
-                <div class="summary-item"><span class="summary-value" style="text-align:left">BOLOGNE — Concerto para Violino n.º 2 em Lá Maior, Op. 2</span></div>
-            </div>
+            <ul class="rep-list">
+                <li><strong>MENDELSSOHN</strong> — Sinfonia n.º 3 em Lá menor, Op. 56 <span class="rep-nota">leitura completa</span></li>
+                <li><strong>BEETHOVEN</strong> — Sinfonia n.º 5 em Dó menor, Op. 67 <span class="rep-nota">1º mov.</span></li>
+                <li><strong>MOZART</strong> — Sinfonia n.º 40 em Sol menor, K. 550 <span class="rep-nota">1º mov.</span></li>
+                <li><strong>BOLOGNE</strong> — Concerto para Violino n.º 2 em Lá Maior, Op. 2</li>
+            </ul>
+            <p class="body" style="margin-bottom:10px">
+                O foco é <strong>tocar junto</strong>. Se houver público, abrimos uma conversa para
+                aproximar quem assiste do universo da orquestra:
+            </p>
+            <ul class="rep-list rep-list--simples">
+                <li>como uma orquestra funciona</li>
+                <li>o que acontece de verdade num ensaio</li>
+                <li>por que repetimos os mesmos compassos tantas vezes</li>
+            </ul>
             <div class="checklist">
                 <div class="checklist-item">
                     <div class="checkbox" id="check1" role="checkbox" tabindex="0" aria-checked="false"></div>
@@ -1252,12 +1477,13 @@
         <div class="screen" id="screen10">
             <div class="screen-header">
                 <h1 class="screen-title">Concerto Final</h1>
-                <p class="screen-subtitle">
-                    Você tem disponibilidade para o concerto do Troféu Raça Negra?
-                </p>
-                <p class="note" style="font-size:12px;color:var(--farol);margin-top:8px;">
-                    Horário a confirmar, premissa de período noturno.
-                </p>
+                <p class="screen-subtitle">Você tem disponibilidade para o concerto?</p>
+            </div>
+            <div class="destaque">
+                <div class="destaque-linha"><span class="destaque-rot">Data</span><span class="destaque-val">20 de Novembro de 2026</span></div>
+                <div class="destaque-linha"><span class="destaque-rot">Ocasião</span><span class="destaque-val">Troféu Raça Negra</span></div>
+                <div class="destaque-linha"><span class="destaque-rot">Local</span><span class="destaque-val">Sala São Paulo</span></div>
+                <div class="destaque-linha"><span class="destaque-rot">Horário</span><span class="destaque-val destaque-val--fraco">A confirmar — provável noite</span></div>
             </div>
             <div class="radio-group" id="dispConcerto">
                 <div class="radio-option" onclick="selectRadio(this, true)">
@@ -1278,13 +1504,25 @@
         <!-- Tela 11: Disponibilidade Semana do Concerto -->
         <div class="screen" id="screen11">
             <div class="screen-header">
-                <h1 class="screen-title">Ensaios da Semana</h1>
-                <p class="screen-subtitle">
-                    Você tem disponibilidade para os ensaios na semana do concerto?
-                </p>
-                <p class="note" style="font-size:12px;color:var(--farol);margin-top:8px;">
-                    Local e horários a confirmar, provável noite.
-                </p>
+                <h1 class="screen-title">Semana do Concerto</h1>
+                <p class="screen-subtitle">Você tem disponibilidade para os ensaios da semana?</p>
+            </div>
+            <div class="cal">
+                <div class="cal-mes">Novembro · 2026</div>
+                <div class="cal-grade">
+                    <span class="cal-dow">Seg</span><span class="cal-dow">Ter</span><span class="cal-dow">Qua</span>
+                    <span class="cal-dow">Qui</span><span class="cal-dow">Sex</span>
+                    <span class="cal-dia cal-dia--ensaio">16</span>
+                    <span class="cal-dia cal-dia--ensaio">17</span>
+                    <span class="cal-dia cal-dia--ensaio">18</span>
+                    <span class="cal-dia cal-dia--ensaio">19</span>
+                    <span class="cal-dia cal-dia--concerto">20</span>
+                </div>
+                <div class="cal-legenda">
+                    <span><i class="cal-chip cal-chip--ensaio"></i> Seg a qui — <strong>ensaios</strong></span>
+                    <span><i class="cal-chip cal-chip--concerto"></i> Sex — <strong>concerto</strong></span>
+                </div>
+                <p class="cal-nota">Local e horários a confirmar — provável noite.</p>
             </div>
             <div class="radio-group" id="dispSemana">
                 <div class="radio-option" onclick="selectRadio(this, true)">
@@ -1394,8 +1632,12 @@
                 <div class="success-icon">✓</div>
                 <h1 class="success-title">Inscrição Concluída!</h1>
                 <p class="success-text">
-                    Obrigado por se inscrever na Camerata 21. Em breve enviaremos um e-mail de confirmação com todos os detalhes.
+                    Obrigado por se inscrever na Camerata 21.<br>
+                    Em instantes você recebe um <strong>e-mail de confirmação</strong> com todos os detalhes.
                 </p>
+                <div class="button-group" style="justify-content:center">
+                    <button type="button" class="btn btn-secondary" onclick="reiniciarCadastro()">Voltar ao início</button>
+                </div>
             </div>
         </div>
 
@@ -1468,6 +1710,12 @@
             const progressFill = document.getElementById('progressFill');
             if (!progressFill) return;
             const idx = SCREEN_ORDER.indexOf(screenKey(currentScreen));
+            const sc = document.getElementById('stepCounter');
+            if (sc) {
+                const k = screenKey(currentScreen);
+                sc.textContent = (k === '00' || k === 'Success') ? '' :
+                    'Etapa ' + idx + ' de ' + (SCREEN_ORDER.length - 2);
+            }
             const progress = ((idx < 0 ? 0 : idx) + 1) / SCREEN_ORDER.length * 100;
             progressFill.style.width = progress + '%';
         }
@@ -1535,6 +1783,23 @@
                 document.getElementById('continueInstrument').disabled = false;
             });
         });
+
+        // Recomeçar do zero a partir da tela de sucesso
+        function reiniciarCadastro() {
+            formData = {};
+            document.querySelectorAll('.radio-option.selected, .instrument-card.selected')
+                .forEach(function (e) { e.classList.remove('selected'); });
+            document.querySelectorAll('#cadastroWizard input').forEach(function (e) { e.value = ''; });
+            const cb = document.getElementById('check1');
+            if (cb) { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); }
+            const cg = document.getElementById('caronaGroup');
+            if (cg) cg.style.display = 'none';
+            document.querySelectorAll('[id^="continue"]').forEach(function (b) {
+                if (b.id !== 'continueMaterial') b.disabled = true;
+            });
+            document.getElementById('continueMaterial').disabled = true;
+            goToScreen(0);
+        }
 
         // Transporte por botões (sem digitação) + pergunta condicional de carona
         function selectTransport(el, value) {
