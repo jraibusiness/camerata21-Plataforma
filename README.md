@@ -30,6 +30,15 @@ Esta plataforma foi desenvolvida para captar inscrições de músicos de forma �
 - [ ] Download de partituras
 - [ ] Integração com pagamento
 
+## 🧭 Módulos
+
+Este repositório reúne duas plataformas da orquestra, ambas em GAS + Google Sheets:
+
+| Módulo | O que faz | Onde |
+|---|---|---|
+| **Inscrições Camerata 21** | Captação de instrumentistas, logística e dashboard de naipes | `Code.gs`, `frontend/` |
+| **Radar de Fomento OS-UZP** | Centro de controle de editais, leis de incentivo, caminho crítico e dossiê documental — com report diário por e-mail e WhatsApp | `radar/` · manual em [`docs/RADAR_FOMENTO.md`](docs/RADAR_FOMENTO.md) |
+
 ## 🏗️ Arquitetura
 
 - **Backend:** Google Apps Script
@@ -52,8 +61,16 @@ Esta plataforma foi desenvolvida para captar inscrições de músicos de forma �
 │   └── branding/              # Brandkit e pesquisa de branding
 ├── assets/
 │   └── fotos/                # Fotos institucionais (reserva para uso gráfico futuro)
+├── radar/                     # Radar de Fomento OS-UZP (editais e prazos)
+│   ├── Config.gs             # Constantes, abas, configuração
+│   ├── Seed.gs               # Carga inicial: 23 editais, 20 etapas, 11 projetos, 15 documentos
+│   ├── Code.gs               # Motor de cálculo (data-gatilho, score), API e autenticação OTP
+│   ├── Notificacoes.gs       # Report diário, pauta semanal, WhatsApp, Calendar, gatilhos
+│   ├── radar.html            # Centro de controle (SPA)
+│   └── appsscript.json       # Manifesto: fuso e escopos
 ├── docs/
 │   ├── HANDOFF.md            # Documento técnico de handoff (arquitetura, planilha, pendências)
+│   ├── RADAR_FOMENTO.md      # Manual do Radar: implantação, WhatsApp, rotina, modelo de dados
 │   └── ARQUITETURA_E_ESCOPO.md
 ├── _redirects                # Redirecionamentos Netlify (aponta para o deployment GAS ativo)
 └── README.md                 # Este arquivo
