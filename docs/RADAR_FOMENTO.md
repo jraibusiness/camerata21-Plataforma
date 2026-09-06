@@ -322,11 +322,17 @@ Então o Radar declara uma **camada de estado**, separada da paleta expressiva:
 | Atenção (≤21d) | Latão | 5,89 : 1 |
 | No prazo | Verde, só como ponto ou barra | 3,69 : 1 — por isso nunca em texto |
 
-**Escopo do Sirene:** só nesta plataforma e só em marcador de estado. Nunca em cartaz,
-programa, ofício, edital ou qualquer peça institucional. Se preferir viver sem ele, a
-alternativa é distinguir vencido de crítico por preenchimento em vez de matiz — custa
-velocidade de leitura, sobretudo no celular. É uma decisão sua; trocar é uma linha
-(`--sirene` no topo de `radar.html` e `CORES.sirene` em `Notificacoes.gs`).
+**Status: aprovado por João em 06/09/2026.** O Sirene é parte do sistema — como extensão
+declarada, não como oitava cor da paleta.
+
+**Escopo:** só nesta plataforma e só em marcador de estado — ponto de semáforo, borda
+esquerda de cartão, filete e número de KPI em alerta, rótulo "sem responsável". **Nunca**
+em cartaz, programa, ofício, edital, capa, selo ou qualquer peça institucional, e nunca
+como campo cheio. Quem herdar este código deve tratá-lo como cor de instrumento, não de
+marca.
+
+**Onde vive:** `--sirene` no topo de `radar.html` e `CORES.sirene` em `Notificacoes.gs`.
+Duas linhas — se um dia a decisão mudar, muda em dois lugares.
 
 ### 9.4 E-mail
 
@@ -373,4 +379,5 @@ O favicon é o **monograma Z**: campo roxo, filete e Z em Farol.
 - [ ] Confirmar regulamento da Funarte Aberta (hoje `VERIFICAR`)
 - [ ] Definir data-gatilho manual do **ProAC ICMS** — é fluxo contínuo, então não tem
       prazo para subtrair; hoje ele só aparece pela etapa 1 do caminho crítico
-- [ ] Aprovar ou vetar o vermelho **Sirene** da camada de estado (§9.3)
+- [x] ~~Aprovar ou vetar o vermelho **Sirene** da camada de estado~~ — aprovado em
+      06/09/2026, com o escopo fechado descrito em §9.3
