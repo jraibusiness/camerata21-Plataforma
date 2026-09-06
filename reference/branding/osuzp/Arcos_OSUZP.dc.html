@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Roboto+Condensed:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#080F22;-webkit-font-smoothing:antialiased}
+  a{color:#FFB800;text-decoration:none;border-bottom:1px solid rgba(255,184,0,.4)}
+  a:hover{color:#EFD5B4;border-bottom-color:rgba(239,213,180,.6)}
+</style>
+</helmet>
+
+<section style="padding:64px clamp(20px,4vw,64px) 96px;font-family:Roboto,system-ui,sans-serif;color:#EFD5B4;background:#080F22">
+
+  <div style="max-width:940px;margin-bottom:48px">
+    <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#FFB800;margin-bottom:18px">Turno 4 · os três arcos · seis marcas e uma regra</div>
+    <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.015em;margin:0 0 22px;max-width:20ch">Três vozes entrando em atraso.</h1>
+    <p style="max-width:64ch;font-size:14.5px;line-height:1.7;font-weight:300;color:rgba(239,213,180,.72);margin:0 0 14px;text-wrap:pretty">O mesmo arco, repetido três vezes com defasagem de <b style="font-weight:400;color:#EFD5B4">26°</b> e peso decrescente: Farol, azul de cena, verde. Lê-se primeiro como contraponto — três entradas em imitação — e só depois como as cores da casa. É a única coisa do sistema que <i>já</i> é música.</p>
+    <p style="max-width:64ch;font-size:14.5px;line-height:1.7;font-weight:300;color:rgba(239,213,180,.72);margin:0;text-wrap:pretty">E o problema que você apontou está resolvido por regra, não por sorte: <b style="font-weight:400;color:#EFD5B4">os arcos nunca entram na coluna de texto</b>. Eles ocupam um quadrante reservado, sangram pela margem e param numa linha de guarda. A construção está em <a href="#4g">4g</a>.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+
+    <div id="4a" style="width:344px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4a</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4">Tripla</div>
+      </div>
+      <div style="height:308px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:#0B1B3D">
+        <svg viewBox="12 18 156 142" width="150" fill="none" aria-hidden="true">
+          <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#FFB800" stroke-width="5.61" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#FFB800" stroke-width="12.38" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#FFB800" stroke-width="16.5" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#FFB800" stroke-width="15.84" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#FFB800" stroke-width="11.88" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#FFB800" stroke-width="4.62" stroke-linecap="round"></path>
+          <path d="M45.04 112.06 A59 59 0 0 1 49.04 88.54" stroke="#3B56A6" stroke-width="3.91" stroke-linecap="round"></path><path d="M49.04 88.54 A59 59 0 0 1 62.04 68.52" stroke="#3B56A6" stroke-width="8.63" stroke-linecap="round"></path><path d="M62.04 68.52 A59 59 0 0 1 81.9 55.3" stroke="#3B56A6" stroke-width="11.5" stroke-linecap="round"></path><path d="M81.9 55.3 A59 59 0 0 1 105.37 51.02" stroke="#3B56A6" stroke-width="11.04" stroke-linecap="round"></path><path d="M105.37 51.02 A59 59 0 0 1 128.62 56.38" stroke="#3B56A6" stroke-width="8.28" stroke-linecap="round"></path><path d="M128.62 56.38 A59 59 0 0 1 147.85 70.52" stroke="#3B56A6" stroke-width="3.22" stroke-linecap="round"></path>
+          <path d="M67.46 93.73 A40 40 0 0 1 76.89 80.59" stroke="#128743" stroke-width="2.52" stroke-linecap="round"></path><path d="M76.89 80.59 A40 40 0 0 1 90.76 72.26" stroke="#128743" stroke-width="5.55" stroke-linecap="round"></path><path d="M90.76 72.26 A40 40 0 0 1 106.79 70.1" stroke="#128743" stroke-width="7.4" stroke-linecap="round"></path><path d="M106.79 70.1 A40 40 0 0 1 122.37 74.47" stroke="#128743" stroke-width="7.1" stroke-linecap="round"></path><path d="M122.37 74.47 A40 40 0 0 1 134.94 84.65" stroke="#128743" stroke-width="5.33" stroke-linecap="round"></path><path d="M134.94 84.65 A40 40 0 0 1 142.45 98.97" stroke="#128743" stroke-width="2.07" stroke-linecap="round"></path>
+        </svg>
+        <div style="text-align:center">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;line-height:.88;color:#EFD5B4">U<span style="font-style:italic;color:#FFB800">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.34em;color:#A69773;margin-top:11px;padding-left:.34em">ORQUESTRA SINFÔNICA</div>
+        </div>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">A forma nua: três arcadas concêntricas, cada uma entrando 26° depois da anterior, cada uma mais fina. Sem moldura, sem campo — a marca é o gesto.</p>
+      </div>
+    </div>
+
+    <div id="4b" style="width:344px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4b</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4">Núcleo</div>
+      </div>
+      <div style="height:308px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:linear-gradient(152deg,#1F0A33 0%,#0B1B3D 76%)">
+        <svg viewBox="12 18 156 142" width="150" fill="none" aria-hidden="true">
+          <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#FFB800" stroke-width="5.61" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#FFB800" stroke-width="12.38" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#FFB800" stroke-width="16.5" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#FFB800" stroke-width="15.84" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#FFB800" stroke-width="11.88" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#FFB800" stroke-width="4.62" stroke-linecap="round"></path>
+          <path d="M45.04 112.06 A59 59 0 0 1 49.04 88.54" stroke="#3B56A6" stroke-width="3.91" stroke-linecap="round"></path><path d="M49.04 88.54 A59 59 0 0 1 62.04 68.52" stroke="#3B56A6" stroke-width="8.63" stroke-linecap="round"></path><path d="M62.04 68.52 A59 59 0 0 1 81.9 55.3" stroke="#3B56A6" stroke-width="11.5" stroke-linecap="round"></path><path d="M81.9 55.3 A59 59 0 0 1 105.37 51.02" stroke="#3B56A6" stroke-width="11.04" stroke-linecap="round"></path><path d="M105.37 51.02 A59 59 0 0 1 128.62 56.38" stroke="#3B56A6" stroke-width="8.28" stroke-linecap="round"></path><path d="M128.62 56.38 A59 59 0 0 1 147.85 70.52" stroke="#3B56A6" stroke-width="3.22" stroke-linecap="round"></path>
+          <path d="M67.46 93.73 A40 40 0 0 1 76.89 80.59" stroke="#128743" stroke-width="2.52" stroke-linecap="round"></path><path d="M76.89 80.59 A40 40 0 0 1 90.76 72.26" stroke="#128743" stroke-width="5.55" stroke-linecap="round"></path><path d="M90.76 72.26 A40 40 0 0 1 106.79 70.1" stroke="#128743" stroke-width="7.4" stroke-linecap="round"></path><path d="M106.79 70.1 A40 40 0 0 1 122.37 74.47" stroke="#128743" stroke-width="7.1" stroke-linecap="round"></path><path d="M122.37 74.47 A40 40 0 0 1 134.94 84.65" stroke="#128743" stroke-width="5.33" stroke-linecap="round"></path><path d="M134.94 84.65 A40 40 0 0 1 142.45 98.97" stroke="#128743" stroke-width="2.07" stroke-linecap="round"></path>
+          <circle cx="104" cy="110" r="19" fill="#EFD5B4"></circle>
+        </svg>
+        <div style="text-align:center">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;line-height:.88;color:#EFD5B4">U<span style="font-style:italic;color:#FFB800">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.34em;color:#A69773;margin-top:11px;padding-left:.34em">ORQUESTRA SINFÔNICA</div>
+        </div>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">O disco sólido concêntrico volta — agora como o ponto de onde as três vozes saem. Dá centro de gravidade à marca e é o que a segura em corpo pequeno: abaixo de 24 px, sobram o núcleo e o arco de Farol.</p>
+      </div>
+    </div>
+
+    <div id="4c" style="width:344px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4c</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4;white-space:nowrap">Ressonância</div>
+      </div>
+      <div style="height:308px;display:flex;align-items:center;justify-content:center;background:#0B1B3D">
+        <svg viewBox="14 14 172 172" width="188" fill="none" aria-hidden="true">
+          <path d="M51.15 158.22 A76 76 0 0 1 29.79 129.08" stroke="#FFB800" stroke-width="4.65" stroke-linecap="round"></path><path d="M29.79 129.08 A76 76 0 0 1 24.29 93.38" stroke="#FFB800" stroke-width="9.61" stroke-linecap="round"></path><path d="M24.29 93.38 A76 76 0 0 1 35.9 59.17" stroke="#FFB800" stroke-width="13.18" stroke-linecap="round"></path><path d="M35.9 59.17 A76 76 0 0 1 62 34.18" stroke="#FFB800" stroke-width="15.5" stroke-linecap="round"></path><path d="M62 34.18 A76 76 0 0 1 96.68 24.07" stroke="#FFB800" stroke-width="15.04" stroke-linecap="round"></path><path d="M96.68 24.07 A76 76 0 0 1 132.12 31.12" stroke="#FFB800" stroke-width="12.4" stroke-linecap="round"></path><path d="M132.12 31.12 A76 76 0 0 1 160.29 53.73" stroke="#FFB800" stroke-width="8.53" stroke-linecap="round"></path><path d="M160.29 53.73 A76 76 0 0 1 174.85 86.8" stroke="#FFB800" stroke-width="3.41" stroke-linecap="round"></path>
+          <path d="M47.01 123.59 A58 58 0 0 1 42.11 96.46" stroke="#3B56A6" stroke-width="3.15" stroke-linecap="round"></path><path d="M42.11 96.46 A58 58 0 0 1 50.28 70.13" stroke="#3B56A6" stroke-width="6.51" stroke-linecap="round"></path><path d="M50.28 70.13 A58 58 0 0 1 69.7 50.55" stroke="#3B56A6" stroke-width="8.92" stroke-linecap="round"></path><path d="M69.7 50.55 A58 58 0 0 1 95.95 42.14" stroke="#3B56A6" stroke-width="10.5" stroke-linecap="round"></path><path d="M95.95 42.14 A58 58 0 0 1 123.13 46.81" stroke="#3B56A6" stroke-width="10.19" stroke-linecap="round"></path><path d="M123.13 46.81 A58 58 0 0 1 145.07 63.5" stroke="#3B56A6" stroke-width="8.4" stroke-linecap="round"></path><path d="M145.07 63.5 A58 58 0 0 1 156.84 88.44" stroke="#3B56A6" stroke-width="5.78" stroke-linecap="round"></path><path d="M156.84 88.44 A58 58 0 0 1 155.75 115.99" stroke="#3B56A6" stroke-width="2.31" stroke-linecap="round"></path>
+          <path d="M60.02 98.6 A40 40 0 0 1 65.19 80.3" stroke="#128743" stroke-width="2.04" stroke-linecap="round"></path><path d="M65.19 80.3 A40 40 0 0 1 78.21 66.45" stroke="#128743" stroke-width="4.22" stroke-linecap="round"></path><path d="M78.21 66.45 A40 40 0 0 1 96.17 60.18" stroke="#128743" stroke-width="5.78" stroke-linecap="round"></path><path d="M96.17 60.18 A40 40 0 0 1 114.98 62.91" stroke="#128743" stroke-width="6.8" stroke-linecap="round"></path><path d="M114.98 62.91 A40 40 0 0 1 130.42 74.02" stroke="#128743" stroke-width="6.6" stroke-linecap="round"></path><path d="M130.42 74.02 A40 40 0 0 1 138.97 91" stroke="#128743" stroke-width="5.44" stroke-linecap="round"></path><path d="M138.97 91 A40 40 0 0 1 138.73 110.02" stroke="#128743" stroke-width="3.74" stroke-linecap="round"></path><path d="M138.73 110.02 A40 40 0 0 1 129.73 126.77" stroke="#128743" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">As mesmas três vozes levadas a 220° cada: fecham quase um anel e deixam três aberturas em posições diferentes. É a versão de selo — respiração dentro de uma forma redonda, sem virar círculo comum.</p>
+      </div>
+    </div>
+
+    <div id="4d" style="width:344px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4d</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4">Eco</div>
+      </div>
+      <div style="height:308px;display:flex;align-items:center;justify-content:center;background:#1F0A33">
+        <svg viewBox="12 18 156 142" width="172" fill="none" aria-hidden="true">
+          <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#FFB800" stroke-width="7.14" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#FFB800" stroke-width="15.75" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#FFB800" stroke-width="21" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#FFB800" stroke-width="20.16" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#FFB800" stroke-width="15.12" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#FFB800" stroke-width="5.88" stroke-linecap="round"></path>
+          <path d="M45.04 112.06 A59 59 0 0 1 49.04 88.54" stroke="#3B56A6" stroke-width="1.56" stroke-linecap="round"></path><path d="M49.04 88.54 A59 59 0 0 1 62.04 68.52" stroke="#3B56A6" stroke-width="3.45" stroke-linecap="round"></path><path d="M62.04 68.52 A59 59 0 0 1 81.9 55.3" stroke="#3B56A6" stroke-width="4.6" stroke-linecap="round"></path><path d="M81.9 55.3 A59 59 0 0 1 105.37 51.02" stroke="#3B56A6" stroke-width="4.42" stroke-linecap="round"></path><path d="M105.37 51.02 A59 59 0 0 1 128.62 56.38" stroke="#3B56A6" stroke-width="3.31" stroke-linecap="round"></path><path d="M128.62 56.38 A59 59 0 0 1 147.85 70.52" stroke="#3B56A6" stroke-width="1.29" stroke-linecap="round"></path>
+          <path d="M67.46 93.73 A40 40 0 0 1 76.89 80.59" stroke="#128743" stroke-width="1.02" stroke-linecap="round"></path><path d="M76.89 80.59 A40 40 0 0 1 90.76 72.26" stroke="#128743" stroke-width="2.25" stroke-linecap="round"></path><path d="M90.76 72.26 A40 40 0 0 1 106.79 70.1" stroke="#128743" stroke-width="3" stroke-linecap="round"></path><path d="M106.79 70.1 A40 40 0 0 1 122.37 74.47" stroke="#128743" stroke-width="2.88" stroke-linecap="round"></path><path d="M122.37 74.47 A40 40 0 0 1 134.94 84.65" stroke="#128743" stroke-width="2.16" stroke-linecap="round"></path><path d="M134.94 84.65 A40 40 0 0 1 142.45 98.97" stroke="#128743" stroke-width="0.84" stroke-linecap="round"></path>
+        </svg>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">Hierarquia extrema: uma arcada em massa e duas em fio. Obedece à regra do acento único — o Farol é a voz, azul e verde são a ressonância. A mais sóbria das seis e a que menos parece bandeira.</p>
+      </div>
+    </div>
+
+    <div id="4e" style="width:344px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4e</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4">Documento</div>
+      </div>
+      <div style="height:308px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:#EFD5B4">
+        <svg viewBox="12 18 156 142" width="146" fill="none" aria-hidden="true">
+          <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#13387F" stroke-width="5.61" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#13387F" stroke-width="12.38" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#13387F" stroke-width="16.5" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#13387F" stroke-width="15.84" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#13387F" stroke-width="11.88" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#13387F" stroke-width="4.62" stroke-linecap="round"></path>
+          <g opacity=".62"><path d="M45.04 112.06 A59 59 0 0 1 49.04 88.54" stroke="#13387F" stroke-width="3.91" stroke-linecap="round"></path><path d="M49.04 88.54 A59 59 0 0 1 62.04 68.52" stroke="#13387F" stroke-width="8.63" stroke-linecap="round"></path><path d="M62.04 68.52 A59 59 0 0 1 81.9 55.3" stroke="#13387F" stroke-width="11.5" stroke-linecap="round"></path><path d="M81.9 55.3 A59 59 0 0 1 105.37 51.02" stroke="#13387F" stroke-width="11.04" stroke-linecap="round"></path><path d="M105.37 51.02 A59 59 0 0 1 128.62 56.38" stroke="#13387F" stroke-width="8.28" stroke-linecap="round"></path><path d="M128.62 56.38 A59 59 0 0 1 147.85 70.52" stroke="#13387F" stroke-width="3.22" stroke-linecap="round"></path></g>
+          <g opacity=".38"><path d="M67.46 93.73 A40 40 0 0 1 76.89 80.59" stroke="#13387F" stroke-width="2.52" stroke-linecap="round"></path><path d="M76.89 80.59 A40 40 0 0 1 90.76 72.26" stroke="#13387F" stroke-width="5.55" stroke-linecap="round"></path><path d="M90.76 72.26 A40 40 0 0 1 106.79 70.1" stroke="#13387F" stroke-width="7.4" stroke-linecap="round"></path><path d="M106.79 70.1 A40 40 0 0 1 122.37 74.47" stroke="#13387F" stroke-width="7.1" stroke-linecap="round"></path><path d="M122.37 74.47 A40 40 0 0 1 134.94 84.65" stroke="#13387F" stroke-width="5.33" stroke-linecap="round"></path><path d="M134.94 84.65 A40 40 0 0 1 142.45 98.97" stroke="#13387F" stroke-width="2.07" stroke-linecap="round"></path></g>
+        </svg>
+        <div style="text-align:center">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;line-height:.88;color:#13387F">U<span style="font-style:italic">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.3em;color:#13387F;margin-top:11px;padding-left:.3em">ORQUESTRA SINFÔNICA</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:400;font-size:8px;letter-spacing:.22em;color:rgba(19,56,127,.72);margin-top:6px;padding-left:.22em">UNIVERSIDADE ZUMBI DOS PALMARES</div>
+        </div>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">Uma cor só, azul institucional: a defasagem passa a ser dita por <b style="color:#EFD5B4;font-weight:400">opacidade e espessura</b>, não por matiz. Obrigatória em ofício, edital e prestação de contas. Sobrevive a fax, xerox e gravação a laser.</p>
+      </div>
+    </div>
+
+    <div id="4f" style="width:344px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4f</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4">Entrada</div>
+      </div>
+      <div style="height:308px;display:flex;align-items:center;justify-content:center;background:#0B1B3D">
+        <svg viewBox="12 18 156 142" width="172" fill="none" aria-hidden="true">
+          <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#FFB800" stroke-width="5.61" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#FFB800" stroke-width="12.38" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#FFB800" stroke-width="16.5" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#FFB800" stroke-width="15.84" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#FFB800" stroke-width="11.88" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#FFB800" stroke-width="4.62" stroke-linecap="round"></path>
+          <path d="M47.89 91.77 A59 59 0 0 1 59.7 71.03" stroke="#3B56A6" stroke-width="3.91" stroke-linecap="round"></path><path d="M59.7 71.03 A59 59 0 0 1 78.75 56.67" stroke="#3B56A6" stroke-width="8.63" stroke-linecap="round"></path><path d="M78.75 56.67 A59 59 0 0 1 101.94 51.04" stroke="#3B56A6" stroke-width="11.5" stroke-linecap="round"></path><path d="M101.94 51.04 A59 59 0 0 1 125.46 55.04" stroke="#3B56A6" stroke-width="11.04" stroke-linecap="round"></path><path d="M125.46 55.04 A59 59 0 0 1 145.48 68.04" stroke="#3B56A6" stroke-width="8.28" stroke-linecap="round"></path><path d="M145.48 68.04 A59 59 0 0 1 158.7 87.9" stroke="#3B56A6" stroke-width="3.22" stroke-linecap="round"></path>
+          <path d="M86.47 74.05 A40 40 0 0 1 102.14 70.04" stroke="#128743" stroke-width="2.52" stroke-linecap="round"></path><path d="M102.14 70.04 A40 40 0 0 1 118.12 72.57" stroke="#128743" stroke-width="5.55" stroke-linecap="round"></path><path d="M118.12 72.57 A40 40 0 0 1 131.79 81.23" stroke="#128743" stroke-width="7.4" stroke-linecap="round"></path><path d="M131.79 81.23 A40 40 0 0 1 140.91 94.59" stroke="#128743" stroke-width="7.1" stroke-linecap="round"></path><path d="M140.91 94.59 A40 40 0 0 1 144 110.47" stroke="#128743" stroke-width="5.33" stroke-linecap="round"></path><path d="M144 110.47 A40 40 0 0 1 140.54 126.27" stroke="#128743" stroke-width="2.07" stroke-linecap="round"></path>
+        </svg>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">Defasagem maior — 46° em vez de 26° — e as três arcadas escalonam em diagonal como um <i>stretto</i>. Menos simétrica, mais nervosa; é a versão que melhor se anima, entrando uma voz de cada vez.</p>
+      </div>
+    </div>
+
+    <div id="4g" style="width:712px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4g</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4;white-space:nowrap">Convivência com o texto</div>
+      </div>
+      <div style="display:flex">
+        <div style="flex:1;position:relative;overflow:hidden;min-height:420px;padding:34px 30px;background:radial-gradient(130% 110% at 6% 2%,#1F0A33 0%,#0B1B3D 60%);border-right:1px solid rgba(166,151,115,.26)">
+          <div style="position:absolute;left:62%;right:0;top:0;bottom:0;overflow:hidden;z-index:1">
+            <svg viewBox="0 0 340 420" style="position:absolute;left:0;bottom:-46px;width:404px;height:499px" fill="none" aria-hidden="true">
+              <path d="M320 420 A300 300 0 0 0 309.78 342.35" stroke="#FFB800" stroke-width="30" stroke-linecap="round"></path><path d="M309.78 342.35 A300 300 0 0 0 279.81 270" stroke="#FFB800" stroke-width="30" stroke-linecap="round"></path><path d="M279.81 270 A300 300 0 0 0 232.13 207.87" stroke="#FFB800" stroke-width="28.8" stroke-linecap="round"></path><path d="M232.13 207.87 A300 300 0 0 0 170 160.19" stroke="#FFB800" stroke-width="24.6" stroke-linecap="round"></path><path d="M170 160.19 A300 300 0 0 0 97.65 130.22" stroke="#FFB800" stroke-width="17.4" stroke-linecap="round"></path><path d="M97.65 130.22 A300 300 0 0 0 20 120" stroke="#FFB800" stroke-width="7.8" stroke-linecap="round"></path>
+              <path d="M246.05 367.81 A232 232 0 0 0 228.82 318.9" stroke="#3B56A6" stroke-width="18" stroke-linecap="round"></path><path d="M228.82 318.9 A232 232 0 0 0 201.14 275.05" stroke="#3B56A6" stroke-width="18" stroke-linecap="round"></path><path d="M201.14 275.05 A232 232 0 0 0 164.42 238.43" stroke="#3B56A6" stroke-width="17.28" stroke-linecap="round"></path><path d="M164.42 238.43 A232 232 0 0 0 120.49 210.89" stroke="#3B56A6" stroke-width="14.76" stroke-linecap="round"></path><path d="M120.49 210.89 A232 232 0 0 0 71.53 193.8" stroke="#3B56A6" stroke-width="10.44" stroke-linecap="round"></path><path d="M71.53 193.8 A232 232 0 0 0 20 188" stroke="#3B56A6" stroke-width="4.68" stroke-linecap="round"></path>
+              <path d="M178.19 342.85 A176 176 0 0 0 161.17 314.9" stroke="#128743" stroke-width="11" stroke-linecap="round"></path><path d="M161.17 314.9 A176 176 0 0 0 139.28 290.59" stroke="#128743" stroke-width="11" stroke-linecap="round"></path><path d="M139.28 290.59 A176 176 0 0 0 113.27 270.74" stroke="#128743" stroke-width="10.56" stroke-linecap="round"></path><path d="M113.27 270.74 A176 176 0 0 0 84.03 256.06" stroke="#128743" stroke-width="9.02" stroke-linecap="round"></path><path d="M84.03 256.06 A176 176 0 0 0 52.58 247.04" stroke="#128743" stroke-width="6.38" stroke-linecap="round"></path><path d="M52.58 247.04 A176 176 0 0 0 20 244" stroke="#128743" stroke-width="2.86" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div style="position:relative;z-index:2;max-width:60%">
+            <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.2em;color:#FFB800;white-space:nowrap">ENSAIO ABERTO · 16.08.2026 · 18H</div>
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;line-height:1;color:#EFD5B4;margin-top:16px">Mendelssohn<br><span style="font-style:italic">Escocesa</span></div>
+            <div style="height:1px;background:rgba(166,151,115,.7);margin:20px 0 16px;width:86%"></div>
+            <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:7.5px;letter-spacing:.11em;line-height:2;color:rgba(239,213,180,.8);white-space:nowrap">JOSEPH BOLOGNE · CONCERTO PARA VIOLINO</div>
+          </div>
+          <div style="position:absolute;left:30px;bottom:26px;z-index:2;max-width:56%">
+            <div style="display:flex;align-items:center;gap:12px">
+              <svg viewBox="12 18 156 142" width="44" fill="none" aria-hidden="true">
+                <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#FFB800" stroke-width="5.61" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#FFB800" stroke-width="12.38" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#FFB800" stroke-width="16.5" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#FFB800" stroke-width="15.84" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#FFB800" stroke-width="11.88" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#FFB800" stroke-width="4.62" stroke-linecap="round"></path>
+                <path d="M45.04 112.06 A59 59 0 0 1 49.04 88.54" stroke="#3B56A6" stroke-width="3.91" stroke-linecap="round"></path><path d="M49.04 88.54 A59 59 0 0 1 62.04 68.52" stroke="#3B56A6" stroke-width="8.63" stroke-linecap="round"></path><path d="M62.04 68.52 A59 59 0 0 1 81.9 55.3" stroke="#3B56A6" stroke-width="11.5" stroke-linecap="round"></path><path d="M81.9 55.3 A59 59 0 0 1 105.37 51.02" stroke="#3B56A6" stroke-width="11.04" stroke-linecap="round"></path><path d="M105.37 51.02 A59 59 0 0 1 128.62 56.38" stroke="#3B56A6" stroke-width="8.28" stroke-linecap="round"></path><path d="M128.62 56.38 A59 59 0 0 1 147.85 70.52" stroke="#3B56A6" stroke-width="3.22" stroke-linecap="round"></path>
+                <path d="M67.46 93.73 A40 40 0 0 1 76.89 80.59" stroke="#128743" stroke-width="2.52" stroke-linecap="round"></path><path d="M76.89 80.59 A40 40 0 0 1 90.76 72.26" stroke="#128743" stroke-width="5.55" stroke-linecap="round"></path><path d="M90.76 72.26 A40 40 0 0 1 106.79 70.1" stroke="#128743" stroke-width="7.4" stroke-linecap="round"></path><path d="M106.79 70.1 A40 40 0 0 1 122.37 74.47" stroke="#128743" stroke-width="7.1" stroke-linecap="round"></path><path d="M122.37 74.47 A40 40 0 0 1 134.94 84.65" stroke="#128743" stroke-width="5.33" stroke-linecap="round"></path><path d="M134.94 84.65 A40 40 0 0 1 142.45 98.97" stroke="#128743" stroke-width="2.07" stroke-linecap="round"></path>
+              </svg>
+              <div>
+                <div style="font-family:'Instrument Serif',Georgia,serif;font-size:30px;line-height:.9;color:#EFD5B4">U<span style="font-style:italic;color:#FFB800">Z</span>P</div>
+                <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:7.5px;letter-spacing:.2em;color:#A69773;margin-top:7px">ORQUESTRA SINFÔNICA</div>
+              </div>
+            </div>
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:13px;line-height:1.2;color:rgba(239,213,180,.78);margin-top:10px;white-space:nowrap">João Rocha, maestro e diretor musical</div>
+          </div>
+          <div style="position:absolute;left:0;right:0;top:0;bottom:0;z-index:3;pointer-events:none">
+            <div style="position:absolute;left:62%;top:0;bottom:0;width:1px;background:repeating-linear-gradient(180deg,rgba(255,184,0,.85) 0 6px,transparent 6px 12px)"></div>
+            <div style="position:absolute;left:calc(62% + 8px);top:14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.06em;color:rgba(255,184,0,.9)">linha de guarda</div>
+          </div>
+        </div>
+        <div style="width:280px;flex:0 0 auto;padding:30px 26px;background:rgba(0,0,0,.2)">
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.24em;color:#A69773;margin-bottom:14px">TRÊS REGRAS</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:17px;color:#EFD5B4;margin-bottom:6px">1 · Quadrante reservado</div>
+          <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0 0 18px">Os arcos vivem num só canto da peça e sangram por duas margens. Nunca aparecem em dois cantos, nunca no meio.</p>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:17px;color:#EFD5B4;margin-bottom:6px">2 · Linha de guarda</div>
+          <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0 0 18px">A coluna de texto ocupa até 62% da largura; nenhum arco cruza essa linha. Se o texto crescer, os arcos encolhem — nunca o contrário.</p>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:17px;color:#EFD5B4;margin-bottom:6px">3 · Opacidade cheia</div>
+          <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0 0 18px">Fora da coluna, os arcos entram em cor plena. Nada de rebaixar para 20% e “deixar o texto por cima” — é isso que suja a leitura.</p>
+          <div style="border-top:1px solid rgba(166,151,115,.26);padding-top:16px">
+            <p style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;line-height:1.6;color:rgba(255,184,0,.72);margin:0">coluna de texto ≤ 62%<br>arcos ≥ 38% · zero sobreposição</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="4h" style="width:712px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4h</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4;white-space:nowrap">Três níveis de assinatura</div>
+      </div>
+      <div style="display:flex">
+        <div style="flex:1;min-height:280px;padding:32px 26px;display:flex;flex-direction:column;justify-content:center;background:#0B1B3D;border-right:1px solid rgba(166,151,115,.26)">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:64px;line-height:.86;color:#EFD5B4">U<span style="font-style:italic;color:#FFB800">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.3em;color:#A69773;margin-top:13px">ORQUESTRA SINFÔNICA</div>
+          <div style="margin-top:22px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.6;color:rgba(255,184,0,.7)">nível 1 · sigla<br>feed, camiseta, capa de single</div>
+        </div>
+        <div style="flex:1;min-height:280px;padding:32px 26px;display:flex;flex-direction:column;justify-content:center;background:#0B1B3D;border-right:1px solid rgba(166,151,115,.26)">
+          <svg viewBox="12 18 156 142" width="62" fill="none" style="margin-bottom:18px" aria-hidden="true">
+            <path d="M35.13 146.62 A78 78 0 0 1 26.26 116.35" stroke="#FFB800" stroke-width="5.61" stroke-linecap="round"></path><path d="M26.26 116.35 A78 78 0 0 1 30.1 85.04" stroke="#FFB800" stroke-width="12.38" stroke-linecap="round"></path><path d="M30.1 85.04 A78 78 0 0 1 46.03 57.81" stroke="#FFB800" stroke-width="16.5" stroke-linecap="round"></path><path d="M46.03 57.81 A78 78 0 0 1 71.45 39.12" stroke="#FFB800" stroke-width="15.84" stroke-linecap="round"></path><path d="M71.45 39.12 A78 78 0 0 1 102.19 32.02" stroke="#FFB800" stroke-width="11.88" stroke-linecap="round"></path><path d="M102.19 32.02 A78 78 0 0 1 133.22 37.68" stroke="#FFB800" stroke-width="4.62" stroke-linecap="round"></path>
+            <path d="M45.04 112.06 A59 59 0 0 1 49.04 88.54" stroke="#3B56A6" stroke-width="3.91" stroke-linecap="round"></path><path d="M49.04 88.54 A59 59 0 0 1 62.04 68.52" stroke="#3B56A6" stroke-width="8.63" stroke-linecap="round"></path><path d="M62.04 68.52 A59 59 0 0 1 81.9 55.3" stroke="#3B56A6" stroke-width="11.5" stroke-linecap="round"></path><path d="M81.9 55.3 A59 59 0 0 1 105.37 51.02" stroke="#3B56A6" stroke-width="11.04" stroke-linecap="round"></path><path d="M105.37 51.02 A59 59 0 0 1 128.62 56.38" stroke="#3B56A6" stroke-width="8.28" stroke-linecap="round"></path><path d="M128.62 56.38 A59 59 0 0 1 147.85 70.52" stroke="#3B56A6" stroke-width="3.22" stroke-linecap="round"></path>
+            <path d="M67.46 93.73 A40 40 0 0 1 76.89 80.59" stroke="#128743" stroke-width="2.52" stroke-linecap="round"></path><path d="M76.89 80.59 A40 40 0 0 1 90.76 72.26" stroke="#128743" stroke-width="5.55" stroke-linecap="round"></path><path d="M90.76 72.26 A40 40 0 0 1 106.79 70.1" stroke="#128743" stroke-width="7.4" stroke-linecap="round"></path><path d="M106.79 70.1 A40 40 0 0 1 122.37 74.47" stroke="#128743" stroke-width="7.1" stroke-linecap="round"></path><path d="M122.37 74.47 A40 40 0 0 1 134.94 84.65" stroke="#128743" stroke-width="5.33" stroke-linecap="round"></path><path d="M134.94 84.65 A40 40 0 0 1 142.45 98.97" stroke="#128743" stroke-width="2.07" stroke-linecap="round"></path>
+          </svg>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:46px;line-height:.86;color:#EFD5B4">U<span style="font-style:italic;color:#FFB800">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.26em;color:#A69773;margin-top:11px">ORQUESTRA SINFÔNICA</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:15px;line-height:1.25;color:rgba(239,213,180,.74);margin-top:8px">Universidade Zumbi dos Palmares</div>
+          <div style="margin-top:20px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.6;color:rgba(255,184,0,.7)">nível 2 · média<br>cartaz, programa, site</div>
+        </div>
+        <div style="flex:1;min-height:280px;padding:32px 26px;display:flex;flex-direction:column;justify-content:center;background:#EFD5B4">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:46px;line-height:.86;color:#13387F">U<span style="font-style:italic">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.26em;color:#13387F;margin-top:11px">ORQUESTRA SINFÔNICA</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:16px;line-height:1.22;color:#13387F;margin-top:8px">Universidade Zumbi<br>dos Palmares</div>
+          <div style="height:1px;background:rgba(19,56,127,.34);margin:14px 0 12px"></div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:14px;line-height:1.2;color:rgba(19,56,127,.9);white-space:nowrap">João Rocha, maestro e diretor musical</div>
+          <div style="margin-top:18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.6;color:rgba(19,56,127,.6)">nível 3 · extensa<br>ofício, edital, fachada</div>
+        </div>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">A sigla manda em todos os níveis e o <b style="color:#FFB800;font-weight:400">Z</b> é sempre o acento — em itálico, em Farol sobre escuro, em itálico simples no monocromático. “Orquestra Sinfônica” passa a rótulo; o nome da universidade entra por extenso a partir do nível 2, e a regência assina só no nível 3.</p>
+      </div>
+    </div>
+
+    <div id="4i" style="width:712px;flex:0 0 auto;border:1px solid rgba(166,151,115,.26);background:#101F44">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid rgba(166,151,115,.26)">
+        <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;color:#0B1B3D;background:#FFB800;padding:3px 8px">4i</div>
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#EFD5B4;white-space:nowrap">Template com fotografia</div>
+      </div>
+      <div style="position:relative;overflow:hidden;height:470px;background:#0B1B3D">
+        <svg style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <pattern id="ph4i" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+              <rect width="14" height="14" fill="#16264F"></rect>
+              <rect width="6" height="14" fill="#1E3161"></rect>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#ph4i)"></rect>
+        </svg>
+        <div style="position:absolute;right:22px;top:18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.06em;color:rgba(239,213,180,.5)">fotografia de fundo · sangra os 4 lados</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(94deg,#0B1B3D 0%,#0B1B3D 46%,rgba(11,27,61,.86) 60%,rgba(11,27,61,0) 82%)"></div>
+        <div style="position:absolute;left:62%;right:0;top:0;bottom:0;overflow:hidden">
+          <svg viewBox="0 0 340 420" style="position:absolute;left:0;bottom:-40px;width:404px;height:499px" fill="none" aria-hidden="true">
+            <path d="M320 420 A300 300 0 0 0 309.78 342.35" stroke="#FFB800" stroke-width="30" stroke-linecap="round"></path><path d="M309.78 342.35 A300 300 0 0 0 279.81 270" stroke="#FFB800" stroke-width="30" stroke-linecap="round"></path><path d="M279.81 270 A300 300 0 0 0 232.13 207.87" stroke="#FFB800" stroke-width="28.8" stroke-linecap="round"></path><path d="M232.13 207.87 A300 300 0 0 0 170 160.19" stroke="#FFB800" stroke-width="24.6" stroke-linecap="round"></path><path d="M170 160.19 A300 300 0 0 0 97.65 130.22" stroke="#FFB800" stroke-width="17.4" stroke-linecap="round"></path><path d="M97.65 130.22 A300 300 0 0 0 20 120" stroke="#FFB800" stroke-width="7.8" stroke-linecap="round"></path>
+            <path d="M246.05 367.81 A232 232 0 0 0 228.82 318.9" stroke="#3B56A6" stroke-width="18" stroke-linecap="round"></path><path d="M228.82 318.9 A232 232 0 0 0 201.14 275.05" stroke="#3B56A6" stroke-width="18" stroke-linecap="round"></path><path d="M201.14 275.05 A232 232 0 0 0 164.42 238.43" stroke="#3B56A6" stroke-width="17.28" stroke-linecap="round"></path><path d="M164.42 238.43 A232 232 0 0 0 120.49 210.89" stroke="#3B56A6" stroke-width="14.76" stroke-linecap="round"></path><path d="M120.49 210.89 A232 232 0 0 0 71.53 193.8" stroke="#3B56A6" stroke-width="10.44" stroke-linecap="round"></path><path d="M71.53 193.8 A232 232 0 0 0 20 188" stroke="#3B56A6" stroke-width="4.68" stroke-linecap="round"></path>
+            <path d="M178.19 342.85 A176 176 0 0 0 161.17 314.9" stroke="#128743" stroke-width="11" stroke-linecap="round"></path><path d="M161.17 314.9 A176 176 0 0 0 139.28 290.59" stroke="#128743" stroke-width="11" stroke-linecap="round"></path><path d="M139.28 290.59 A176 176 0 0 0 113.27 270.74" stroke="#128743" stroke-width="10.56" stroke-linecap="round"></path><path d="M113.27 270.74 A176 176 0 0 0 84.03 256.06" stroke="#128743" stroke-width="9.02" stroke-linecap="round"></path><path d="M84.03 256.06 A176 176 0 0 0 52.58 247.04" stroke="#128743" stroke-width="6.38" stroke-linecap="round"></path><path d="M52.58 247.04 A176 176 0 0 0 20 244" stroke="#128743" stroke-width="2.86" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div style="position:absolute;left:38px;top:38px;width:54%">
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.26em;color:#FFB800">TEMPORADA 2026 · 12.09 · 20H</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:40px;line-height:1.02;color:#EFD5B4;margin-top:18px;white-space:nowrap">Villa-Lobos</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:40px;line-height:1.02;color:#EFD5B4;font-style:italic;white-space:nowrap">Bachianas nº 4</div>
+          <div style="height:1px;background:rgba(166,151,115,.7);margin:20px 0 14px;width:78%"></div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.16em;line-height:1.9;color:rgba(239,213,180,.82);white-space:nowrap">FLORENCE PRICE · SINFONIA Nº 1 EM MI MENOR</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.16em;line-height:1.9;color:rgba(239,213,180,.82);white-space:nowrap">TEATRO MUNICIPAL DE SÃO PAULO · ENTRADA FRANCA</div>
+        </div>
+        <div style="position:absolute;left:38px;bottom:34px">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;line-height:.88;color:#EFD5B4">U<span style="font-style:italic;color:#FFB800">Z</span>P</div>
+          <div style="font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.26em;color:#A69773;margin-top:10px">ORQUESTRA SINFÔNICA</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:14px;line-height:1.2;color:rgba(239,213,180,.72);margin-top:6px">Universidade Zumbi dos Palmares</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:13.5px;line-height:1.2;color:rgba(239,213,180,.78);margin-top:9px;white-space:nowrap">João Rocha, maestro e diretor musical</div>
+        </div>
+      </div>
+      <div style="padding:16px 18px 20px;background:rgba(0,0,0,.24);border-top:1px solid rgba(166,151,115,.26)">
+        <p style="font-size:12.5px;line-height:1.6;color:rgba(239,213,180,.66);margin:0">A fotografia sangra os quatro lados; um degradê de Noturno cobre 46% da largura em cor sólida e some antes da linha de guarda, de modo que <b style="color:#EFD5B4;font-weight:400">o texto nunca se apoia na imagem crua</b> e os arcos continuam no quadrante reservado. Título de obra sempre em uma linha só — se não couber, diminui o corpo, nunca quebra. Tudo aqui é vetor: arcos, degradê e tipografia saem em SVG/PDF com a foto entrando como camada substituível.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:44px;max-width:70ch;border-top:1px solid rgba(166,151,115,.26);padding-top:24px">
+    <p style="font-size:14px;line-height:1.72;font-weight:300;color:rgba(239,213,180,.72);margin:0 0 12px;text-wrap:pretty">Ajustado: <b style="font-weight:400;color:#EFD5B4">a sigla passou a mandar</b> em toda assinatura, com o Z sempre em destaque (<a href="#4h">4h</a>); os arcos agora têm traçado completo em todos os quadros — nenhuma ponta cortada; nomes de obra e créditos nunca quebram em duas linhas; e a regência assina abaixo da orquestra.</p>
+    <p style="font-size:14px;line-height:1.72;font-weight:300;color:rgba(239,213,180,.72);margin:0;text-wrap:pretty"><b style="font-weight:400;color:#EFD5B4">Sobre o output.</b> Marca e templates são geometria pura — arcos como caminhos de raio conhecido, sem efeito de bitmap. Consigo entregar cada marca e cada template como <span style="font-family:ui-monospace,monospace;font-size:12.5px;color:#FFB800">.svg</span> individual (abre no Illustrator, no Figma e no Inkscape com os caminhos editáveis) e o cartaz de <a href="#4i">4i</a> como arquivo com a camada de imagem separada, para você trocar a foto sem tocar no resto. Diga se quer que eu já monte o brandkit — e se ele deve vir com essa pasta de vetores anexa.</p>
+  </div>
+
+</section>
+
+</x-dc>
+</body>
+</html>

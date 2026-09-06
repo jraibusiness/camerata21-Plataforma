@@ -1,276 +1,397 @@
-<!-- RADAR DE FOMENTO — OS-UZP · centro de controle (Google Apps Script) -->
+<!-- ═══════════════════════════════════════════════════════════════
+     RADAR DE FOMENTO · Orquestra Sinfônica da UZP
+     Centro de controle de editais — Google Apps Script
+     Identidade: Sistema de Marca OS-UZP v5
+       fundo Noturno #0B1B3D · atmosfera Roxo #1F0A33
+       acento único Farol #FFB800 · texto Marfim #EFD5B4
+       filete Latão #A69773 · massa Cena #3B56A6 · terceira voz Verde #128743
+       Instrument Serif (display) · Roboto Condensed (rótulo) · Roboto (texto)
+     Símbolo: os três arcos em defasagem de 26°, geometria do brandkit
+     ═══════════════════════════════════════════════════════════════ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Roboto+Condensed:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231F0A33'/%3E%3Crect x='2' y='2' width='60' height='60' fill='none' stroke='%23FFB800' stroke-width='3'/%3E%3Ctext x='32' y='47' font-family='Georgia,serif' font-style='italic' font-size='44' fill='%23FFB800' text-anchor='middle'%3EZ%3C/text%3E%3C/svg%3E">
 <style>
 :root{
-  --meianoite:#1F0A33; --meianoite-2:#2A1244; --meianoite-3:#361856;
-  --farol:#FFB800; --acido:#B2FF05; --cobalto:#2E4BFF;
-  --pergaminho:#F2EDE2; --tinta:#17082A; --erro:#FF3D5A;
-  --linha:rgba(255,184,0,.24); --linha-forte:rgba(255,184,0,.5);
-  --dim:rgba(242,237,226,.55); --dim-2:rgba(242,237,226,.35);
-  --topo:64px;
+  /* ── herança verificada da UZP ── */
+  --noturno:#0B1B3D;      /* fundo · 42% */
+  --noturno-2:#101F44;    /* cartão */
+  --noturno-3:#16264F;    /* hover */
+  --roxo:#1F0A33;         /* segundo fundo · atmosfera · 16% */
+  --farol:#FFB800;        /* acento ÚNICO · 12% */
+  --marfim:#EFD5B4;       /* texto · 18% */
+  --latao:#A69773;        /* filete e rótulo · 6% · nunca protagonista */
+  --cena:#3B56A6;         /* massa gráfica · 4% · NUNCA texto */
+  --verde:#128743;        /* terceira voz · 1,5% · só display 24px+ ou massa */
+  --zumbi:#13387F;        /* assinatura sobre claro */
+  /* ── camada de estado · exclusiva da plataforma, fora do sistema de marca ── */
+  --sirene:#FF5C63;       /* VENCIDO · 5,62:1 sobre Noturno */
+  /* ── derivados ── */
+  --linha:rgba(166,151,115,.26);
+  --linha-forte:rgba(166,151,115,.5);
+  --dim:rgba(239,213,180,.66);
+  --dim-2:rgba(239,213,180,.42);
+  --topo:62px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--meianoite);color:var(--pergaminho);font-family:'Space Grotesk',system-ui,sans-serif;
-  font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;font-size:15px;
+::selection{background:var(--farol);color:var(--roxo)}
+body{background:var(--noturno);color:var(--marfim);
+  font-family:Roboto,system-ui,-apple-system,sans-serif;font-weight:300;line-height:1.7;
+  -webkit-font-smoothing:antialiased;font-size:15px;overflow-x:hidden;
   padding-bottom:env(safe-area-inset-bottom)}
-.fr{font-family:'Fraunces',Georgia,serif}
+svg{max-width:100%;height:auto}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:none}
-a{color:var(--acido);text-decoration:none}
-:focus-visible{outline:2px solid var(--acido);outline-offset:2px}
+a{color:var(--farol);text-decoration:none}
+:focus-visible{outline:2px solid var(--farol);outline-offset:3px}
 .num{font-variant-numeric:tabular-nums}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-hr.sutura{border:none;border-top:2px dashed var(--farol);opacity:.45;margin:0}
+
+/* ── dicção ── */
+.ser{font-family:'Instrument Serif',Georgia,serif;font-weight:400}
+.lbl{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;line-height:1.6}
+.zi{font-style:italic;color:var(--farol)}
+.disp{font-family:'Instrument Serif',Georgia,serif;font-weight:400;line-height:.9;letter-spacing:-.01em}
 
 /* ══════════ LOGIN ══════════ */
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.card-login{width:100%;max-width:390px}
-.marca{font-size:10px;letter-spacing:.32em;color:var(--farol);font-weight:600}
-.marca span{display:block;color:var(--dim-2);letter-spacing:.16em;margin-top:6px}
-.wm{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(40px,13vw,62px);line-height:.86;
-  letter-spacing:-.035em;margin:22px 0 8px}
-.wm i{font-style:italic;color:var(--farol)}
-.sub-login{font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:30px;max-width:32ch}
+#login{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  padding:40px clamp(20px,5vw,64px);
+  background:radial-gradient(130% 110% at 6% 2%,var(--roxo) 0%,var(--noturno) 60%)}
+/* Regra 1 e 2 do brandkit: quadrante reservado, linha de guarda em 62%.
+   Os arcos vivem à direita, sangram por duas margens e nunca cruzam o texto. */
+#arcosLogin{position:absolute;left:62%;right:0;top:0;bottom:0;overflow:hidden;pointer-events:none}
+#arcosLogin svg{position:absolute;left:-4%;bottom:-16%;width:min(820px,152%);height:auto}
+@media(max-width:820px){#arcosLogin{left:38%;opacity:.5}}
+.card-login{position:relative;z-index:2;width:100%;max-width:min(420px,58%)}
+@media(max-width:820px){.card-login{max-width:100%}}
+.lockup{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.lockup .sig{font-family:'Instrument Serif',Georgia,serif;font-size:52px;line-height:.86}
+.lockup .rot{color:var(--latao);padding-top:5px}
+#login h1{font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:clamp(34px,6.4vw,54px);line-height:1;letter-spacing:-.015em;margin-bottom:18px}
+.sub-login{font-size:14px;color:var(--dim);line-height:1.7;margin-bottom:32px;max-width:40ch}
+.sub-login b{font-weight:400;color:var(--marfim)}
 .campo{display:block;margin-bottom:16px}
-.campo label{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
-.campo input,.campo select,.campo textarea{width:100%;background:var(--meianoite-2);border:1px solid var(--linha);
-  color:var(--pergaminho);padding:14px 15px;font-size:16px;font-weight:400;border-radius:0}
+.campo>span{display:block;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--latao);margin-bottom:8px}
+.campo input,.campo select,.campo textarea{width:100%;background:rgba(0,0,0,.26);
+  border:1px solid var(--linha);color:var(--marfim);padding:14px 15px;font-size:16px;
+  font-weight:400;border-radius:0}
 .campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--farol);outline:none}
-.campo .dica{font-size:11px;color:var(--dim-2);margin-top:6px;line-height:1.5}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:13px 24px;
-  background:var(--farol);color:var(--tinta);font-weight:700;font-size:12px;letter-spacing:.14em;
-  text-transform:uppercase;transition:.18s;width:100%}
-.btn:hover{background:var(--acido)}
+.campo .dica{display:block;font-size:11.5px;color:var(--dim-2);margin-top:7px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;
+  padding:13px 24px;background:var(--farol);color:var(--roxo);
+  font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:11.5px;
+  letter-spacing:.2em;text-transform:uppercase;transition:.18s;width:100%}
+.btn:hover{background:var(--marfim)}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
-.btn.ghost{background:none;border:1px solid var(--linha-forte);color:var(--farol)}
-.btn.ghost:hover{background:var(--farol);color:var(--tinta)}
-.btn.mini{min-height:36px;padding:8px 14px;font-size:10.5px;width:auto}
-.aviso{font-size:12.5px;padding:11px 14px;margin-bottom:16px;border-left:3px solid var(--erro);
-  background:rgba(255,61,90,.1);line-height:1.6}
-.aviso.ok{border-color:var(--acido);background:rgba(178,255,5,.09)}
+.btn.ghost{background:none;border:1px solid var(--linha-forte);color:var(--marfim)}
+.btn.ghost:hover{border-color:var(--marfim);background:rgba(239,213,180,.08)}
+.btn.mini{min-height:36px;padding:8px 14px;font-size:9.5px;letter-spacing:.16em;width:auto}
+.aviso{font-size:13px;padding:12px 15px;margin-bottom:18px;border-left:3px solid var(--sirene);
+  background:rgba(255,92,99,.1);line-height:1.6}
+.aviso.ok{border-color:var(--latao);background:rgba(166,151,115,.12)}
+.aviso.ok b{color:var(--farol);font-weight:400}
 #otpBox{display:none}
-.codigo input{letter-spacing:.5em;font-size:26px;text-align:center;font-weight:700}
+.codigo input{letter-spacing:.5em;font-size:26px;text-align:center;font-weight:500;
+  font-family:'Roboto Condensed',Arial,sans-serif}
 
 /* ══════════ APP ══════════ */
 #app{display:none}
-header{position:sticky;top:0;z-index:40;background:rgba(31,10,51,.96);backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--linha)}
-.hd{display:flex;align-items:center;gap:14px;padding:0 clamp(14px,3vw,28px);height:var(--topo)}
-.hd .logo{font-family:'Fraunces',serif;font-weight:900;font-size:19px;letter-spacing:-.02em;white-space:nowrap}
-.hd .logo i{font-style:italic;color:var(--farol)}
-.hd .data{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
-  border-left:1px solid var(--linha);padding-left:14px;line-height:1.35}
-.hd .data b{display:block;color:var(--farol);font-weight:500}
-.hd .fim{margin-left:auto;display:flex;align-items:center;gap:8px}
-.chip-user{font-size:10.5px;letter-spacing:.1em;color:var(--dim);border:1px solid var(--linha);padding:7px 11px;white-space:nowrap}
-.icone{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--linha);color:var(--farol);font-size:15px}
-.icone:hover{background:var(--farol);color:var(--tinta)}
-@media(max-width:700px){.hd .data{display:none}.chip-user{display:none}}
+header{position:sticky;top:0;z-index:40;background:rgba(11,27,61,.96);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
+.hd{display:flex;align-items:center;gap:13px;padding:0 clamp(14px,3vw,28px);height:var(--topo)}
+.hd .marca{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.hd .marca .sig{font-family:'Instrument Serif',Georgia,serif;font-size:27px;line-height:.86}
+.hd .tit{border-left:1px solid var(--linha);padding-left:13px;color:var(--latao);
+  font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.35}
+.hd .tit b{display:block;color:var(--marfim);font-weight:700}
+.hd .fim{margin-left:auto;display:flex;align-items:center;gap:7px}
+.chip-user{font-family:'Roboto Condensed',Arial,sans-serif;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--latao);border:1px solid var(--linha);padding:7px 11px;white-space:nowrap}
+.icone{width:37px;height:37px;display:grid;place-items:center;border:1px solid var(--linha);
+  color:var(--marfim);font-size:15px;transition:.15s}
+.icone:hover{border-color:var(--farol);color:var(--farol)}
+@media(max-width:760px){.hd .tit,.chip-user{display:none}}
 
-nav.tabs{display:flex;gap:0;overflow-x:auto;border-bottom:1px solid var(--linha);
-  padding:0 clamp(14px,3vw,28px);scrollbar-width:none;background:var(--meianoite)}
+nav.tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--linha);
+  padding:0 clamp(14px,3vw,28px);scrollbar-width:none;background:var(--noturno)}
 nav.tabs::-webkit-scrollbar{display:none}
-nav.tabs button{padding:14px 16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);border-bottom:2px solid transparent;white-space:nowrap;font-weight:500}
-nav.tabs button.on{color:var(--farol);border-bottom-color:var(--farol)}
-nav.tabs button .badge{display:inline-block;margin-left:7px;background:var(--erro);color:#fff;
-  font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:9px;vertical-align:1px}
-nav.tabs button.on .badge{background:var(--farol);color:var(--tinta)}
+nav.tabs button{padding:13px 16px;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--latao);
+  border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs button:hover{color:var(--marfim)}
+nav.tabs button.on{color:var(--marfim);border-bottom-color:var(--farol)}
+nav.tabs button .badge{display:inline-block;margin-left:7px;background:var(--sirene);color:var(--noturno);
+  font-size:9.5px;font-weight:700;padding:1px 6px;vertical-align:1px;letter-spacing:.04em}
 
-main{padding:clamp(18px,3.5vw,32px) clamp(14px,3vw,28px) 90px;max-width:1320px;margin:0 auto}
+main{padding:clamp(20px,3.5vw,34px) clamp(14px,3vw,28px) 96px;max-width:1340px;margin:0 auto}
 .view{display:none}
 .view.on{display:block}
 
-/* ══════════ KPIs ══════════ */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:2px;
-  background:var(--linha);border:1px solid var(--linha);margin-bottom:26px}
-.kpi{background:var(--meianoite);padding:15px 14px 14px;border-top:3px solid var(--dim-2);position:relative}
-.kpi.vermelho{border-top-color:var(--erro)} .kpi.ambar{border-top-color:var(--farol)}
-.kpi.verde{border-top-color:var(--acido)} .kpi.azul{border-top-color:var(--cobalto)}
-.kpi b{display:block;font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
-.kpi.vermelho b{color:var(--erro)} .kpi.ambar b{color:var(--farol)} .kpi.verde b{color:var(--acido)}
-.kpi.azul b{color:#8fa0ff}
-.kpi span{display:block;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
-  margin-top:8px;line-height:1.45}
-.kpi small{display:block;font-size:10.5px;color:var(--dim-2);margin-top:5px}
+/* ══════════ KPIs ══════════
+   Disciplina do acento: só o tile que tem problema recebe cor quente.
+   Tile zerado fica com filete Verde (massa gráfica) e número em Marfim. */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:1px;
+  background:var(--linha);border:1px solid var(--linha);margin-bottom:30px}
+.kpi{background:var(--noturno);padding:15px 14px 14px;border-top:3px solid var(--latao)}
+.kpi b{display:block;font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:34px;line-height:1;color:var(--marfim);font-variant-numeric:tabular-nums}
+.kpi.alerta{border-top-color:var(--sirene)}   .kpi.alerta b{color:var(--sirene)}
+.kpi.atencao{border-top-color:var(--farol)}   /* acento só no filete, nunca no número */
+.kpi.calmo{border-top-color:var(--verde)}
+.kpi.info{border-top-color:var(--cena)}
+.kpi span{display:block;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--latao);
+  margin-top:9px;line-height:1.5}
+.kpi small{display:block;font-size:11px;color:var(--dim-2);margin-top:5px;line-height:1.5}
+@media(max-width:660px){
+  /* No celular a fila tem de caber na primeira tela. Os quatro tiles
+     informativos vivem nas abas Radar e Caminho — aqui só o estado. */
+  .kpi.info{display:none}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi small{display:none}
+}
 
 /* ══════════ Cabeçalho de seção ══════════ */
-.sec{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:0 0 16px;flex-wrap:wrap}
-.sec h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(21px,3.4vw,28px);line-height:1.15}
-.sec h2 em{font-style:italic;color:var(--farol)}
-.sec p{font-size:12px;color:var(--dim);margin-top:5px;max-width:62ch;line-height:1.65}
-.eyebrow{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--farol);
-  display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.eyebrow::before{content:"";width:22px;height:2px;background:var(--farol)}
+.sec{margin:0 0 20px}
+.sec h2{font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:clamp(25px,4vw,40px);line-height:1.06}
+.sec h2 i{color:var(--farol)}
+.sec p{font-size:13.5px;color:var(--dim);margin-top:9px;max-width:74ch;line-height:1.7}
+.sec p b{font-weight:400;color:var(--marfim)}
+.eyebrow{display:flex;align-items:center;gap:11px;margin-bottom:13px;
+  font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--farol)}
+.eyebrow i{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:14px;
+  color:var(--latao);letter-spacing:0;text-transform:none;font-weight:400}
+.eyebrow::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(166,151,115,.5),transparent)}
 
-/* ══════════ Cartões da fila ══════════ */
-.fila{display:grid;gap:9px}
-.item{background:var(--meianoite-2);border-left:4px solid var(--dim-2);padding:14px 16px;
-  display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:start;transition:.15s}
-.item:hover{background:var(--meianoite-3)}
-.item.p0{border-left-color:var(--erro)} .item.p1{border-left-color:var(--farol)} .item.p2{border-left-color:var(--acido)}
-.item .meta{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;display:flex;
-  gap:9px;flex-wrap:wrap;align-items:center}
-.item.p0 .meta .m1{color:var(--erro)} .item.p1 .meta .m1{color:var(--farol)} .item.p2 .meta .m1{color:var(--acido)}
-.item .meta .m2{color:var(--dim-2);font-weight:400}
-.item h3{font-size:16px;font-weight:500;line-height:1.3;margin:7px 0 3px}
-.item .org{font-size:12px;color:var(--dim)}
-.item .acao{font-size:13px;color:var(--farol);margin-top:9px;line-height:1.5}
-.item .dono{font-size:11px;color:var(--dim);margin-top:6px}
-.item .dono.sem{color:var(--erro);font-weight:500}
+/* ══════════ Fila ══════════ */
+.fila{display:grid;gap:1px;background:var(--linha);border:1px solid var(--linha)}
+.item{background:var(--noturno-2);border-left:4px solid var(--latao);padding:15px 17px;
+  display:grid;grid-template-columns:1fr auto;gap:12px 20px;align-items:start;
+  transition:.15s;cursor:pointer}
+.item:hover{background:var(--noturno-3)}
+.item.p0{border-left-color:var(--sirene)}
+.item.p1{border-left-color:var(--farol)}
+.item.p2{border-left-color:var(--latao)}
+.item .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:.16em;text-transform:uppercase}
+.item.p0 .meta .m1{color:var(--sirene)}
+.item.p1 .meta .m1{color:var(--farol)}
+.item.p2 .meta .m1{color:var(--marfim)}
+.item .meta .m2{color:var(--latao)}
+.item h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:20px;
+  line-height:1.18;margin:9px 0 5px}
+.item .org{font-size:12.5px;color:var(--dim-2)}
+.item .acao{font-size:13.5px;color:var(--dim);margin-top:10px;line-height:1.6;max-width:78ch}
+.item .acao::before{content:"▸ ";color:var(--latao)}
+.item .dono{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--latao);margin-top:9px}
+.item .dono.sem{color:var(--sirene)}
 .item .btns{display:flex;flex-direction:column;gap:6px;align-items:stretch}
-@media(max-width:640px){.item{grid-template-columns:1fr}.item .btns{flex-direction:row;flex-wrap:wrap}}
+@media(max-width:660px){.item{grid-template-columns:1fr}.item .btns{flex-direction:row;flex-wrap:wrap}}
 
-.tagpri{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.1em;padding:2px 7px;
-  border:1px solid currentColor}
-.pA{color:var(--acido)} .pB{color:var(--farol)} .pC{color:var(--dim-2)}
+.tagpri{display:inline-block;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:9px;letter-spacing:.14em;padding:2px 7px;border:1px solid currentColor}
+.pA{color:var(--farol)} .pB{color:var(--marfim)} .pC{color:var(--latao)}
 
 /* ══════════ Filtros ══════════ */
-.filtros{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-.filtros button{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;padding:8px 13px;
-  border:1px solid var(--linha);color:var(--dim);white-space:nowrap}
-.filtros button.on{background:var(--farol);color:var(--tinta);border-color:var(--farol);font-weight:600}
-.busca{flex:1;min-width:170px;background:var(--meianoite-2);border:1px solid var(--linha);
-  padding:9px 13px;font-size:14px;color:var(--pergaminho)}
+.filtros{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.filtros button{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;padding:9px 13px;border:1px solid var(--linha);
+  color:var(--latao);white-space:nowrap;transition:.15s}
+.filtros button:hover{color:var(--marfim);border-color:var(--linha-forte)}
+.filtros button.on{background:var(--marfim);color:var(--roxo);border-color:var(--marfim)}
+.busca{flex:1;min-width:180px;background:rgba(0,0,0,.26);border:1px solid var(--linha);
+  padding:9px 13px;font-size:14px;color:var(--marfim)}
+.busca:focus{border-color:var(--farol);outline:none}
 
 /* ══════════ Tabela RADAR ══════════ */
 .tabela{width:100%;border-collapse:collapse;font-size:13px}
-.tabela th{text-align:left;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim-2);
-  font-weight:500;padding:0 12px 10px 0;border-bottom:1px solid var(--linha);white-space:nowrap;cursor:pointer}
-.tabela th:hover{color:var(--farol)}
-.tabela td{padding:13px 12px 13px 0;border-bottom:1px solid rgba(255,184,0,.1);vertical-align:top}
+.tabela th{text-align:left;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--latao);
+  padding:0 12px 11px 0;border-bottom:1px solid var(--linha);white-space:nowrap;cursor:pointer}
+.tabela th:hover{color:var(--marfim)}
+.tabela td{padding:13px 12px 13px 0;border-bottom:1px solid rgba(166,151,115,.15);vertical-align:top}
 .tabela tr{cursor:pointer}
-.tabela tr:hover td{background:rgba(255,184,0,.045)}
-.tabela .nome{font-weight:500;font-size:14px;line-height:1.35;max-width:32ch}
-.tabela .nome small{display:block;font-weight:300;color:var(--dim);font-size:11.5px;margin-top:3px}
-.tabela .st{font-size:11.5px;color:var(--dim);max-width:22ch;line-height:1.45}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:0}
-.d-VENCIDO{background:var(--erro)} .d-HOJE{background:var(--erro)}
-.d-CRITICO{background:var(--farol)} .d-ATENÇÃO{background:#c8a23a} .d-OK{background:var(--acido)} .d-NA{background:var(--dim-2)}
-.dias{font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap}
-.dias.neg{color:var(--erro)} .dias.perto{color:var(--farol)}
-@media(max-width:900px){
+.tabela tr:hover td{background:rgba(239,213,180,.04)}
+.tabela .nome{font-family:'Instrument Serif',Georgia,serif;font-size:17px;line-height:1.22;max-width:34ch}
+.tabela .nome small{display:block;font-family:Roboto,sans-serif;font-size:11.5px;
+  color:var(--dim-2);margin-top:5px;line-height:1.5}
+.tabela .st{font-size:12px;color:var(--dim);max-width:24ch;line-height:1.5}
+.tabela .sub{font-size:10.5px;color:var(--dim-2);font-weight:300}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.d-VENCIDO,.d-HOJE{background:var(--sirene)}
+.d-CRITICO{background:var(--farol)}
+.d-ATENCAO{background:var(--latao)}
+.d-OK{background:var(--verde)}
+.d-NA{background:var(--cena)}
+.dias{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:400}
+.dias.neg{color:var(--sirene)} .dias.perto{color:var(--farol)}
+@media(max-width:940px){
   .tabela thead{display:none}
   .tabela,.tabela tbody,.tabela tr,.tabela td{display:block;width:100%}
-  .tabela tr{background:var(--meianoite-2);margin-bottom:8px;padding:13px 15px;border-left:4px solid var(--dim-2)}
-  .tabela tr.s-VENCIDO,.tabela tr.s-HOJE{border-left-color:var(--erro)}
-  .tabela tr.s-CRITICO{border-left-color:var(--farol)} .tabela tr.s-OK{border-left-color:var(--acido)}
-  .tabela td{border:none;padding:2px 0}
-  .tabela td[data-r]::before{content:attr(data-r) " · ";font-size:10px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--dim-2)}
-  .tabela td.esconde{display:none}
+  .tabela tr{background:var(--noturno-2);margin-bottom:1px;padding:14px 16px;
+    border-left:4px solid var(--latao)}
+  .tabela tr.s-VENCIDO,.tabela tr.s-HOJE{border-left-color:var(--sirene)}
+  .tabela tr.s-CRITICO{border-left-color:var(--farol)}
+  .tabela tr.s-OK{border-left-color:var(--verde)}
+  .tabela td{border:none;padding:3px 0}
+  .tabela td[data-r]::before{content:attr(data-r) " · ";
+    font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--latao)}
 }
 
-/* ══════════ CAMINHO CRÍTICO ══════════ */
-.fase{margin-bottom:30px}
-.fase-hd{display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.fase-hd h3{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--farol);font-weight:600;white-space:nowrap}
-.fase-hd .barra{flex:1;height:3px;background:var(--meianoite-2);position:relative;overflow:hidden}
-.fase-hd .barra i{position:absolute;inset:0 auto 0 0;background:var(--acido);display:block}
-.fase-hd .pct{font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
-.etapa{background:var(--meianoite-2);border-left:4px solid var(--dim-2);padding:13px 16px;margin-bottom:7px;
-  display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:start;cursor:pointer}
-.etapa:hover{background:var(--meianoite-3)}
-.etapa.ok{border-left-color:var(--acido);opacity:.62}
-.etapa.atras{border-left-color:var(--erro)}
+/* ══════════ Caminho crítico ══════════ */
+.fase{margin-bottom:34px}
+.fase-hd{display:flex;align-items:center;gap:14px;margin-bottom:13px}
+.fase-hd h3{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--marfim);white-space:nowrap}
+.fase-hd .barra{flex:1;height:3px;background:rgba(0,0,0,.3);position:relative;overflow:hidden}
+.fase-hd .barra i{position:absolute;inset:0 auto 0 0;background:var(--verde);display:block}
+.fase-hd .pct{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10.5px;
+  color:var(--latao);font-variant-numeric:tabular-nums;white-space:nowrap}
+.etapa{background:var(--noturno-2);border-left:4px solid var(--latao);padding:14px 17px;
+  margin-bottom:1px;display:grid;grid-template-columns:32px 1fr auto;gap:16px;
+  align-items:start;cursor:pointer;transition:.15s}
+.etapa:hover{background:var(--noturno-3)}
+.etapa.ok{border-left-color:var(--verde);opacity:.6}
+.etapa.atras{border-left-color:var(--sirene)}
 .etapa.perto{border-left-color:var(--farol)}
-.etapa .n{font-family:'Fraunces',serif;font-weight:900;font-size:20px;color:var(--dim-2);line-height:1}
-.etapa.ok .n{color:var(--acido)}
-.etapa h4{font-size:14.5px;font-weight:500;line-height:1.35}
-.etapa .porque{font-size:11.5px;color:var(--dim);margin-top:5px;line-height:1.6;max-width:76ch}
-.etapa .quando{font-size:11px;color:var(--dim-2);margin-top:6px;font-variant-numeric:tabular-nums}
-.etapa .lado{text-align:right;font-size:10.5px;white-space:nowrap;color:var(--dim)}
-.etapa .lado b{display:block;font-size:12px;font-weight:600;margin-bottom:3px}
-.etapa.atras .lado b{color:var(--erro)} .etapa.perto .lado b{color:var(--farol)} .etapa.ok .lado b{color:var(--acido)}
-@media(max-width:640px){.etapa{grid-template-columns:26px 1fr}.etapa .lado{grid-column:1/-1;text-align:left;margin-top:6px}}
+.etapa .n{font-family:'Instrument Serif',Georgia,serif;font-size:22px;color:var(--latao);line-height:1}
+.etapa.ok .n{color:var(--verde)}
+.etapa h4{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:18px;line-height:1.22}
+.etapa .porque{font-size:12.5px;color:var(--dim-2);margin-top:7px;line-height:1.65;max-width:80ch}
+.etapa .quando{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--latao);margin-top:9px}
+.etapa .lado{text-align:right;white-space:nowrap;font-family:'Roboto Condensed',Arial,sans-serif;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--latao)}
+.etapa .lado b{display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;color:var(--marfim)}
+.etapa.atras .lado b{color:var(--sirene)}
+.etapa.perto .lado b{color:var(--farol)}
+@media(max-width:660px){.etapa{grid-template-columns:26px 1fr}
+  .etapa .lado{grid-column:1/-1;text-align:left;margin-top:8px}}
 
-/* ══════════ DOSSIÊ ══════════ */
-.doc{display:grid;grid-template-columns:1fr 118px 86px;gap:16px;align-items:center;padding:13px 0;
-  border-bottom:1px solid rgba(255,184,0,.12);cursor:pointer}
-.doc:hover{background:rgba(255,184,0,.045)}
-.doc h4{font-size:14px;font-weight:400;line-height:1.35}
-.doc .quem{font-size:11px;color:var(--dim-2);margin-top:4px}
-.doc .val{font-size:11.5px;color:var(--dim);text-align:right;font-variant-numeric:tabular-nums}
-.doc .prazo{text-align:right;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
-.doc .prazo.venc{color:var(--erro)} .doc .prazo.perto{color:var(--farol)} .doc .prazo.ok{color:var(--acido)}
-.doc .prazo.na{color:var(--dim-2);font-weight:300;font-size:11px}
-@media(max-width:640px){.doc{grid-template-columns:1fr 78px}.doc .val{display:none}}
+/* ══════════ Dossiê ══════════ */
+.doc{display:grid;grid-template-columns:1fr 120px 92px;gap:18px;align-items:center;
+  padding:14px 0;border-bottom:1px solid rgba(166,151,115,.15);cursor:pointer}
+.doc:hover{background:rgba(239,213,180,.04)}
+.doc h4{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:17px;line-height:1.25}
+.doc .quem{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--latao);margin-top:6px}
+.doc .obs{font-size:12px;color:var(--dim-2);margin-top:6px;line-height:1.55;max-width:68ch}
+.doc .val{font-size:12px;color:var(--dim-2);text-align:right;font-variant-numeric:tabular-nums}
+.doc .prazo{text-align:right;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:13px;font-variant-numeric:tabular-nums;letter-spacing:.06em;color:var(--marfim)}
+.doc .prazo.venc{color:var(--sirene)}
+.doc .prazo.perto{color:var(--farol)}
+.doc .prazo.na{color:var(--latao);font-weight:400;font-size:10px;letter-spacing:.16em}
+@media(max-width:660px){.doc{grid-template-columns:1fr 84px}.doc .val{display:none}}
 
-/* ══════════ PROJETOS ══════════ */
-.grid-proj{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;
+/* ══════════ Projetos ══════════ */
+.grid-proj{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:1px;
   background:var(--linha);border:1px solid var(--linha)}
-.proj{background:var(--meianoite);padding:18px 17px;cursor:pointer}
-.proj:hover{background:var(--meianoite-2)}
-.proj .est{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--farol);font-weight:600}
-.proj h4{font-family:'Fraunces',serif;font-size:17px;font-weight:600;line-height:1.22;margin:9px 0 7px}
-.proj .form{font-size:11px;color:var(--dim-2);letter-spacing:.06em}
-.proj .obs{font-size:12px;color:var(--dim);margin-top:11px;line-height:1.6}
-.proj .reap{font-size:11px;color:var(--acido);margin-top:11px;line-height:1.5;
-  border-top:1px dashed var(--linha);padding-top:9px}
+.proj{background:var(--noturno-2);padding:20px 18px;cursor:pointer;transition:.15s}
+.proj:hover{background:var(--noturno-3)}
+.proj .est{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--farol)}
+.proj h4{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:21px;
+  line-height:1.16;margin:10px 0 8px}
+.proj .form{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--latao)}
+.proj .obs{font-size:12.5px;color:var(--dim-2);margin-top:12px;line-height:1.62}
+.proj .reap{font-size:11.5px;color:var(--dim);margin-top:12px;line-height:1.55;
+  border-top:1px solid var(--linha);padding-top:10px}
+.proj .reap::before{content:"↻ ";color:var(--latao)}
 
-/* ══════════ Drawer / modal ══════════ */
-.overlay{position:fixed;inset:0;background:rgba(10,3,18,.72);z-index:60;display:none}
+/* ══════════ Gaveta ══════════ */
+.overlay{position:fixed;inset:0;background:rgba(6,14,32,.76);z-index:60;display:none}
 .overlay.on{display:block}
-.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--meianoite);
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(580px,100%);
+  background:radial-gradient(120% 60% at 100% 0%,var(--roxo) 0%,var(--noturno) 62%);
   border-left:1px solid var(--linha);z-index:61;overflow-y:auto;transform:translateX(100%);
-  transition:transform .25s cubic-bezier(.3,.8,.3,1);display:flex;flex-direction:column}
+  transition:transform .25s cubic-bezier(.3,.8,.3,1)}
 .drawer.on{transform:none}
-.drawer-hd{position:sticky;top:0;background:var(--meianoite);border-bottom:1px solid var(--linha);
-  padding:16px clamp(16px,4vw,26px);display:flex;align-items:center;gap:12px;z-index:2}
-.drawer-hd .t{flex:1;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--farol)}
-.drawer-bd{padding:20px clamp(16px,4vw,26px) 40px}
-.drawer h3{font-family:'Fraunces',serif;font-size:22px;font-weight:600;line-height:1.2;margin-bottom:6px}
-.drawer .orgx{font-size:12px;color:var(--dim);margin-bottom:20px}
-.linha-info{display:grid;grid-template-columns:118px 1fr;gap:10px 14px;font-size:12.5px;
-  padding:10px 0;border-bottom:1px solid rgba(255,184,0,.1);line-height:1.6}
-.linha-info dt{color:var(--dim-2);font-size:10px;letter-spacing:.13em;text-transform:uppercase;padding-top:3px}
-.linha-info dd{color:var(--pergaminho)}
-.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--linha);
-  border:1px solid var(--linha);margin:8px 0 4px}
-.sc{background:var(--meianoite-2);padding:11px 6px;text-align:center}
-.sc label{display:block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim-2);margin-bottom:7px}
-.sc select{width:100%;background:var(--meianoite);border:1px solid var(--linha);text-align:center;
-  padding:7px 2px;font-size:16px;font-weight:700;color:var(--farol)}
-.score-out{display:flex;align-items:baseline;gap:12px;margin:12px 0 22px;font-size:12px;color:var(--dim)}
-.score-out b{font-family:'Fraunces',serif;font-size:30px;font-weight:900;color:var(--farol);line-height:1}
-.acoes-drawer{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
-.acoes-drawer .btn{width:auto;flex:1;min-width:130px}
+.drawer-hd{position:sticky;top:0;background:var(--noturno);border-bottom:1px solid var(--linha);
+  padding:15px clamp(16px,4vw,28px);display:flex;align-items:center;gap:12px;z-index:2}
+.drawer-hd .t{flex:1;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--latao)}
+.drawer-bd{padding:24px clamp(16px,4vw,28px) 48px}
+.drawer h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:27px;
+  line-height:1.12;margin-bottom:7px}
+.drawer .orgx{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--latao);margin-bottom:24px}
+.linha-info{display:grid;grid-template-columns:118px 1fr;gap:10px 15px;font-size:12.5px;
+  padding:11px 0;border-bottom:1px solid rgba(166,151,115,.15);line-height:1.65}
+.linha-info dt{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--latao);padding-top:3px}
+.linha-info dd{color:var(--dim)}
+.scores{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--linha);
+  border:1px solid var(--linha);margin:10px 0 0}
+.sc{background:rgba(0,0,0,.26);padding:12px 6px;text-align:center}
+.sc label{display:block;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--latao);margin-bottom:8px}
+.sc select{width:100%;background:var(--noturno);border:1px solid var(--linha);text-align:center;
+  padding:8px 2px;font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:var(--marfim)}
+.score-out{display:flex;align-items:baseline;gap:14px;margin:14px 0 26px;font-size:12px;color:var(--dim-2)}
+.score-out b{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:38px;
+  color:var(--farol);line-height:1}
+.acoes-drawer{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+.acoes-drawer .btn{width:auto;flex:1;min-width:140px}
 
 /* ══════════ Toast ══════════ */
-#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120%);z-index:90;
-  background:var(--acido);color:var(--tinta);padding:13px 22px;font-size:13px;font-weight:500;
-  transition:transform .3s cubic-bezier(.3,.9,.3,1);max-width:calc(100vw - 32px);text-align:center}
-#toast.on{transform:translate(-50%,0)}
-#toast.err{background:var(--erro);color:#fff}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);z-index:90;
+  opacity:0;visibility:hidden;pointer-events:none;
+  background:var(--marfim);color:var(--roxo);padding:13px 24px;
+  font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;
+  transition:transform .3s cubic-bezier(.3,.9,.3,1),opacity .2s;
+  max-width:calc(100vw - 32px);text-align:center}
+#toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
+#toast.err{background:var(--sirene);color:var(--noturno)}
 
-.vazio{text-align:center;padding:52px 20px;color:var(--dim-2)}
-.vazio .big{font-family:'Fraunces',serif;font-size:26px;color:var(--acido);margin-bottom:8px}
-.carregando{text-align:center;padding:70px 20px;color:var(--dim);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
-.rodape{margin-top:44px;padding-top:18px;border-top:1px dashed var(--linha);font-size:11px;
-  color:var(--dim-2);line-height:1.8}
-.rodape b{color:var(--dim)}
+.vazio{text-align:center;padding:56px 22px;color:var(--dim-2);font-size:13.5px;line-height:1.7}
+.vazio .big{font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:var(--marfim);
+  margin-bottom:10px}
+.carregando{text-align:center;padding:80px 20px;color:var(--latao);
+  font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:.28em;text-transform:uppercase}
+.rodape{margin-top:48px;padding-top:20px;border-top:1px solid var(--linha);
+  font-size:12.5px;color:var(--dim-2);line-height:1.85;max-width:80ch}
+.rodape b{color:var(--marfim);font-weight:400}
 </style>
 
 <!-- ══════════════════ LOGIN ══════════════════ -->
 <div id="login">
+  <div id="arcosLogin" aria-hidden="true"></div>
   <div class="card-login">
-    <div class="marca">RADAR DE FOMENTO<span>ORQUESTRA SINFÔNICA DA UZP</span></div>
-    <div class="wm">RA<i>DAR</i></div>
-    <p class="sub-login">Editais, leis de incentivo, caminho crítico e dossiê documental da OS-UZP — em um só lugar, ordenados por <b>data-gatilho</b>, não por prazo.</p>
+    <div class="lockup">
+      <span id="markLogin" aria-hidden="true"></span>
+      <div>
+        <div class="sig">U<span class="zi">Z</span>P</div>
+        <div class="lbl rot" style="margin-top:8px">Orquestra Sinfônica</div>
+      </div>
+    </div>
+    <h1>Radar de <i>Fomento</i></h1>
+    <p class="sub-login">Editais, leis de incentivo, caminho crítico e dossiê documental da orquestra — ordenados por <b>data-gatilho</b>, a data em que o trabalho começa. Não por prazo: ninguém age em D-0.</p>
     <div id="loginMsg"></div>
     <div id="emailBox">
       <label class="campo"><span>Seu e-mail</span>
         <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="nome@exemplo.com">
       </label>
       <button class="btn" id="btnCodigo">Receber código</button>
-      <p class="dica" style="font-size:11px;color:var(--dim-2);margin-top:14px;line-height:1.6">
-        Só e-mails listados na aba EQUIPE têm acesso. Nenhuma senha: um código de 6 dígitos chega por e-mail e vale 10 minutos.</p>
+      <p class="dica" style="font-size:11.5px;color:var(--dim-2);margin-top:16px;line-height:1.65">
+        Só e-mails da aba EQUIPE têm acesso. Sem senha: um código de seis dígitos chega por e-mail e vale dez minutos.</p>
     </div>
     <div id="otpBox">
-      <label class="campo codigo"><span>Código de 6 dígitos</span>
+      <label class="campo codigo"><span>Código de seis dígitos</span>
         <input id="otp" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
       </label>
       <button class="btn" id="btnEntrar">Entrar</button>
@@ -283,8 +404,11 @@ main{padding:clamp(18px,3.5vw,32px) clamp(14px,3vw,28px) 90px;max-width:1320px;m
 <div id="app">
   <header>
     <div class="hd">
-      <div class="logo">RA<i>DAR</i></div>
-      <div class="data"><span id="hjDia">—</span><b id="hjData">—</b></div>
+      <div class="marca">
+        <span id="markHd" aria-hidden="true"></span>
+        <span class="sig">U<span class="zi">Z</span>P</span>
+      </div>
+      <div class="tit"><span id="hjDia">—</span><b id="hjData">—</b></div>
       <div class="fim">
         <span class="chip-user" id="chipUser">—</span>
         <button class="icone" id="btnNovo" title="Novo edital (captura rápida)">+</button>
@@ -305,15 +429,12 @@ main{padding:clamp(18px,3.5vw,32px) clamp(14px,3vw,28px) 90px;max-width:1320px;m
   <main>
     <div id="carregando" class="carregando">Carregando o radar…</div>
 
-    <!-- ───── HOJE ───── -->
     <section class="view on" id="v-hoje">
       <div class="kpis" id="kpis"></div>
       <div class="sec">
-        <div>
-          <div class="eyebrow">A fila</div>
-          <h2 class="fr">O que exige <em>decisão hoje</em></h2>
-          <p>Ordenada por urgência do gatilho, não por prazo. Um item aqui tem dono e um único próximo passo. Se não tem dono, aparece em vermelho — é o primeiro item da pauta.</p>
-        </div>
+        <div class="eyebrow"><span>A fila</span><i>o que exige decisão</i></div>
+        <h2>Hoje, e <i>nada além</i>.</h2>
+        <p>Uma lista só, ordenada por urgência do gatilho: editais, etapas do caminho crítico e certidões vencendo. Se está aqui, tem dono e tem um único próximo passo. <b>Linha sem dono é linha que se perde</b> — por isso ela aparece marcada.</p>
       </div>
       <div class="filtros" id="fFila">
         <button data-f="tudo" class="on">Tudo</button>
@@ -326,14 +447,11 @@ main{padding:clamp(18px,3.5vw,32px) clamp(14px,3vw,28px) 90px;max-width:1320px;m
       <div class="rodape" id="rodapeHoje"></div>
     </section>
 
-    <!-- ───── RADAR ───── -->
     <section class="view" id="v-radar">
       <div class="sec">
-        <div>
-          <div class="eyebrow">Radar</div>
-          <h2 class="fr">O mapa <em>completo</em></h2>
-          <p>SCORE = elegibilidade + aderência + valor + facilidade + probabilidade (máx. 15). A = 12+, atacar · B = 8–11, avaliar · C = abaixo de 8, arquivar. Clique numa linha para pontuar, atribuir e mudar status.</p>
-        </div>
+        <div class="eyebrow"><span>Radar</span><i>o mapa</i></div>
+        <h2>Elegibilidade, aderência, <i>score</i>.</h2>
+        <p>SCORE é a soma de cinco critérios de 0 a 3, máximo 15. <b>A = 12 ou mais, atacar · B = 8 a 11, avaliar · C = abaixo de 8, arquivar com o motivo escrito.</b> O score é calculado, não opinado. Clique numa linha para pontuar, atribuir e mudar o status.</p>
       </div>
       <div class="filtros" id="fRadar">
         <button data-f="ativos" class="on">Ativos</button>
@@ -351,38 +469,29 @@ main{padding:clamp(18px,3.5vw,32px) clamp(14px,3vw,28px) 90px;max-width:1320px;m
       </tr></thead><tbody id="tbRadar"></tbody></table>
     </section>
 
-    <!-- ───── CAMINHO ───── -->
     <section class="view" id="v-caminho">
       <div class="sec">
-        <div>
-          <div class="eyebrow">Caminho crítico</div>
-          <h2 class="fr">A estratégia <em>com datas</em></h2>
-          <p>Da Fase 0 (destravar) à meta: temporada 2027 financiada e remuneração recorrente. Clique numa etapa para atualizar status e percentual.</p>
-        </div>
+        <div class="eyebrow"><span>Caminho crítico</span><i>a estratégia com datas</i></div>
+        <h2>Da Fase 0 até a <i>temporada financiada</i>.</h2>
+        <p>Destravar, submeter, provar, captar. A meta é uma só: <b>temporada 2027 financiada e remuneração recorrente</b>. Só o plano plurianual produz renda recorrente — todo o resto é ponte.</p>
       </div>
       <div id="caminho"></div>
     </section>
 
-    <!-- ───── DOSSIÊ ───── -->
     <section class="view" id="v-dossie">
       <div class="sec">
-        <div>
-          <div class="eyebrow">Dossiê</div>
-          <h2 class="fr">Documentos e <em>validades</em></h2>
-          <p>Certidão vencida inabilita sem análise de mérito. O CRF/FGTS é o que mais vence sem ninguém notar — por isso ele aparece na fila 30 dias antes.</p>
-        </div>
+        <div class="eyebrow"><span>Dossiê</span><i>documentos e validades</i></div>
+        <h2>Certidão vencida <i>inabilita</i>.</h2>
+        <p>Sem análise de mérito. O CRF/FGTS tem a validade mais curta e é o que mais vence sem ninguém notar — por isso entra na fila trinta dias antes.</p>
       </div>
       <div id="dossie"></div>
     </section>
 
-    <!-- ───── PROJETOS ───── -->
     <section class="view" id="v-projetos">
       <div class="sec">
-        <div>
-          <div class="eyebrow">Projetos</div>
-          <h2 class="fr">Banco de peças <em>reutilizáveis</em></h2>
-          <p>Nada se escreve do zero. Cada linha aqui é um ativo que se adapta ao formato do edital novo.</p>
-        </div>
+        <div class="eyebrow"><span>Projetos</span><i>banco de peças</i></div>
+        <h2>Nada se escreve <i>do zero</i>.</h2>
+        <p>Cada linha é um ativo já pago que se adapta ao formato do edital novo. A Arquitetura CAIXA está pronta e não submetida; o Petrobras Circuitos já prova abrangência nacional.</p>
       </div>
       <div class="grid-proj" id="projetos"></div>
     </section>
@@ -399,7 +508,7 @@ main{padding:clamp(18px,3.5vw,32px) clamp(14px,3vw,28px) 90px;max-width:1320px;m
 
 <script>
 // ══════════════════════════════════════════════════════════════
-// RADAR DE FOMENTO — cliente
+// RADAR DE FOMENTO · cliente
 // ══════════════════════════════════════════════════════════════
 var TOKEN = null, E = null, VIEW = 'hoje';
 var fFila = 'tudo', fRadar = 'ativos', qRadar = '', sRadar = 'urgencia', sDir = 1;
@@ -410,9 +519,66 @@ var $$ = function (s) { return Array.prototype.slice.call(document.querySelector
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
+// ─────────── O SÍMBOLO ───────────
+// Três arcos em defasagem de 26°, geometria idêntica à do brandkit v5 (4a/4b).
+// Uma voz entra depois da outra, cada uma mais fina: Farol, Cena, Verde.
+var ARCO_VOZES = [
+  ['#FFB800', 78, [['35.13 146.62','26.26 116.35',5.61],['26.26 116.35','30.1 85.04',12.38],
+    ['30.1 85.04','46.03 57.81',16.5],['46.03 57.81','71.45 39.12',15.84],
+    ['71.45 39.12','102.19 32.02',11.88],['102.19 32.02','133.22 37.68',4.62]]],
+  ['#3B56A6', 59, [['45.04 112.06','49.04 88.54',3.91],['49.04 88.54','62.04 68.52',8.63],
+    ['62.04 68.52','81.9 55.3',11.5],['81.9 55.3','105.37 51.02',11.04],
+    ['105.37 51.02','128.62 56.38',8.28],['128.62 56.38','147.85 70.52',3.22]]],
+  ['#128743', 40, [['67.46 93.73','76.89 80.59',2.52],['76.89 80.59','90.76 72.26',5.55],
+    ['90.76 72.26','106.79 70.1',7.4],['106.79 70.1','122.37 74.47',7.1],
+    ['122.37 74.47','134.94 84.65',5.33],['134.94 84.65','142.45 98.97',2.07]]]
+];
+function arcoMarca(largura, comNucleo) {
+  var p = '';
+  ARCO_VOZES.forEach(function (v) {
+    v[2].forEach(function (s) {
+      p += '<path d="M' + s[0] + ' A' + v[1] + ' ' + v[1] + ' 0 0 1 ' + s[1] + '" stroke="' + v[0] +
+           '" stroke-width="' + s[2] + '" stroke-linecap="round"/>';
+    });
+  });
+  if (comNucleo) p += '<circle cx="104" cy="110" r="19" fill="#EFD5B4"/>';
+  return '<svg viewBox="12 18 156 142" width="' + largura + '" fill="none" aria-hidden="true">' + p + '</svg>';
+}
+
+// Versão monumental para o quadrante reservado do login.
+var ARCO_GRANDE = [
+  ['#FFB800', 300, [['320 420','309.78 342.35',30],['309.78 342.35','279.81 270',30],
+    ['279.81 270','232.13 207.87',28.8],['232.13 207.87','170 160.19',24.6],
+    ['170 160.19','97.65 130.22',17.4],['97.65 130.22','20 120',7.8]]],
+  ['#3B56A6', 232, [['246.05 367.81','228.82 318.9',18],['228.82 318.9','201.14 275.05',18],
+    ['201.14 275.05','164.42 238.43',17.28],['164.42 238.43','120.49 210.89',14.76],
+    ['120.49 210.89','71.53 193.8',10.44],['71.53 193.8','20 188',4.68]]],
+  ['#128743', 176, [['178.19 342.85','161.17 314.9',11],['161.17 314.9','139.28 290.59',11],
+    ['139.28 290.59','113.27 270.74',10.56],['113.27 270.74','84.03 256.06',9.02],
+    ['84.03 256.06','52.58 247.04',6.38],['52.58 247.04','20 244',2.86]]]
+];
+function arcoQuadrante() {
+  var p = '';
+  ARCO_GRANDE.forEach(function (v) {
+    v[2].forEach(function (s) {
+      p += '<path d="M' + s[0] + ' A' + v[1] + ' ' + v[1] + ' 0 0 0 ' + s[1] + '" stroke="' + v[0] +
+           '" stroke-width="' + s[2] + '" stroke-linecap="round"/>';
+    });
+  });
+  return '<svg viewBox="0 0 340 420" fill="none" aria-hidden="true">' + p + '</svg>';
+}
+$('#arcosLogin').innerHTML = arcoQuadrante();
+$('#markLogin').innerHTML = arcoMarca(64, true);
+$('#markHd').innerHTML = arcoMarca(30, true);
+
 function toast(msg, erro) {
   var t = $('#toast'); t.textContent = msg; t.className = erro ? 'on err' : 'on';
   clearTimeout(t._t); t._t = setTimeout(function(){ t.className = ''; }, 3400);
+}
+// chaves ASCII para as classes de semáforo
+function semKey(s) {
+  return ({'VENCIDO':'VENCIDO','HOJE':'HOJE','CRÍTICO':'CRITICO',
+           'ATENÇÃO':'ATENCAO','OK':'OK'})[s] || 'NA';
 }
 
 // ─────────── LOGIN ───────────
@@ -437,7 +603,7 @@ $('#btnVoltar').onclick = function () {
   $('#otpBox').style.display = 'none'; $('#emailBox').style.display = 'block'; msgLogin('');
 };
 $('#btnEntrar').onclick = function () {
-  var c = $('#otp').value.trim(); if (c.length < 6) { msgLogin('O código tem 6 dígitos.'); return; }
+  var c = $('#otp').value.trim(); if (c.length < 6) { msgLogin('O código tem seis dígitos.'); return; }
   this.disabled = true; this.textContent = 'Entrando…'; var b = this;
   google.script.run.withSuccessHandler(function (r) {
     b.disabled = false; b.textContent = 'Entrar';
@@ -503,18 +669,22 @@ function kpi(n, rot, cls, extra) {
   return '<div class="kpi ' + cls + '"><b class="num">' + n + '</b><span>' + rot + '</span>' +
     (extra ? '<small>' + extra + '</small>' : '') + '</div>';
 }
+// Disciplina do acento: cor quente só onde há problema. Zero = filete verde, número em marfim.
+function grau(n, quenteSeAlgum) {
+  if (!n) return 'calmo';
+  return quenteSeAlgum === 'alerta' ? 'alerta' : 'atencao';
+}
 function renderKpis() {
   var k = E.kpis;
   $('#kpis').innerHTML =
-    kpi(k.gatilhosVencidos, 'Gatilhos vencidos', k.gatilhosVencidos ? 'vermelho' : 'verde', 'o trabalho já devia ter começado') +
-    kpi(k.filaHoje, 'Na fila hoje', k.filaHoje ? 'ambar' : 'verde', 'editais + caminho + dossiê') +
-    kpi(k.prioridadeA, 'Prioridade A ativa', 'azul', 'score 12+ e elegível') +
-    kpi(k.bloqueados, 'Bloqueados', 'ambar', 'esperam PRONAC ou ProAC') +
-    kpi(k.reprogramar, 'Ciclos encerrados', 'azul', 'reprogramar para 2027') +
-    kpi(k.semDono, 'Sem responsável', k.semDono ? 'vermelho' : 'verde', 'linha sem dono se perde') +
-    kpi(k.docsVencendo, 'Docs vencendo 30d', k.docsVencendo ? 'ambar' : 'verde', 'certidão vencida inabilita') +
-    kpi(k.etapasAtrasadas, 'Etapas atrasadas', k.etapasAtrasadas ? 'vermelho' : 'verde', 'caminho crítico') +
-    kpi(k.caminhoPct + '%', 'Plano concluído', 'azul', k.proxima ? 'próx. prazo: ' + k.proxima.data : '');
+    kpi(k.gatilhosVencidos, 'Gatilhos vencidos', grau(k.gatilhosVencidos, 'alerta'), 'o trabalho já devia ter começado') +
+    kpi(k.filaHoje, 'Na fila hoje', grau(k.filaHoje), 'editais, caminho e dossiê') +
+    kpi(k.semDono, 'Sem responsável', grau(k.semDono, 'alerta'), 'linha sem dono se perde') +
+    kpi(k.etapasAtrasadas, 'Etapas atrasadas', grau(k.etapasAtrasadas, 'alerta'), 'caminho crítico') +
+    kpi(k.docsVencendo, 'Docs vencendo 30d', grau(k.docsVencendo), 'certidão vencida inabilita') +
+    kpi(k.prioridadeA, 'Prioridade A ativa', 'info', 'score 12 ou mais, elegível') +
+    kpi(k.bloqueados, 'Bloqueados', 'info', 'esperam PRONAC ou ProAC') +
+    kpi(k.caminhoPct + '%', 'Plano concluído', 'info', k.proxima ? 'próximo prazo: ' + k.proxima.data : '');
 }
 
 // ── Fila ──
@@ -534,21 +704,22 @@ function renderFila() {
     return i.fonteAba === fFila;
   });
   if (!l.length) {
-    $('#fila').innerHTML = '<div class="vazio"><div class="big fr">Nada vence hoje.</div>' +
+    $('#fila').innerHTML = '<div class="vazio" style="background:var(--noturno-2)">' +
+      '<div class="big">Nada vence hoje.</div>' +
       'Nenhum gatilho, prazo ou documento nesta janela. Bom dia para adiantar a Fase 1.</div>';
   } else {
     $('#fila').innerHTML = l.map(function (i) {
       return '<article class="item p' + i.peso + '" data-id="' + esc(i.id) + '">' +
         '<div><div class="meta"><span class="m1">' + esc(i.motivo) + '</span>' +
           '<span class="m2">' + esc(i.fonteAba) + '</span>' +
-          (i.fonteAba === 'RADAR' ? '<span class="tagpri p' + esc(i.pri) + '">PRI ' + esc(i.pri) + ' · ' + i.score + '/15</span>' : '') +
+          (i.fonteAba === 'RADAR' ? '<span class="tagpri p' + esc(i.pri) + '">' + esc(i.pri) + ' · ' + i.score + '/15</span>' : '') +
         '</div>' +
         '<h3>' + esc(i.titulo) + '</h3>' +
         '<div class="org">' + esc(i.sub) + (i.prazoBR ? ' · prazo ' + esc(i.prazoBR) : '') +
           (i.gatilhoBR ? ' · gatilho ' + esc(i.gatilhoBR) : '') + '</div>' +
-        '<div class="acao">▸ ' + esc(i.acao || 'Definir o próximo passo') + '</div>' +
+        '<div class="acao">' + esc(i.acao || 'Definir o próximo passo') + '</div>' +
         '<div class="dono' + (i.semDono ? ' sem' : '') + '">' +
-          (i.semDono ? '⚠ SEM RESPONSÁVEL — atribuir agora' : '👤 ' + esc(i.responsavel)) + '</div></div>' +
+          (i.semDono ? 'Sem responsável — atribuir agora' : esc(i.responsavel)) + '</div></div>' +
         '<div class="btns">' +
           '<button class="btn mini ghost" data-ab="' + esc(i.id) + '">Abrir</button>' +
           '<button class="btn mini ghost" data-ad="' + esc(i.id) + '">Adiar 7d</button>' +
@@ -556,17 +727,20 @@ function renderFila() {
         '</div></article>';
     }).join('');
   }
-  $('#rodapeHoje').innerHTML = '<b>Ritual semanal:</b> ' +
+  $('#rodapeHoje').innerHTML = '<b>Ritual semanal —</b> ' +
     ({SEG:'segunda-feira',TER:'terça-feira',QUA:'quarta-feira',QUI:'quinta-feira',SEX:'sexta-feira'}[E.ritual] || E.ritual) +
-    ', 20 minutos, só a tela. Passo 1 Radar · Passo 2 Dossiê · Passo 3 Caminho · Passo 4 varrer fontes.<br>' +
-    '<b>Regra de ouro:</b> nada entra no Radar sem responsável e sem data-gatilho.';
+    ', vinte minutos, só a tela. Passo 1 Radar · Passo 2 Dossiê · Passo 3 Caminho crítico · Passo 4 varrer as fontes. ' +
+    'O que passar de vinte minutos vira tarefa, não discussão.<br>' +
+    '<b>Regra de ouro —</b> nada entra no Radar sem responsável e sem data-gatilho.<br>' +
+    '<b>Regra de corte —</b> antes da primeira linha do projeto, confirmar as três exigências que mais eliminam: ' +
+    'sede do proponente, CNAE compatível e pré-requisito de projeto já aprovado.';
   ligarBotoes();
 }
 
 function ligarBotoes() {
   $$('[data-ab]').forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); abrir(b.dataset.ab); }; });
   $$('[data-ad]').forEach(function (b) { b.onclick = function (e) {
-    e.stopPropagation(); acao('adiar', [TOKEN, b.dataset.ad, 7], 'Adiado por 7 dias.'); }; });
+    e.stopPropagation(); acao('adiar', [TOKEN, b.dataset.ad, 7], 'Adiado por sete dias.'); }; });
   $$('[data-assumir]').forEach(function (b) { b.onclick = function (e) {
     e.stopPropagation(); salvar(b.dataset.assumir, 'Responsável', E.usuario.nome, 'Você assumiu este item.'); }; });
   $$('.item').forEach(function (a) { a.onclick = function () { abrir(a.dataset.id); }; });
@@ -609,21 +783,21 @@ function renderRadar() {
 
   $('#tbRadar').innerHTML = l.map(function (r) {
     var cls = r.diasGatilho === null ? '' : (r.diasGatilho < 0 ? 'neg' : (r.diasGatilho <= 7 ? 'perto' : ''));
-    var sem = (r.semaforo || '—').replace('CRÍTICO', 'CRITICO');
-    return '<tr class="s-' + esc(sem) + '" data-id="' + esc(r.id) + '">' +
-      '<td data-r="Gatilho"><span class="dot d-' + esc(sem === '—' ? 'NA' : sem) + '"></span>' +
+    var sk = semKey(r.semaforo);
+    return '<tr class="s-' + sk + '" data-id="' + esc(r.id) + '">' +
+      '<td data-r="Gatilho"><span class="dot d-' + sk + '"></span>' +
         '<span class="dias ' + cls + '">' + (r.gatilhoBR || (r.emEspera ? 'em espera' : '—')) + '</span>' +
-        (r.diasGatilho !== null ? '<div style="font-size:10.5px;color:var(--dim-2);margin-left:15px">' +
+        (r.diasGatilho !== null ? '<div class="sub" style="margin-left:16px">' +
           (r.diasGatilho < 0 ? Math.abs(r.diasGatilho) + 'd atrás' : 'em ' + r.diasGatilho + 'd') + '</div>' : '') + '</td>' +
       '<td data-r="Edital" class="nome">' + esc(r.instrumento) + '<small>' + esc(r.orgao) + ' · ' + esc(r.tipo) + '</small></td>' +
       '<td data-r="Score"><span class="tagpri p' + esc(r.pri) + '">' + esc(r.pri) + '</span> ' +
-        '<span class="num" style="color:var(--dim)">' + r.score + '/15</span></td>' +
+        '<span class="num sub">' + r.score + '/15</span></td>' +
       '<td data-r="Prazo" class="dias ' + (r.diasRestantes !== null && r.diasRestantes < 0 ? 'neg' : '') + '">' +
-        (r.prazoBR || '<span style="color:var(--dim-2);font-weight:300">fluxo contínuo</span>') +
-        (r.diasRestantes !== null ? '<div style="font-size:10.5px;color:var(--dim-2);font-weight:300">' +
-          (r.diasRestantes < 0 ? 'encerrado' : r.diasRestantes + ' dias') + '</div>' : '') + '</td>' +
+        (r.prazoBR || '<span class="sub">fluxo contínuo</span>') +
+        (r.diasRestantes !== null ? '<div class="sub">' +
+          (r.diasRestantes < 0 ? 'ciclo encerrado' : r.diasRestantes + ' dias') + '</div>' : '') + '</td>' +
       '<td data-r="Responsável" class="st">' + (r.responsavel ? esc(r.responsavel) :
-        '<span style="color:var(--erro)">⚠ sem dono</span>') + '</td>' +
+        '<span style="color:var(--sirene)">sem dono</span>') + '</td>' +
       '<td data-r="Status" class="st">' + esc(r.status) + '</td></tr>';
   }).join('') || '<tr><td colspan="6"><div class="vazio">Nenhum item com esse filtro.</div></td></tr>';
 
@@ -649,11 +823,11 @@ function renderCaminho() {
           '<div><h4>' + esc(c.entregavel) + '</h4>' +
             '<div class="porque">' + esc(c.porque) + '</div>' +
             '<div class="quando">' + esc(c.inicioBR) + ' → ' + esc(c.fimBR) +
-              ' · 👤 ' + esc(c.responsavel || '⚠ sem dono') +
+              ' · ' + esc(c.responsavel || 'sem dono') +
               (c.depende && c.depende !== '—' ? ' · depende de ' + esc(c.depende) : '') + '</div></div>' +
-          '<div class="lado"><b>' + (c.concluido ? 'CONCLUÍDO' :
-            (c.diasFim === null ? '—' : (c.diasFim < 0 ? 'ATRASADA ' + Math.abs(c.diasFim) + 'd' : c.diasFim + 'd'))) + '</b>' +
-            esc(c.status) + '<div style="margin-top:5px;color:var(--dim-2)">' + c.pct + '%</div></div></div>';
+          '<div class="lado"><b>' + (c.concluido ? 'Concluído' :
+            (c.diasFim === null ? '—' : (c.diasFim < 0 ? 'Atrasada ' + Math.abs(c.diasFim) + 'd' : c.diasFim + 'd'))) + '</b>' +
+            esc(c.status) + '<div style="margin-top:5px">' + c.pct + '%</div></div></div>';
       }).join('') + '</div>';
   }).join('');
   $$('.etapa').forEach(function (el) { el.onclick = function () { abrir(el.dataset.id); }; });
@@ -666,15 +840,14 @@ function renderDossie() {
     return x - y;
   });
   $('#dossie').innerHTML = l.map(function (d) {
-    var k = d.diasVencer === null ? 'na' : (d.diasVencer < 0 ? 'venc' : (d.diasVencer <= 30 ? 'perto' : 'ok'));
+    var k = d.diasVencer === null ? 'na' : (d.diasVencer < 0 ? 'venc' : (d.diasVencer <= 30 ? 'perto' : ''));
     return '<div class="doc" data-id="' + esc(d.id) + '">' +
       '<div><h4>' + esc(d.documento) + '</h4><div class="quem">' + esc(d.titular) +
-        ' · ' + esc(d.onde) + ' · 👤 ' + esc(d.responsavel || '⚠ sem dono') +
-        (d.obs ? '<div style="margin-top:5px;color:var(--dim);font-size:11px;line-height:1.55">' + esc(d.obs) + '</div>' : '') +
-        '</div></div>' +
+        ' · ' + esc(d.onde) + ' · ' + esc(d.responsavel || 'sem dono') + '</div>' +
+        (d.obs ? '<div class="obs">' + esc(d.obs) + '</div>' : '') + '</div>' +
       '<div class="val">' + (d.validadeBR || 'sem validade') + '</div>' +
       '<div class="prazo ' + k + '">' + (d.diasVencer === null ? 'permanente' :
-        (d.diasVencer < 0 ? 'VENCIDO' : d.diasVencer + 'd')) + '</div></div>';
+        (d.diasVencer < 0 ? 'vencido' : d.diasVencer + 'd')) + '</div></div>';
   }).join('');
   $$('.doc').forEach(function (el) { el.onclick = function () { abrir(el.dataset.id); }; });
 }
@@ -685,12 +858,12 @@ function renderProjetos() {
     return '<div class="proj" data-id="' + esc(p.id) + '"><div class="est">' + esc(p.estado) + '</div>' +
       '<h4>' + esc(p.projeto) + '</h4><div class="form">' + esc(p.formacao) + ' · ' + esc(p.titularidade) + '</div>' +
       (p.obs ? '<div class="obs">' + esc(p.obs) + '</div>' : '') +
-      (p.reaproveitavel ? '<div class="reap">↻ ' + esc(p.reaproveitavel) + '</div>' : '') + '</div>';
+      (p.reaproveitavel ? '<div class="reap">' + esc(p.reaproveitavel) + '</div>' : '') + '</div>';
   }).join('');
   $$('.proj').forEach(function (el) { el.onclick = function () { abrir(el.dataset.id); }; });
 }
 
-// ─────────── DRAWER ───────────
+// ─────────── GAVETA ───────────
 function fecharDrawer() { $('#drawer').classList.remove('on'); $('#overlay').classList.remove('on'); }
 $('#drFechar').onclick = fecharDrawer;
 $('#overlay').onclick = fecharDrawer;
@@ -720,17 +893,17 @@ function abrir(id) {
 
 function abrirRadar(id) {
   var r = E.radar.filter(function (x) { return x.id === id; })[0]; if (!r) return;
-  var cs = [['eleg','Eleg.','Elegibilidade'],['ader','Ader.','Aderência'],['valor','Valor','Valor'],
-            ['facil','Facil.','Facilidade'],['prob','Prob.','Probabilidade']];
+  var cs = [['eleg','Eleg.','Elegib'],['ader','Ader.','Aderên'],['valor','Valor','Valor'],
+            ['facil','Facil.','Facili'],['prob','Prob.','Probab']];
   var h = '<h3>' + esc(r.instrumento) + '</h3><div class="orgx">' + esc(r.orgao) + ' · ' + esc(r.tipo) + '</div>';
 
   h += '<div class="scores">' + cs.map(function (c) {
-    return '<div class="sc"><label>' + c[2].slice(0, 5) + '</label><select data-sc="' + c[1] + '">' +
+    return '<div class="sc"><label>' + c[2] + '</label><select data-sc="' + c[1] + '">' +
       [0,1,2,3].map(function (n) { return '<option value="' + n + '"' + (r[c[0]] === n ? ' selected' : '') + '>' + n + '</option>'; }).join('') +
       '</select></div>';
   }).join('') + '</div>' +
-  '<div class="score-out"><b id="scoreOut" class="num">' + r.score + '</b><span>de 15 · prioridade <b style="font-size:15px" id="priOut">' + r.pri + '</b><br>' +
-    '<span style="font-size:11px;color:var(--dim-2)">A = 12+ atacar · B = 8–11 avaliar · C = arquivar</span></span></div>';
+  '<div class="score-out"><b id="scoreOut" class="num">' + r.score + '</b><span>de 15 · prioridade ' +
+    '<b style="font-size:17px" id="priOut">' + r.pri + '</b><br>A = 12 ou mais, atacar · B = 8 a 11, avaliar · C = arquivar</span></div>';
 
   h += '<label class="campo"><span>Responsável</span>' + selResp(r.responsavel) + '</label>';
   h += '<label class="campo"><span>Status</span><input id="dStatus" value="' + esc(r.status) + '"></label>';
@@ -740,10 +913,10 @@ function abrirRadar(id) {
     '<label class="campo"><span>Preparo (dias)</span><input id="dPreparo" type="number" min="0" value="' + r.preparo + '"></label></div>' +
     (r.prazo ? '' :
       '<label class="campo"><span>Data-gatilho (manual)</span><input id="dGatilho" type="date" value="' + esc(r.gatilho) + '">' +
-      '<span class="dica">Fluxo contínuo não tem prazo: sem uma data-gatilho definida à mão, esta linha nunca entra na fila.</span></label>') +
-    '<div class="aviso ok" style="margin-bottom:18px">Data-gatilho calculada: <b>' + (r.gatilhoBR || '—') + '</b>' +
-    (r.diasGatilho !== null ? ' (' + (r.diasGatilho < 0 ? Math.abs(r.diasGatilho) + ' dias atrás' : 'em ' + r.diasGatilho + ' dias') + ')' : '') +
-    '<br><span style="font-size:11px;color:var(--dim)">prazo − preparo. É esta data que manda, não o prazo.</span></div>';
+      '<span class="dica">Fluxo contínuo não tem prazo para subtrair: sem uma data-gatilho definida à mão, esta linha nunca entra na fila.</span></label>') +
+    '<div class="aviso ok" style="margin-bottom:20px">Data-gatilho calculada: <b>' + (r.gatilhoBR || '—') + '</b>' +
+    (r.diasGatilho !== null ? ' — ' + (r.diasGatilho < 0 ? Math.abs(r.diasGatilho) + ' dias atrás' : 'em ' + r.diasGatilho + ' dias') : '') +
+    '<br><span style="font-size:11.5px;color:var(--dim-2)">prazo menos preparo. É esta data que manda, não o prazo.</span></div>';
   h += '<label class="campo"><span>Notas</span><textarea id="dNotas" rows="3">' + esc(r.notas) + '</textarea></label>';
 
   h += info('Proponente', esc(r.proponente)) + info('Pré-requisito', esc(r.prerequisito)) +
@@ -776,20 +949,20 @@ function abrirRadar(id) {
     if ($('#dGatilho') && $('#dGatilho').value !== r.gatilho) mud.push(['DATA-GATILHO', $('#dGatilho').value]);
     salvarLote(id, mud);
   };
-  $('#drAdiar').onclick = function () { acao('adiar', [TOKEN, id, 7], 'Adiado por 7 dias.'); };
+  $('#drAdiar').onclick = function () { acao('adiar', [TOKEN, id, 7], 'Adiado por sete dias.'); };
 }
 
 function abrirCaminho(id) {
   var c = E.caminho.filter(function (x) { return x.id === id; })[0]; if (!c) return;
   var h = '<h3>' + esc(c.entregavel) + '</h3><div class="orgx">' + esc(c.fase) + ' · etapa ' + c.ordem + '</div>';
-  h += '<div class="aviso ok" style="margin-bottom:20px"><b>Por que existe:</b> ' + esc(c.porque) + '</div>';
+  h += '<div class="aviso ok" style="margin-bottom:22px"><b>Por que existe</b><br>' + esc(c.porque) + '</div>';
   h += '<label class="campo"><span>Status</span><select id="dStatus">' +
     ['A fazer','Em andamento','Bloqueado','Concluído','Cancelado'].map(function (s) {
       return '<option' + (s === c.status ? ' selected' : '') + '>' + s + '</option>'; }).join('') +
     (['A fazer','Em andamento','Bloqueado','Concluído','Cancelado'].indexOf(c.status) < 0 ?
       '<option selected>' + esc(c.status) + '</option>' : '') + '</select></label>';
-  h += '<label class="campo"><span>% concluído — <b id="pctOut">' + c.pct + '%</b></span>' +
-    '<input id="dPct" type="range" min="0" max="100" step="10" value="' + c.pct + '" style="padding:0"></label>';
+  h += '<label class="campo"><span>Concluído — <b id="pctOut">' + c.pct + '%</b></span>' +
+    '<input id="dPct" type="range" min="0" max="100" step="10" value="' + c.pct + '" style="padding:0;background:none;border:none"></label>';
   h += '<label class="campo"><span>Responsável</span>' + selResp(c.responsavel) + '</label>';
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
     '<label class="campo"><span>Início</span><input id="dIni" type="date" value="' + esc(c.inicio) + '"></label>' +
@@ -816,9 +989,9 @@ function abrirCaminho(id) {
 function abrirDossie(id) {
   var d = E.dossie.filter(function (x) { return x.id === id; })[0]; if (!d) return;
   var h = '<h3>' + esc(d.documento) + '</h3><div class="orgx">' + esc(d.titular) + '</div>';
-  if (d.obs) h += '<div class="aviso ok" style="margin-bottom:20px">' + esc(d.obs) + '</div>';
+  if (d.obs) h += '<div class="aviso ok" style="margin-bottom:22px">' + esc(d.obs) + '</div>';
   h += '<label class="campo"><span>Validade</span><input id="dVal" type="date" value="' + esc(d.validade) + '">' +
-    '<span class="dica">Deixe vazio para documentos permanentes. Com validade preenchida, ele entra na fila 30 dias antes.</span></label>';
+    '<span class="dica">Vazio = documento permanente. Com validade preenchida, ele entra na fila trinta dias antes.</span></label>';
   h += '<label class="campo"><span>Onde está</span><input id="dOnde" value="' + esc(d.onde) + '"></label>';
   h += '<label class="campo"><span>Responsável</span>' + selResp(d.responsavel) + '</label>';
   h += '<label class="campo"><span>Observação</span><textarea id="dObs" rows="3">' + esc(d.obs) + '</textarea></label>';
@@ -882,7 +1055,10 @@ function acao(fn, args, msg) {
 
 // ─────────── CAPTURA RÁPIDA ───────────
 $('#btnNovo').onclick = function () {
-  var h = '<h3>Novo edital</h3><div class="orgx">Captura rápida. O POP manda: registre o mínimo agora, pontue depois.</div>' +
+  var h = '<h3>Novo edital</h3><div class="orgx">Captura rápida · trinta segundos</div>' +
+    '<p style="font-size:13px;color:var(--dim);line-height:1.65;margin-bottom:22px">' +
+    'O POP manda: Vitor cria a linha com o mínimo — instrumento, órgão, prazo, proponente, pré-requisito e fonte. ' +
+    'Nada mais. João pontua depois e a prioridade se calcula sozinha.</p>' +
     '<label class="campo"><span>Instrumento / nome do edital *</span><input id="nInstr" placeholder="Ex.: ProAC Editais 2027"></label>' +
     '<label class="campo"><span>Órgão / empresa *</span><input id="nOrgao" placeholder="Ex.: SEC-SP"></label>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
@@ -892,7 +1068,7 @@ $('#btnNovo').onclick = function () {
     '<label class="campo"><span>Pré-requisito bloqueante</span><textarea id="nPre" rows="2" placeholder="Sede? CNAE? Projeto já aprovado? — as três exigências que mais eliminam"></textarea></label>' +
     '<label class="campo"><span>Responsável</span>' + selResp('') + '</label>' +
     '<label class="campo"><span>Fonte</span><input id="nFonte" placeholder="site oficial ou link"></label>' +
-    '<div class="aviso ok">Entra com score 0 e status <b>0. Novo — pontuar</b>. João pontua os cinco critérios e a prioridade se calcula sozinha.</div>' +
+    '<div class="aviso ok">Entra com score zero e status <b>0. Novo — pontuar</b>.</div>' +
     '<div class="acoes-drawer"><button class="btn" id="nSalvar">Adicionar ao Radar</button></div>';
   abrirDrawer('Captura rápida', h);
   $('#nSalvar').onclick = function () {

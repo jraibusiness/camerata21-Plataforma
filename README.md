@@ -58,7 +58,8 @@ Este repositório reúne duas plataformas da orquestra, ambas em GAS + Google Sh
 │   └── admin.html           # Dashboard administrativo (login OTP)
 ├── reference/
 │   ├── editais/              # PDFs de editais e regulamentos (Rouanet, Petrobras, Caixa)
-│   └── branding/              # Brandkit e pesquisa de branding
+│   └── branding/             # Brandkit Camerata 21, pesquisa de branding
+│       └── osuzp/            # Sistema de Marca OS-UZP v5 (HTML, PDF e os três arcos)
 ├── assets/
 │   └── fotos/                # Fotos institucionais (reserva para uso gráfico futuro)
 ├── radar/                     # Radar de Fomento OS-UZP (editais e prazos)

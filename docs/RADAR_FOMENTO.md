@@ -61,9 +61,16 @@ Código de 6 dígitos por e-mail, sessão de 12h assinada. Uma senha a mais é u
 esquecer — e o acesso é controlado por uma linha na aba EQUIPE, que você mesmo edita.
 
 **2.7 Acessibilidade e mobile primeiro.**
-Semáforo nunca é *só* cor: cada estado também tem rótulo em texto ("VENCIDO", "4d").
-Tabelas viram cartões abaixo de 900px. Alvos de toque de 44px+. Fonte 16px nos campos
-(evita o zoom automático do iOS). Você vai usar isso no celular, entre um ensaio e outro.
+Semáforo nunca é *só* cor: cada estado também tem rótulo em texto ("vencido", "4d").
+Tabelas viram cartões abaixo de 940px. Alvos de toque de 44px+. Fonte 16px nos campos
+(evita o zoom automático do iOS). No celular os quatro KPIs informativos somem — a fila
+tem de caber na primeira tela. Você vai usar isso entre um ensaio e outro.
+
+**2.8 Ciclo encerrado não lidera a lista.**
+Um prazo que já passou tem gatilho vencido há meses. Se a ordenação fosse ingênua, o
+PROMAC-SP (encerrado em 26/05) apareceria eternamente no topo, acima do que ainda dá para
+fazer. Ele vai para o fim da ordenação e para o KPI de reprogramação. O mesmo vale para
+item adiado: sai da disputa por atenção até a data voltar.
 
 ---
 
@@ -262,7 +269,87 @@ Rode pelo editor do Apps Script quando precisar:
 
 ---
 
-## 9. LIMITES E ARMADILHAS
+## 9. A IDENTIDADE APLICADA
+
+Fonte: **Sistema de Marca OS-UZP v5**, em `reference/branding/osuzp/`. A plataforma segue
+o documento; onde precisou estendê-lo, está declarado abaixo.
+
+### 9.1 O que veio direto do sistema
+
+| Elemento | Aplicação no Radar |
+|---|---|
+| **Noturno `#0B1B3D`** | fundo de toda a plataforma |
+| **Roxo `#1F0A33`** | atmosfera — degradê no login e na gaveta, nunca campo chapado |
+| **Farol `#FFB800`** | o **Z** da sigla, o arco principal, o itálico dos títulos, o botão primário |
+| **Marfim `#EFD5B4`** | todo o texto corrido e todos os números |
+| **Latão `#A69773`** | rótulos, filetes, cabeçalhos de tabela, metadados |
+| **Cena `#3B56A6`** | segunda voz dos arcos e filete de KPI informativo. **Nunca texto** (2,48:1) |
+| **Verde `#128743`** | terceira voz dos arcos, barra de progresso, filete de "tudo certo". Só massa gráfica |
+| **Instrument Serif** | títulos de seção, nomes de edital, números de KPI |
+| **Roboto Condensed 700 · `.24em`** | rótulos, datas, status, botões |
+| **Roboto 300** | texto corrido |
+| **Os três arcos** | geometria idêntica à do brandkit (4a/4b para a marca, 4g/4i para o quadrante do login) |
+
+O símbolo é desenhado em SVG a partir das mesmas coordenadas do kit — não é imagem
+rasterizada, então escala de 30 px no cabeçalho a 820 px no login sem perda.
+
+### 9.2 A regra do acento, num painel com muitos estados
+
+O sistema diz: *"se duas coisas estão em Farol na mesma peça, uma delas está errada."*
+Um centro de controle mostra oito indicadores ao mesmo tempo — a regra não sobrevive
+literalmente. A leitura que a plataforma adota:
+
+- **Farol continua sendo acento de marca**, não sinal de estado. Aparece no Z, no arco,
+  no itálico do título da seção e no botão primário. **Nunca em número de KPI** — no tile
+  de atenção ele fica só no filete de 3px, que é massa gráfica.
+- **Latão faz o trabalho silencioso** que o amarelo faria mal: todo rótulo, toda data
+  secundária, todo metadado.
+
+### 9.3 A extensão declarada: Sirene `#FF5C63`
+
+Não existe vermelho no sistema de marca, e é correto que não exista — a paleta é de
+concerto, não de painel de alarme. Mas "gatilho vencido" e "sem responsável" precisam ser
+inconfundíveis num relance, e usar Farol para isso destruiria a regra do acento (o vencido
+e o "vence em 4 dias" ficariam do mesmo matiz, que é justamente a distinção mais
+importante da ferramenta).
+
+Então o Radar declara uma **camada de estado**, separada da paleta expressiva:
+
+| Estado | Cor | Contraste sobre Noturno |
+|---|---|---|
+| Vencido / sem dono | **Sirene `#FF5C63`** | 5,62 : 1 — passa em AA para qualquer corpo |
+| É hoje / crítico (≤7d) | Farol (só como filete e borda) | 9,78 : 1 |
+| Atenção (≤21d) | Latão | 5,89 : 1 |
+| No prazo | Verde, só como ponto ou barra | 3,69 : 1 — por isso nunca em texto |
+
+**Escopo do Sirene:** só nesta plataforma e só em marcador de estado. Nunca em cartaz,
+programa, ofício, edital ou qualquer peça institucional. Se preferir viver sem ele, a
+alternativa é distinguir vencido de crítico por preenchimento em vez de matiz — custa
+velocidade de leitura, sobretudo no celular. É uma decisão sua; trocar é uma linha
+(`--sirene` no topo de `radar.html` e `CORES.sirene` em `Notificacoes.gs`).
+
+### 9.4 E-mail
+
+O Gmail bloqueia SVG e não carrega webfont. Então, nos e-mails:
+
+- **Instrument Serif → Georgia**, que é o fallback previsto no próprio brandkit;
+  Roboto Condensed → Arial Narrow; Roboto → Helvetica.
+- **Os três arcos viram três filetes em defasagem** — largura e espessura decrescentes,
+  entrando em atraso, Farol → Cena → Verde. Mesma leitura de contraponto, em HTML que
+  sobrevive a qualquer cliente.
+- A sigla vai por tipografia, com o **Z em itálico Farol**, como manda o nível 1.
+
+### 9.5 Assinatura
+
+A plataforma é ferramenta interna, então usa o **nível 1** do brandkit: sigla `UZP` com
+o Z em acento, mais o rótulo "Orquestra Sinfônica". O nome da universidade por extenso e
+a assinatura da regência ficam para os níveis 2 e 3 — cartaz, programa, ofício.
+
+O favicon é o **monograma Z**: campo roxo, filete e Z em Farol.
+
+---
+
+## 10. LIMITES E ARMADILHAS
 
 | Item | Realidade |
 |---|---|
@@ -278,7 +365,7 @@ Rode pelo editor do Apps Script quando precisar:
 
 ---
 
-## 10. O QUE FALTA DECIDIR
+## 11. O QUE FALTA DECIDIR
 
 - [ ] E-mail e WhatsApp do Vitor (aba EQUIPE)
 - [ ] Provedor de WhatsApp — recomendação: CallMeBot agora, Meta quando escalar
@@ -286,6 +373,4 @@ Rode pelo editor do Apps Script quando precisar:
 - [ ] Confirmar regulamento da Funarte Aberta (hoje `VERIFICAR`)
 - [ ] Definir data-gatilho manual do **ProAC ICMS** — é fluxo contínuo, então não tem
       prazo para subtrair; hoje ele só aparece pela etapa 1 do caminho crítico
-- [ ] Identidade visual: a paleta e a tipografia vieram do brandkit da Camerata 21
-      (`reference/branding/camerata21_brandkit_v3.html`). Se a OS-UZP tiver logo própria,
-      basta trocar o wordmark `RA<i>DAR</i>` no topo de `radar.html` e o cabeçalho dos e-mails
+- [ ] Aprovar ou vetar o vermelho **Sirene** da camada de estado (§9.3)

@@ -209,7 +209,11 @@ function lerRadar_() {
       dormente: dormente, emEspera: emEspera,
       cicloEncerrado: dR !== null && dR < 0,
       semDono: !String(o['Responsável'] || '').trim(),
-      urgencia: (dG !== null ? dG : (dR !== null ? dR : 9999))
+      // Ordenação: ciclo encerrado e item adiado são reais, mas não competem
+      // por atenção com o que ainda dá para fazer. Vão para o fim da fila.
+      urgencia: (dR !== null && dR < 0) ? 90000 + Math.abs(dR)
+              : (adiado && dias_(adiado) > 0) ? 80000 + dias_(adiado)
+              : (dG !== null ? dG : (dR !== null ? dR : 70000))
     };
   });
 }

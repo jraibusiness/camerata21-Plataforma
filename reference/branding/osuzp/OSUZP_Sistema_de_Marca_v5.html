@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Orquestra Sinfônica da UZP — Sistema de Marca v5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noturno:#0B1B3D;
+    --roxo:#1F0A33;
+    --farol:#FFB800;
+    --marfim:#EFD5B4;
+    --latao:#A69773;
+    --cena:#3B56A6;
+    --zumbi:#13387F;
+    --verde:#128743;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  ::selection{background:var(--farol);color:var(--roxo)}
+  svg{max-width:100%;height:auto}
+  :focus-visible{outline:2px solid var(--farol);outline-offset:3px}
+
+  body{background:var(--noturno);color:var(--marfim);
+       font-family:Roboto,system-ui,sans-serif;font-weight:300;line-height:1.7;
+       -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(18px,5vw,60px)}
+  section{padding:clamp(46px,7.5vw,88px) 0;position:relative}
+
+  .ser{font-family:'Instrument Serif',Georgia,serif;font-weight:400}
+  .lbl{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+       font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;line-height:1.6}
+
+  .mark{display:flex;align-items:center;gap:11px;margin-bottom:15px}
+  .mark span{color:var(--farol)}
+  .mark i{font-family:'Instrument Serif',serif;font-style:italic;font-size:15px;
+          color:var(--latao);opacity:.9;letter-spacing:0;text-transform:none;font-weight:400}
+  .mark::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(166,151,115,.5),transparent)}
+
+  .hero{position:relative;overflow:hidden;
+        background:radial-gradient(125% 105% at 10% 0%,var(--roxo) 0%,var(--noturno) 62%)}
+  .hero .arcowrap{position:absolute;inset:0;pointer-events:none}
+  .hero svg.sweep{position:absolute;right:-26%;top:-24%;width:74%;max-width:none}
+  .draw{stroke-dasharray:1500;stroke-dashoffset:1500;
+        animation:arco 2.2s cubic-bezier(.2,.72,.15,1) .3s forwards}
+  .draw.d2{animation-delay:.62s}
+  .draw.d3{animation-delay:.94s}
+  @keyframes arco{to{stroke-dashoffset:0}}
+  .hero .inner{position:relative;z-index:3;padding-block:clamp(58px,10vw,118px) clamp(40px,6vw,66px)}
+  h1{font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+     font-size:clamp(40px,9.2vw,94px);line-height:.94;letter-spacing:-.015em;max-width:14ch}
+  h1 i{color:var(--farol);font-style:italic}
+  .lede{max-width:58ch;margin-top:26px;font-size:15px;color:rgba(239,213,180,.74)}
+  .lede b{color:var(--farol);font-weight:400}
+
+  h2{font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+     font-size:clamp(27px,4.6vw,44px);line-height:1.06;margin-bottom:12px}
+  h2 i{color:var(--farol)}
+  .sub{max-width:72ch;font-size:14px;color:rgba(239,213,180,.62);margin-bottom:30px}
+  .sub b{color:var(--farol);font-weight:400}
+  .h3s{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:22px}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(166,151,115,.22);vertical-align:top}
+  th{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10px;
+     letter-spacing:.18em;text-transform:uppercase;color:var(--latao)}
+  td b{font-weight:500;color:var(--marfim)}
+  .chip{display:inline-block;width:15px;height:15px;vertical-align:-2px;margin-right:8px;
+        border:1px solid rgba(239,213,180,.28)}
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(292px,100%),1fr))}
+  .card{border:1px solid rgba(166,151,115,.26);display:flex;flex-direction:column;
+        min-width:0;overflow:hidden;background:#101F44}
+  .stage{padding:clamp(22px,4vw,32px);min-height:214px;display:flex;align-items:center;
+         position:relative;overflow:hidden;min-width:0;
+         background:linear-gradient(152deg,var(--roxo) 0%,var(--noturno) 76%)}
+  .stage.marfim{background:var(--marfim);color:var(--roxo)}
+  .stage.amarelo{background:var(--farol);color:var(--roxo)}
+  .stage.puro{background:var(--roxo)}
+  .meta{border-top:1px solid rgba(166,151,115,.26);padding:15px 18px 20px;background:rgba(0,0,0,.24)}
+  .tag{display:inline-block;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+       font-size:9.5px;letter-spacing:.2em;background:var(--farol);color:var(--roxo);
+       padding:3px 8px;margin-bottom:9px}
+  .card h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:20px;margin-bottom:7px}
+  .card p{font-size:12.5px;line-height:1.62;color:rgba(239,213,180,.62)}
+  .lock{width:100%;min-width:0}
+  .disp{font-family:'Instrument Serif',Georgia,serif;font-weight:400;line-height:.92;letter-spacing:-.01em}
+  .zi{font-style:italic;color:var(--farol)}
+
+  .swatch{display:flex;flex-wrap:wrap;border:1px solid rgba(166,151,115,.26)}
+  .swatch div{flex:1 1 25%;min-width:148px;padding:16px 14px;min-height:96px;
+              display:flex;flex-direction:column;justify-content:flex-end}
+  .swatch small{font-family:'Roboto Condensed',Arial,sans-serif;font-size:9.5px;letter-spacing:.16em;opacity:.82}
+  .swatch span{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em}
+
+  .typespec{border-left:2px solid var(--farol);padding-left:20px;margin-bottom:28px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+       color:var(--farol);background:rgba(255,184,0,.09);padding:1px 6px}
+
+  footer{background:var(--roxo);padding:clamp(36px,6vw,64px) 0}
+  footer p{max-width:76ch;font-size:13px;color:rgba(239,213,180,.72);margin-bottom:14px}
+  footer b{color:var(--farol);font-weight:400}
+
+  @media(max-width:640px){ .stage{min-height:188px} .swatch div{flex:1 1 50%} }
+  @media(prefers-reduced-motion:reduce){ .draw{animation:none;stroke-dashoffset:0} }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="arcowrap" aria-hidden="true">
+    <svg class="sweep" viewBox="0 0 620 480" fill="none" style="z-index:1">
+      <path class="draw"    d="M 30 470 A 430 430 0 0 1 470 40"   stroke="#FFB800" stroke-width="17" stroke-linecap="round"/>
+      <path class="draw d2" d="M 150 476 A 430 430 0 0 1 566 148" stroke="#3B56A6" stroke-width="9" stroke-linecap="round" opacity=".42"/>
+      <path class="draw d3" d="M 262 478 A 430 430 0 0 1 610 248" stroke="#128743" stroke-width="6" stroke-linecap="round" opacity=".34"/>
+      <circle cx="516" cy="70" r="15" fill="#A69773" opacity=".8"/>
+    </svg>
+  </div>
+  <div class="wrap inner">
+    <div class="lbl" style="color:var(--farol)">Sistema de marca · v5</div>
+    <h1 style="margin-top:16px">Orquestra Sinfônica da <i>Z</i>umbi dos Palmares</h1>
+    <p class="lede">A base inteira vem da universidade — o azul do logotipo, o marfim e o latão registrados no kit institucional, a grotesca já hospedada no servidor. O que entra por fora é deliberado e escasso: um <b>roxo</b> que faz a sala escurecer e um <b>amarelo</b> que acende o que precisa ser lido primeiro. Herança na estrutura, autoria no acento.</p>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Tema</span><i>a herança, medida</i></div>
+  <h2>O que já era da casa.</h2>
+  <p class="sub">Extraído dos globais do kit Elementor da UZP e da amostragem de pixel do arquivo <code>logozumbiazul.png</code>. Cada item entra com função declarada — nada é ornamento.</p>
+  <div class="tw">
+  <table>
+    <thead><tr><th>Ativo</th><th>Origem verificada</th><th>Função na orquestra</th></tr></thead>
+    <tbody>
+      <tr><td><b><span class="chip" style="background:#3B56A6"></span>#3B56A6</b></td><td>Elementor <code>--e-global-color-primary</code></td><td>Azul de cena — massa gráfica, segunda voz dos arcos</td></tr>
+      <tr><td><b><span class="chip" style="background:#13387F"></span>#13387F</b></td><td>Tinta do logotipo, pixel</td><td>Azul institucional — assinatura sobre claro</td></tr>
+      <tr><td><b><span class="chip" style="background:#EFD5B4"></span>#EFD5B4</b></td><td>Global <code>b057929</code></td><td>Marfim — texto, papel, tecla</td></tr>
+      <tr><td><b><span class="chip" style="background:#A69773"></span>#A69773</b></td><td>Global <code>0919493</code></td><td>Latão — filetes e rótulos. Nunca protagonista</td></tr>
+      <tr><td><b><span class="chip" style="background:#128743"></span>#128743</b></td><td>Global <code>280c570</code></td><td>Verde — terceira voz dos arcos</td></tr>
+      <tr><td><b>Roboto Condensed</b></td><td><code>/elementor/google-fonts/</code></td><td>Camada utilitária — rótulos, datas, fichas técnicas</td></tr>
+      <tr><td><b>Medalhão com arco</b></td><td>Círculo rompido no logotipo</td><td>Símbolo — <i>o Arco</i></td></tr>
+      <tr><td style="opacity:.5"><span class="chip" style="background:#F58220"></span>#F58220</td><td style="opacity:.5">Botão de vestibular</td><td style="opacity:.5">Não herdado. É cor de conversão comercial</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Timbre</span><i>a cor e o que ela acende</i></div>
+  <h2>Duas escuridões, <i>um farol</i>.</h2>
+  <p class="sub">O sistema tem dois fundos que se atravessam: o <b>Noturno</b>, que é o próprio azul da UZP no matiz 219° levado à luminosidade de sala apagada, e o <b>Roxo Meia-Noite</b>, que entra por cima em degradê. A diferença entre eles é de 1,08 : 1 — desprezível como contraste, decisiva como atmosfera. É o que impede a página de ser azul-marinho chapado. Sobre esse campo, uma só cor tem licença para gritar.</p>
+
+  <div class="swatch">
+    <div style="background:#0B1B3D;color:#EFD5B4"><span>#0B1B3D</span><small>NOTURNO · fundo · 42%</small></div>
+    <div style="background:#1F0A33;color:#EFD5B4"><span>#1F0A33</span><small>ROXO · segundo fundo · 16%</small></div>
+    <div style="background:#FFB800;color:#1F0A33"><span>#FFB800</span><small>FAROL · acento único · 12%</small></div>
+    <div style="background:#EFD5B4;color:#1F0A33"><span>#EFD5B4</span><small>MARFIM · texto · 18%</small></div>
+    <div style="background:#A69773;color:#1F0A33"><span>#A69773</span><small>LATÃO · filete · 6%</small></div>
+    <div style="background:#3B56A6;color:#EFD5B4"><span>#3B56A6</span><small>CENA · massa gráfica · 4%</small></div>
+    <div style="background:#128743;color:#EFD5B4"><span>#128743</span><small>VERDE · terceira voz · 1,5%</small></div>
+    <div style="background:#13387F;color:#EFD5B4"><span>#13387F</span><small>ZUMBI · sobre claro · 0,5%</small></div>
+  </div>
+
+  <div class="h3s" style="margin:38px 0 10px">A regra do acento</div>
+  <p class="sub" style="margin-bottom:24px">O <b>Farol #FFB800</b> tem três usos e nenhum a mais: o <b>Z</b> de Zumbi, o <b>arco principal</b> do símbolo, e um único elemento por peça que precise ser lido antes de todos os outros — a data, a chamada, ou o nome da obra. Se duas coisas estão em Farol na mesma peça, uma delas está errada. O latão faz o trabalho silencioso que o amarelo faria mal.</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th>Cor</th><th>sobre Noturno</th><th>sobre Roxo</th><th>Uso permitido</th></tr></thead>
+    <tbody>
+      <tr><td><b><span class="chip" style="background:#EFD5B4"></span>Marfim</b></td><td>11,99 : 1</td><td>12,92 : 1</td><td>Texto corrido, qualquer corpo</td></tr>
+      <tr><td><b><span class="chip" style="background:#FFB800"></span>Farol</b></td><td>9,78 : 1</td><td>10,53 : 1</td><td>Acento. Legível até em corpo 11</td></tr>
+      <tr><td><b><span class="chip" style="background:#A69773"></span>Latão</b></td><td>5,89 : 1</td><td>6,35 : 1</td><td>Rótulos, filetes, subtítulos</td></tr>
+      <tr><td><b><span class="chip" style="background:#128743"></span>Verde</b></td><td>3,69 : 1</td><td>3,98 : 1</td><td>Só display 24 px+ ou massa gráfica</td></tr>
+      <tr><td><b><span class="chip" style="background:#3B56A6"></span>Cena</b></td><td>2,48 : 1</td><td>2,67 : 1</td><td>Massa gráfica. <b>Nunca texto</b></td></tr>
+      <tr><td><b><span class="chip" style="background:#13387F"></span>Zumbi</b></td><td>1,53 : 1</td><td>1,65 : 1</td><td>Só sobre Marfim, onde dá 7,81 : 1</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="h3s" style="margin:38px 0 10px">Sobre o Brasil</div>
+  <p class="sub" style="margin-bottom:0">Verde, amarelo e azul estão no sistema, mas chegaram por caminhos separados: o verde e o azul são globais registrados da UZP, o amarelo é o acento. Eles só aparecem juntos em um lugar — <b>os três arcos em defasagem</b> — onde a leitura primeira é contraponto, três vozes entrando em imitação, e a segunda é o país. Nessa ordem, nunca invertida. O roxo é justamente o que impede a peça de virar decoração cívica: ele não está na bandeira, e a presença dele obriga o olho a ler um sistema de cor em vez de um símbolo nacional.</p>
+</section>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Dicção</span><i>como a marca fala</i></div>
+  <h2>Serifa de concerto sobre a <i>grotesca da casa</i>.</h2>
+  <p class="sub">A camada utilitária é literalmente a fonte da universidade, já auto-hospedada no servidor da UZP: toda ficha técnica da orquestra fala a mesma língua do site institucional. A camada de display é nossa.</p>
+
+  <div class="typespec">
+    <div class="lbl" style="color:var(--farol)">Display · Instrument Serif</div>
+    <div class="ser" style="font-size:clamp(34px,7vw,62px);line-height:1;margin:6px 0 8px">Allegro con brio</div>
+    <p style="font-size:13px;color:rgba(239,213,180,.62)">Títulos, capas, nomes de obra e de solista. Caixa-alta e baixa, nunca versalete. O itálico é reservado ao <b style="color:var(--farol);font-weight:400">Z</b> e a termos musicais em italiano.</p>
+  </div>
+
+  <div class="typespec">
+    <div class="lbl" style="color:var(--farol)">Utilidade · Roboto Condensed <span style="color:rgba(239,213,180,.5)">— herdada</span></div>
+    <div class="lbl" style="font-size:15px;letter-spacing:.24em;margin:8px 0">REGÊNCIA · JOÃO ROCHA · 16 DE AGOSTO</div>
+    <p style="font-size:13px;color:rgba(239,213,180,.62)">Rótulos, datas, numeração de movimentos, créditos. Caixa-alta, <code>letter-spacing .24em</code>, peso 700.</p>
+  </div>
+
+  <div class="typespec" style="margin-bottom:0">
+    <div class="lbl" style="color:var(--farol)">Texto · Roboto Light</div>
+    <p style="font-size:15px;max-width:58ch;margin:8px 0">Notas de programa, biografias, release. Peso 300, entrelinha 1,7, medida máxima de 60 caracteres — a mesma família do site da universidade, no peso mais leve disponível.</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Gesto</span><i>o símbolo</i></div>
+  <h2>O <i>Arco</i>.</h2>
+  <p class="sub">No logotipo da UZP, o retrato de Zumbi está dentro de um círculo rompido por um crescente que escapa pela direita. É a única geometria pura de todo o sistema da universidade — e, em português, <b>arco</b> é ao mesmo tempo a curva, a arcada do violino e o gesto que produz som. O símbolo já existia na casa; faltava nomeá-lo e dar-lhe a cor certa.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="stage" style="justify-content:center">
+        <svg viewBox="0 0 200 200" width="182" role="img" aria-label="Arco — marca primária">
+          <circle cx="96" cy="106" r="60" fill="none" stroke="#EFD5B4" stroke-width="9"/>
+          <path d="M 46 64 A 76 76 0 0 1 174 58" fill="none" stroke="#FFB800" stroke-width="11" stroke-linecap="round"/>
+          <circle cx="96" cy="106" r="25" fill="#3B56A6"/>
+        </svg>
+      </div>
+      <div class="meta"><span class="tag">Marca</span>
+        <h3>Primária</h3>
+        <p>Círculo em marfim, arco em Farol escapando pela direita, núcleo em azul de cena. O arco tem raio 1,27× o do círculo e nasce fora dele — nunca tangente, nunca concêntrico. Reprodução mínima 14 mm.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage marfim" style="justify-content:center">
+        <svg viewBox="0 0 200 200" width="182" role="img" aria-label="Arco monocromático">
+          <circle cx="96" cy="106" r="60" fill="none" stroke="#13387F" stroke-width="9"/>
+          <path d="M 46 64 A 76 76 0 0 1 174 58" fill="none" stroke="#13387F" stroke-width="11" stroke-linecap="round"/>
+          <circle cx="96" cy="106" r="25" fill="#13387F"/>
+        </svg>
+      </div>
+      <div class="meta"><span class="tag">Ofício</span>
+        <h3>Monocromática</h3>
+        <p>Uma cor só, azul Zumbi sobre marfim. Versão de portaria, carimbo, gravação a laser e documento oficial. Contraste 7,81 : 1 — passa em qualquer impressão, inclusive fax e xerox.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage puro" style="justify-content:center">
+        <svg viewBox="0 0 200 200" width="182" role="img" aria-label="Arcos em defasagem">
+          <g stroke-linecap="round" fill="none">
+            <path d="M 26 152 A 68 68 0 0 1 94 84"   stroke="#128743" stroke-width="9"/>
+            <path d="M 64 162 A 68 68 0 0 1 132 94"  stroke="#FFB800" stroke-width="9"/>
+            <path d="M 102 172 A 68 68 0 0 1 170 104" stroke="#3B56A6" stroke-width="9"/>
+            <circle cx="152" cy="52" r="19" fill="#EFD5B4" stroke="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="meta"><span class="tag">Padrão</span>
+        <h3>Arcos em defasagem</h3>
+        <p>O mesmo arco repetido em atraso: três vozes entrando em imitação. Verde, Farol e azul de cena, sempre nesta ordem e sempre com o mesmo intervalo. Gera fundo, moldura, abertura de vídeo e grafismo de palco. Não substitui a marca.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Tutti</span><i>assinatura por extenso</i></div>
+  <h2>Portarias, editais, <i>fachada</i>.</h2>
+  <p class="sub">O nome da universidade não se abrevia nem se quebra nestas versões. O <b>Z</b> em Farol itálico é o acento fixo do sistema — o mesmo glifo que a UZP desenha a pincel, aqui desenhado a serifa.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="stage">
+        <div class="lock">
+          <div class="lbl" style="color:var(--latao)">Orquestra Sinfônica da</div>
+          <div class="disp" style="font-size:clamp(27px,4.8vw,40px);margin-top:12px">Universidade</div>
+          <div class="disp" style="font-size:clamp(27px,4.8vw,40px)"><span class="zi">Z</span>umbi dos Palmares</div>
+          <svg viewBox="0 0 300 16" style="width:100%;margin-top:16px" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 2 14 Q 150 1 298 14" fill="none" stroke="#FFB800" stroke-width="2.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Canônica</span>
+        <h3>Horizontal primária</h3>
+        <p>Rótulo condensado acima, massa serifada abaixo, arco de Farol como filete de base. Versão obrigatória em papel timbrado, ofício e prestação de contas.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage marfim">
+        <div class="lock" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+          <svg viewBox="0 0 120 120" width="78" style="flex:0 0 auto" aria-hidden="true">
+            <circle cx="57" cy="64" r="37" fill="none" stroke="#13387F" stroke-width="7"/>
+            <path d="M 27 39 A 47 47 0 0 1 107 35" fill="none" stroke="#13387F" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="57" cy="64" r="15" fill="#13387F"/>
+          </svg>
+          <div style="flex:1 1 168px;min-width:0">
+            <div class="lbl" style="color:#13387F">Orquestra Sinfônica</div>
+            <div class="disp" style="font-size:clamp(23px,4vw,32px);color:#13387F;margin-top:6px">Universidade</div>
+            <div class="disp" style="font-size:clamp(23px,4vw,32px);color:#13387F"><i>Z</i>umbi dos Palmares</div>
+          </div>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Documento</span>
+        <h3>Com símbolo · sobre marfim</h3>
+        <p>Monocromática integral: aqui o Z abre mão do Farol. Documento oficial não carrega acento — a hierarquia nele é jurídica, não visual. Espaço de proteção igual ao diâmetro do núcleo.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage" style="align-items:flex-end;justify-content:flex-start">
+        <svg viewBox="0 0 300 220" style="position:absolute;right:-12%;top:-14%;width:76%;opacity:.95" aria-hidden="true">
+          <path d="M 24 208 A 150 150 0 0 1 274 44" fill="none" stroke="#FFB800" stroke-width="24" stroke-linecap="round"/>
+          <path d="M 84 216 A 150 150 0 0 1 292 108" fill="none" stroke="#3B56A6" stroke-width="11" stroke-linecap="round"/>
+        </svg>
+        <div class="lock" style="position:relative">
+          <div class="disp" style="font-size:clamp(30px,5.4vw,46px)">Sinfônica<br><span class="zi">Z</span>umbi</div>
+          <div class="lbl" style="color:var(--latao);margin-top:12px">Universidade Zumbi dos Palmares · São Paulo</div>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Capa</span>
+        <h3>Abertura</h3>
+        <p>O arco em corpo monumental vaza a margem e vira tecido de fundo. Restrito a capa de programa, abertura de vídeo e cartaz. Nunca em documento oficial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Solo</span><i>sigla</i></div>
+  <h2>Cartaz, feed, <i>gravação</i>.</h2>
+  <p class="sub">Compressão máxima para o campo em que a marca compete com Chineke!, Sphinx e as temporadas europeias. A sigla vem primeiro; a função qualifica.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="stage">
+        <div class="lock">
+          <div class="disp" style="font-size:clamp(58px,12vw,104px)">U<span class="zi">Z</span>P</div>
+          <svg viewBox="0 0 300 16" style="width:100%;margin:12px 0 14px" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 2 14 Q 150 1 298 14" fill="none" stroke="#FFB800" stroke-width="2.5"/>
+          </svg>
+          <div class="lbl" style="color:rgba(239,213,180,.82)">Orquestra Sinfônica</div>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Primária</span>
+        <h3>Sigla</h3>
+        <p>O Z italiano em Farol é o que impede a sigla de ler como logotipo genérico de universidade. Arco de base em vez de filete reto. Piso de reprodução: 110 px digital, 32 mm impresso.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage amarelo">
+        <div class="lock" style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+          <div class="disp" style="font-size:clamp(50px,10vw,84px);color:#1F0A33">U<i>Z</i>P</div>
+          <div style="flex:1 1 128px;min-width:0;padding-bottom:10px">
+            <div class="lbl" style="color:#1F0A33">Orquestra<br>Sinfônica</div>
+            <svg viewBox="0 0 160 14" style="width:100%;margin-top:8px" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M 2 12 Q 80 1 158 12" fill="none" stroke="#1F0A33" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Inversão</span>
+        <h3>Sobre Farol</h3>
+        <p>Campo cheio de amarelo, tipografia em roxo. É a única peça em que o acento vira fundo — usar uma vez por campanha, no material de maior alcance. Repetida, perde o efeito.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage" style="justify-content:flex-start;gap:22px;flex-wrap:wrap">
+        <div style="width:118px;height:118px;background:var(--roxo);position:relative;flex:0 0 auto;border:2px solid var(--farol)">
+          <div class="disp" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);
+               font-size:76px;font-style:italic;color:var(--farol)">Z</div>
+        </div>
+        <div style="min-width:0">
+          <div class="lbl" style="color:var(--farol)">Monograma</div>
+          <p style="font-size:12.5px;color:rgba(239,213,180,.62);margin-top:6px">24 px digital<br>8 mm impresso</p>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Mínimo</span>
+        <h3>Monograma Z</h3>
+        <p>Favicon, avatar, selo de gravação, marca-d'água de partitura, carimbo de arquivo. Campo roxo, filete e Z em Farol. Nunca substitui as versões acima em peça principal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="mark lbl"><span>Concerto</span><i>o sistema em campo</i></div>
+  <h2>Como isso chega <i>ao público</i>.</h2>
+
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))">
+    <div class="card">
+      <div class="stage" style="min-height:352px;align-items:flex-start;padding:28px;
+           background:radial-gradient(135% 115% at 6% 2%,#1F0A33 0%,#0B1B3D 58%)">
+        <svg viewBox="0 0 300 300" style="position:absolute;right:-20%;bottom:-16%;width:88%;opacity:.92" aria-hidden="true">
+          <path d="M 16 286 A 200 200 0 0 1 278 34"  fill="none" stroke="#FFB800" stroke-width="32" stroke-linecap="round"/>
+          <path d="M 90 292 A 200 200 0 0 1 292 126" fill="none" stroke="#3B56A6" stroke-width="13" stroke-linecap="round"/>
+          <path d="M 152 296 A 200 200 0 0 1 296 196" fill="none" stroke="#128743" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+        <div class="lock" style="position:relative">
+          <div class="lbl" style="color:var(--farol)">Ensaio aberto · 16.08.2026 · 18h</div>
+          <div class="disp" style="font-size:clamp(34px,6.4vw,52px);margin-top:16px">Mendelssohn<br><span style="font-style:italic">Escocesa</span></div>
+          <svg viewBox="0 0 240 14" style="width:74%;margin:16px 0 14px" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 2 12 Q 120 1 238 12" fill="none" stroke="#A69773" stroke-width="2"/>
+          </svg>
+          <div class="lbl" style="color:rgba(239,213,180,.8);font-size:9.5px">Joseph Bologne · Concerto para violino<br>Regência · João Rocha</div>
+          <div class="disp" style="font-size:26px;margin-top:22px">U<span class="zi">Z</span>P</div>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Cartaz</span>
+        <h3>Temporada</h3>
+        <p>Um só elemento em Farol — a data, porque é a informação que faz a pessoa sair de casa. O nome da obra fica em marfim itálico. Os três arcos ocupam o canto inferior direito sem tocar o texto.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stage marfim" style="min-height:352px;align-items:center;justify-content:center">
+        <div style="text-align:center;max-width:250px">
+          <svg viewBox="0 0 140 140" width="106" aria-hidden="true">
+            <circle cx="67" cy="75" r="43" fill="none" stroke="#13387F" stroke-width="8"/>
+            <path d="M 31 45 A 55 55 0 0 1 125 40" fill="none" stroke="#13387F" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="67" cy="75" r="17" fill="#3B56A6"/>
+          </svg>
+          <div class="disp" style="font-size:30px;color:#13387F;margin-top:14px">U<i>Z</i>P</div>
+          <div class="lbl" style="color:#13387F;margin-top:8px;font-size:9px">Orquestra Sinfônica</div>
+          <svg viewBox="0 0 200 14" style="width:70%;margin:14px auto 0" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 2 12 Q 100 1 198 12" fill="none" stroke="#13387F" stroke-width="2"/>
+          </svg>
+          <p style="font-family:'Roboto Condensed';font-size:10px;letter-spacing:.2em;color:#13387F;margin-top:10px">FUNDADA EM 2026 · SÃO PAULO</p>
+        </div>
+      </div>
+      <div class="meta"><span class="tag">Selo</span>
+        <h3>Partitura e gravação</h3>
+        <p>Única situação em que a composição é centralizada — selo, carimbo e frontispício de edição pedem eixo. Sem Farol: aqui a peça é arquivo, não convite.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>O princípio.</b> A universidade desenha à mão — pincel seco, traço vivo, falha visível. A orquestra desenha em curva — arco tenso, geometria exata. É o mesmo gesto em suportes diferentes: um braço atravessa uma superfície e deixa som. Por isso o arco é a única forma do sistema, e por isso não há nenhuma outra.</p>
+    <p><b>O acento.</b> Roxo e Farol não vieram da universidade — são a assinatura de quem dirige a orquestra. Entram em quantidade medida: o roxo como atmosfera, o amarelo como um único ponto de leitura por peça. Fora dessa disciplina, o sistema perde a autoridade que a herança lhe dá.</p>
+    <p style="font-size:10.5px;font-family:'Roboto Condensed';letter-spacing:.18em;text-transform:uppercase;color:rgba(239,213,180,.45);margin-top:22px">Noturno 0B1B3D · Roxo 1F0A33 · Farol FFB800 · Marfim EFD5B4 · Latão A69773 · Cena 3B56A6 · Zumbi 13387F · Verde 128743</p>
+  </div>
+</footer>
+
+</body>
+</html>
