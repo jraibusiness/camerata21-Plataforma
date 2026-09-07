@@ -214,7 +214,14 @@ arquivo `frontend/_redirects` define as rotas:
 ```
 
 Há uma cópia idêntica em `_redirects`, na raiz, só para referência — **a que vale
-é a de dentro da pasta que você arrasta.**
+é `frontend/_redirects`**, dentro da pasta publicada.
+
+**O `!` no fim de cada regra é obrigatório.** Por padrão o Netlify serve um
+arquivo existente antes de aplicar o redirecionamento. A pasta `frontend/`
+guarda também `admin.html` e `cadastro (1).html`, que são fontes do Apps Script
+e não páginas do site — sem o `!`, `/admin` devolvia o template cru, com
+chamadas `google.script.run` que só funcionam dentro do Google. Foi exatamente
+o que aconteceu ao trocar o deploy manual pela publicação da pasta inteira.
 
 **Para publicar uma mudança de rota:**
 
