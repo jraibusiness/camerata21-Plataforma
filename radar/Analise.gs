@@ -270,20 +270,106 @@ function iaClaude_(prompt, doc) {
   return JSON.parse(r.getContentText()).content.map(function (b) { return b.text || ''; }).join('');
 }
 
-// Diagnóstico: pergunta à própria API quais modelos a chave alcança.
-function listarModelosIA() {
+// ============================================================
+// ESCOLHA DO MODELO
+// ------------------------------------------------------------
+// Nome de modelo muda com frequência. Em vez de fixar um no código
+// e quebrar meses depois, a plataforma pergunta à API e escolhe.
+//
+// O que esta tarefa exige, e que descarta a maioria dos modelos:
+//   · aceitar PDF como entrada (as famílias flash e pro aceitam);
+//   · contexto longo — edital passa de 50 mil caracteres;
+//   · devolver JSON com fidelidade, em temperatura baixa;
+//   · responder rápido, porque é interação de gaveta, não lote;
+//   · caber na camada gratuita.
+// Isso aponta para FLASH: pro é caro e lento demais para o ganho,
+// lite erra mais em extração de texto jurídico longo.
+// ============================================================
+
+// Famílias que não servem para ler edital, por mais capazes que sejam.
+var IA_FAMILIAS_FORA = /tts|robotics|computer-use|lyria|imagen|veo|embedding|aqa|deep-research|antigravity|image|audio|native-audio|live/i;
+
+function pontuarModelo_(nome) {
+  if (IA_FAMILIAS_FORA.test(nome)) return -1000;
+  var p = 0;
+  if (/flash/i.test(nome) && !/lite/i.test(nome)) p += 100;   // o ponto ideal
+  else if (/flash.*lite|lite.*flash/i.test(nome)) p += 45;
+  else if (/pro/i.test(nome)) p += 60;
+  else if (/gemma/i.test(nome)) p += 10;
+  // Versão: maior manda. O minor pesa menos que o major, senão 2.5
+  // empata com 3.1 — e o minor vai capado, porque "gemma-3-27b" traria 27.
+  var v = nome.match(/(\d+)(?:[.-](\d+))?/);
+  if (v) p += Math.min(Number(v[1]), 9) * 10 + Math.min(v[2] ? Number(v[2]) : 0, 9);
+  if (/preview|exp|experimental/i.test(nome)) p -= 12;        // estável primeiro
+  if (/\d{2}-\d{4}|\d{4}-\d{2}/.test(nome)) p -= 4;         // apelido datado
+  return p;
+}
+
+function modelosDisponiveis_() {
   var key = segredo_('GEMINI_API_KEY') || segredo_('GEMINI_API');
-  if (!key) { Logger.log('Falta a propriedade GEMINI_API_KEY.'); return; }
-  var r = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models',
+  if (!key) throw new Error('Falta a propriedade GEMINI_API_KEY (ou GEMINI_API).');
+  var r = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200',
     { headers: { 'x-goog-api-key': key }, muteHttpExceptions: true });
-  if (r.getResponseCode() >= 400) { Logger.log('Erro ' + r.getResponseCode() + ': ' + r.getContentText().slice(0, 400)); return; }
+  if (r.getResponseCode() >= 400) {
+    throw new Error('A API respondeu ' + r.getResponseCode() + ': ' + r.getContentText().slice(0, 300));
+  }
   var d = JSON.parse(r.getContentText());
-  Logger.log('Modelos que a sua chave alcança e que geram texto:\n');
-  (d.models || []).forEach(function (m) {
-    if ((m.supportedGenerationMethods || []).indexOf('generateContent') < 0) return;
-    Logger.log('  ' + m.name.replace('models/', '') + '   ' + (m.displayName || ''));
+  return (d.models || [])
+    .filter(function (m) { return (m.supportedGenerationMethods || []).indexOf('generateContent') >= 0; })
+    .map(function (m) {
+      var nome = m.name.replace('models/', '');
+      return { nome: nome, rotulo: m.displayName || '', entrada: m.inputTokenLimit || 0,
+               pontos: pontuarModelo_(nome) };
+    })
+    .sort(function (a, b) { return b.pontos - a.pontos; });
+}
+
+// Lista os modelos com a recomendação no topo, já explicada.
+function listarModelosIA() {
+  var lista;
+  try { lista = modelosDisponiveis_(); }
+  catch (e) { Logger.log('✗ ' + e.message); return; }
+
+  var bons = lista.filter(function (m) { return m.pontos > -1000; });
+  if (!bons.length) { Logger.log('Nenhum modelo de texto disponível para esta chave.'); return; }
+
+  var top = bons[0];
+  Logger.log('╔══════════════════════════════════════════════════════════╗');
+  Logger.log('  RECOMENDADO:  ' + top.nome);
+  Logger.log('  ' + (top.rotulo || '') +
+             (top.entrada ? '  ·  contexto de ' + top.entrada.toLocaleString('pt-BR') + ' tokens' : ''));
+  Logger.log('╚══════════════════════════════════════════════════════════╝');
+  Logger.log('');
+  Logger.log('Por quê: ler edital pede PDF na entrada, contexto longo, JSON fiel e');
+  Logger.log('resposta rápida, dentro da camada gratuita. A família flash atende os');
+  Logger.log('cinco; pro custa caro para o ganho e lite erra mais em texto jurídico.');
+  Logger.log('');
+  Logger.log('Para aplicar sem digitar nada, rode:  usarModeloRecomendado');
+  Logger.log('');
+  Logger.log('─── outras opções, da melhor para a pior nesta tarefa ───');
+  bons.slice(1, 12).forEach(function (m, i) {
+    Logger.log('  ' + String(i + 2).padStart(2) + '. ' + m.nome +
+               (m.rotulo ? '   ' + m.rotulo : ''));
   });
-  Logger.log('\nCopie um destes para ia.modelo na aba CONFIG.');
+  var fora = lista.length - bons.length;
+  if (fora) Logger.log('\n(' + fora + ' modelos de voz, imagem, música, robótica e pesquisa ' +
+                       'foram omitidos: não servem para ler edital.)');
+}
+
+// Escreve o modelo recomendado direto na aba CONFIG.
+function usarModeloRecomendado() {
+  var lista;
+  try { lista = modelosDisponiveis_(); }
+  catch (e) { Logger.log('✗ ' + e.message); return; }
+  var bons = lista.filter(function (m) { return m.pontos > -1000; });
+  if (!bons.length) { Logger.log('Nenhum modelo adequado disponível.'); return; }
+  var antes = cfg('ia.modelo', '(vazio)');
+  cfgSet('ia.modelo', bons[0].nome);
+  cfgSet('ia.provedor', 'gemini');
+  Logger.log('✅ ia.modelo: ' + antes + '  →  ' + bons[0].nome);
+  Logger.log('   ia.provedor: gemini');
+  Logger.log('\nPode abrir o Radar e usar o botão "Ler agora" numa linha qualquer.');
+  return bons[0].nome;
 }
 
 function extrairJSON_(txt) {
