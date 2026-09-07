@@ -41,7 +41,7 @@ const CABECALHOS = {
             'Eleg.','Ader.','Valor','Facil.','Prob.','SCORE','PRI',
             'Preparo (dias)','Gatilho manual','DATA-GATILHO','Dias p/ gatilho','Semáforo',
             'Responsável','Status','Próxima ação','Notas','Fonte',
-            'Link','Documento','Adiado até','Atualizado em'],
+            'Link','Documento','Leitura','Adiado até','Atualizado em'],
 
   'CAMINHO CRÍTICO': ['ID','Fase','Ordem','Entregável','Por que existe','Início','Fim','Dias p/ fim',
                       'Responsável','Depende de','Status','% Concluído','Semáforo','Notas','Atualizado em'],

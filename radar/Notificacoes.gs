@@ -633,6 +633,7 @@ function instalarGatilhos() {
 function rotinaNoturna() {
   recalcularTudo();
   limparOTPs_();
+  try { conferirLinks(); } catch (e) { Logger.log('conferência de leitura: ' + e); }
   try { sincronizarCalendario(); } catch (e) { Logger.log('calendário: ' + e); }
 }
 

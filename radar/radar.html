@@ -377,6 +377,21 @@ main{padding:clamp(20px,3.5vw,34px) clamp(14px,3vw,28px) 96px;max-width:1340px;m
 .ia-rodape{font-size:11px;color:var(--dim-2);margin-top:14px;line-height:1.6}
 .ia-resp{background:rgba(0,0,0,.26);border-left:3px solid var(--latao);padding:14px 16px;
   font-size:13px;line-height:1.7;margin-top:12px;white-space:pre-wrap}
+/* Carregando: os três arcos giram. O gesto da marca vira o sinal de que a
+   máquina está trabalhando — e as etapas são reais, não barra de progresso falsa. */
+.ia-lendo{display:flex;align-items:center;gap:18px;padding:20px 0}
+.ia-lendo .giro{flex:0 0 auto;animation:girar 1.5s linear infinite;transform-origin:50% 50%}
+@keyframes girar{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.ia-lendo .giro{animation-duration:4s}}
+.ia-lendo .txt{flex:1 1 auto;min-width:0}
+/* NÃO usar ".etapa" aqui: esse nome já é das etapas do caminho crítico, que são
+   display:grid — o texto caía numa célula de 32px e quebrava em três linhas. */
+.ia-lendo .ia-etapa{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--farol);line-height:1.5}
+.ia-lendo .ia-sub{font-size:12px;color:var(--dim-2);margin-top:6px;line-height:1.6}
+.ia-lendo .ia-relogio{font-size:12px;font-variant-numeric:tabular-nums;color:var(--latao);margin-top:6px}
+.ia-alerta{background:rgba(255,184,0,.1);border-left:3px solid var(--farol);padding:12px 14px;
+  font-size:12.5px;line-height:1.65;margin-bottom:14px}
 .acoes-drawer{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
 .acoes-drawer .btn{width:auto;flex:1;min-width:140px}
 
@@ -996,10 +1011,22 @@ function abrirRadar(id) {
         ? '<button class="btn mini ghost" id="iaLer">Ler agora</button>'
         : '') + '</div>' +
     '<div id="iaCorpo">' +
+      (/FRACA|ERRO/i.test(r.leitura || '')
+        ? '<div class="ia-alerta"><b>Esta página não dá para ler.</b><br>' +
+          'A varredura da noite marcou: <b>' + esc(r.leitura) + '</b>. ' +
+          (/FRACA/i.test(r.leitura)
+            ? 'O site monta o conteúdo por JavaScript, então o texto não vem no HTML. '
+            : 'O endereço respondeu com erro. ') +
+          'Baixe o PDF do edital, suba no Google Drive e cole o link no campo ' +
+          '<b>Documento</b>, acima. A leitura aceita PDF direto.</div>'
+        : '') +
       ((r.link || r.documento)
         ? '<p style="font-size:12.5px;color:var(--dim-2);line-height:1.7">' +
           'A plataforma abre o edital, lê o texto e extrai dez campos factuais, citando o trecho ' +
-          'de origem. Não pontua: os cinco critérios de score continuam seus.</p>'
+          'de origem. Não pontua: os cinco critérios de score continuam seus.' +
+          (r.leitura && !/FRACA|ERRO/i.test(r.leitura)
+            ? '<br><span style="color:var(--latao)">Conferido na varredura: ' + esc(r.leitura) + '</span>' : '') +
+          '</p>'
         : '<p style="font-size:12.5px;color:var(--dim-2)">Cadastre um link ou documento acima para poder ler.</p>') +
     '</div></div>';
 
@@ -1127,15 +1154,43 @@ function ligarIA(id) {
   }).withFailureHandler(function () {}).analisarEditalSeExistir(TOKEN, id);
 }
 
+// Etapas reais, na ordem em que o servidor executa. Não é barra de progresso
+// falsa: cada texto nomeia o que está de fato acontecendo naquele momento.
+var IA_ETAPAS = [
+  [0,  'Abrindo o documento',   'Buscando o edital no site do órgão.'],
+  [4,  'Lendo o texto',         'Limpando menu e rodapé, ficando só com o conteúdo.'],
+  [9,  'Extraindo os campos',   'O modelo está lendo e localizando os dez campos.'],
+  [22, 'Ainda trabalhando',     'Edital longo leva mais. Não feche a gaveta.'],
+  [45, 'Quase lá',              'Passou do usual, mas segue em andamento.']
+];
+
 function lerComIA(id, forcar) {
   var bt = $('#iaLer');
   bt.disabled = true; bt.textContent = 'Lendo…';
-  $('#iaCorpo').innerHTML = '<p style="font-size:12.5px;color:var(--dim-2)">' +
-    'Abrindo o documento e lendo. Um edital longo leva de dez a trinta segundos.</p>';
+  $('#iaCorpo').innerHTML =
+    '<div class="ia-lendo"><span class="giro">' + arcoMarca(46, true) + '</span>' +
+    '<div class="txt"><div class="ia-etapa" id="iaEtapa">Abrindo o documento</div>' +
+    '<div class="ia-sub" id="iaSub">Buscando o edital no site do órgão.</div>' +
+    '<div class="ia-relogio" id="iaRelogio">0s</div></div></div>';
+
+  var t0 = Date.now();
+  var cron = setInterval(function () {
+    var s = Math.round((Date.now() - t0) / 1000);
+    var r = $('#iaRelogio'); if (!r) { clearInterval(cron); return; }
+    r.textContent = s + 's';
+    for (var i = IA_ETAPAS.length - 1; i >= 0; i--) {
+      if (s >= IA_ETAPAS[i][0]) {
+        $('#iaEtapa').textContent = IA_ETAPAS[i][1];
+        $('#iaSub').textContent = IA_ETAPAS[i][2];
+        break;
+      }
+    }
+  }, 1000);
+
   google.script.run.withSuccessHandler(function (d) {
-    bt.disabled = false; pintarIA(id, d);
+    clearInterval(cron); bt.disabled = false; pintarIA(id, d);
   }).withFailureHandler(function (e) {
-    bt.disabled = false; bt.textContent = 'Tentar de novo';
+    clearInterval(cron); bt.disabled = false; bt.textContent = 'Tentar de novo';
     $('#iaCorpo').innerHTML = '<div class="ia-aviso">' + esc(e.message) + '</div>';
   }).analisarEdital(TOKEN, id, !!forcar);
 }
@@ -1165,7 +1220,9 @@ function pintarIA(id, d) {
   $('#iaPerg').onclick = function () {
     var q = $('#iaP').value.trim(); if (!q) return;
     var b = this; b.disabled = true; b.textContent = 'Consultando…';
-    $('#iaRespArea').innerHTML = '';
+    $('#iaRespArea').innerHTML = '<div class="ia-lendo"><span class="giro">' +
+      arcoMarca(34, true) + '</span><div class="txt"><div class="ia-etapa">Consultando o edital</div>' +
+      '<div class="ia-sub">Relendo o documento para responder só com o que está escrito nele.</div></div></div>';
     google.script.run.withSuccessHandler(function (r) {
       b.disabled = false; b.textContent = 'Perguntar';
       $('#iaRespArea').innerHTML = '<div class="ia-resp">' + esc(r.resposta) + '</div>';

@@ -367,6 +367,31 @@ Três verificações automáticas rodam sobre a extração: divergência de praz
 planilha e edital; menção a "Certidão Negativa" quando a nossa federal é CPEN; e
 execução que ultrapasse 20/03/2027.
 
+### Quando a página não dá para ler
+
+Nem todo site entrega o edital para um robô. Alguns montam o conteúdo por
+JavaScript e devolvem um HTML quase vazio; outros interpõem uma casca de acesso
+que responde a mesma página de 1 KB para qualquer endereço — é o caso do
+`proac.sp.gov.br`, que faz isso **inclusive na URL do próprio PDF**.
+
+Mandar 85 caracteres ao modelo produziria um resumo inventado com cara de
+verdade. Então a plataforma **para** em vez de inventar, e explica o que fazer.
+
+Isso é tratado em três camadas, para valer também nos editais que ainda virão:
+
+1. **No download.** Abaixo de 3.000 caracteres de texto útil, ou quando a URL
+   termina em `.pdf` mas volta HTML, a leitura falha com instrução — não com
+   erro técnico.
+2. **Na varredura.** `conferirLinks()` percorre o RADAR, mede cada link e
+   escreve o veredicto na coluna **Leitura**: `ok · 80 mil car.`, `PDF · 420 KB`,
+   `FRACA — anexar PDF` ou `ERRO 404`. Roda sob demanda e toda noite às 23h.
+3. **Na gaveta.** Edital marcado como fraco mostra o aviso **antes** de você
+   clicar em Ler agora, com o caminho: baixe o PDF, suba no Drive, cole o link
+   no campo Documento.
+
+Assim a pergunta "esse link dá para ler?" é respondida quando o edital entra, e
+não com o prazo em cima.
+
 ### Configurar
 
 1. Gere uma chave em [aistudio.google.com/apikey](https://aistudio.google.com/apikey).

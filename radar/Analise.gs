@@ -157,15 +157,92 @@ function baixarDocumento_(url) {
                     'baixe o PDF, jogue no Drive e cole o link no campo Documento.');
   }
   var tipo = String(r.getHeaders()['Content-Type'] || r.getHeaders()['content-type'] || '');
-  if (/pdf/i.test(tipo) || /\.pdf($|\?)/i.test(url)) {
+  var pareceePdf = /\.pdf($|\?)/i.test(url);
+
+  if (/pdf/i.test(tipo)) {
     var bytes = r.getBlob().getBytes();
     if (bytes.length > 8 * 1024 * 1024) {
-      throw new Error('PDF muito grande (' + Math.round(bytes.length / 1048576) + ' MB). ' +
-                      'Limite de 8 MB.');
+      throw new Error('PDF muito grande (' + Math.round(bytes.length / 1048576) + ' MB). Limite de 8 MB.');
     }
-    return { tipo: 'pdf', dados: Utilities.base64Encode(bytes) };
+    return { tipo: 'pdf', dados: Utilities.base64Encode(bytes), tamanho: bytes.length };
   }
-  return { tipo: 'texto', dados: limparHTML_(r.getContentText()) };
+
+  var texto = limparHTML_(r.getContentText());
+
+  // A URL termina em .pdf mas voltou HTML: o site interpôs uma casca ou um
+  // portal de acesso. É o caso do proac.sp.gov.br, que devolve a mesma página
+  // de 1 KB para qualquer endereço.
+  if (pareceePdf) {
+    throw new Error('O endereço termina em .pdf, mas o servidor devolveu uma página HTML — ' +
+      'o site interpôs uma casca de acesso. Baixe o arquivo no navegador, suba no Drive ' +
+      'e cole o link de compartilhamento no campo Documento.');
+  }
+
+  // Página montada por JavaScript: o HTML chega quase vazio. Mandar 85
+  // caracteres ao modelo produziria um resumo inventado com ar de verdade,
+  // que é o pior resultado possível num painel de prazos.
+  if (texto.length < LIMIAR_TEXTO) {
+    throw new Error('A página devolveu só ' + texto.length + ' caracteres de texto — ' +
+      'não dá para ler. Ela é montada por JavaScript, e o conteúdo não vem no HTML. ' +
+      'Prefiro parar a inventar: baixe o PDF do edital, suba no Google Drive e cole ' +
+      'o link no campo Documento, logo acima. A leitura aceita PDF direto.');
+  }
+  return { tipo: 'texto', dados: texto, tamanho: texto.length };
+}
+
+// Abaixo disto uma página não tem edital nenhum — tem menu e rodapé.
+var LIMIAR_TEXTO = 3000;
+
+// ============================================================
+// CONFERÊNCIA DE LEITURA — a mitigação para os próximos editais
+// ------------------------------------------------------------
+// Toda vez que um edital novo entra, a pergunta "esse link dá para
+// ler?" só apareceria na hora errada: com o prazo em cima. Esta
+// varredura antecipa a resposta e escreve o veredicto na coluna
+// Leitura. Roda sob demanda e todo dia às 23h.
+// ============================================================
+function conferirLinks() {
+  var sh = aba_(ABAS.radar);
+  var cab = CABECALHOS[ABAS.radar];
+  var col = cab.indexOf('Leitura') + 1;
+  var linhas = lerRadar_();
+  var resumo = { ok: 0, fraca: 0, erro: 0, sem: 0 };
+
+  linhas.forEach(function (r) {
+    if (r.dormente) { sh.getRange(r.linha, col).setValue(''); return; }
+    var v = veredictoLeitura_(r);
+    sh.getRange(r.linha, col).setValue(v.texto);
+    resumo[v.classe]++;
+  });
+
+  Logger.log('Leitura dos ' + linhas.length + ' editais:');
+  Logger.log('  ' + resumo.ok + ' prontos para ler');
+  Logger.log('  ' + resumo.fraca + ' com página fraca — precisam de PDF anexado');
+  Logger.log('  ' + resumo.erro + ' com link com erro');
+  Logger.log('  ' + resumo.sem + ' sem link cadastrado');
+  if (resumo.fraca || resumo.erro) {
+    Logger.log('\nOs marcados aparecem com aviso na gaveta, antes de você tentar ler.');
+  }
+  return resumo;
+}
+
+function veredictoLeitura_(r) {
+  var alvo = r.documento || r.link;
+  if (!alvo) return { texto: '—  sem link', classe: 'sem' };
+  try {
+    var d = baixarDocumento_(alvo);
+    if (d.tipo === 'pdf') {
+      return { texto: 'PDF · ' + Math.round(d.tamanho / 1024) + ' KB', classe: 'ok' };
+    }
+    return { texto: 'ok · ' + Math.round(d.tamanho / 1000) + ' mil car.', classe: 'ok' };
+  } catch (e) {
+    var m = String(e.message);
+    if (/caracteres de texto|casca de acesso/.test(m)) {
+      return { texto: 'FRACA — anexar PDF', classe: 'fraca' };
+    }
+    var http = m.match(/HTTP (\d+)/);
+    return { texto: 'ERRO' + (http ? ' ' + http[1] : '') , classe: 'erro' };
+  }
 }
 
 function limparHTML_(html) {
