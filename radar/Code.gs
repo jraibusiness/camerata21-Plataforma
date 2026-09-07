@@ -25,6 +25,11 @@ function setupRadar() {
   Object.keys(CABECALHOS).forEach(function (nome) {
     var sh = ss.getSheetByName(nome) || ss.insertSheet(nome);
     var cab = CABECALHOS[nome];
+    // Aba nova nasce com 26 colunas; a RADAR precisa de 30. Sem isto, o
+    // setValues do cabeçalho estoura com "coordenadas inválidas".
+    if (sh.getMaxColumns() < cab.length) {
+      sh.insertColumnsAfter(sh.getMaxColumns(), cab.length - sh.getMaxColumns());
+    }
     sh.getRange(1, 1, 1, cab.length).setValues([cab])
       .setFontWeight('bold').setBackground('#1F0A33').setFontColor('#FFB800')
       .setVerticalAlignment('middle');
