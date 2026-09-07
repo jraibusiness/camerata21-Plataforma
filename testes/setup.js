@@ -33,11 +33,11 @@ const corpo = `
   if (sheets['Página1']) erro('a aba padrao Página1 nao foi removida');
 
   var esperado = { 'RADAR': 23, 'CAMINHO CRITICO': 20, 'PROJETOS': 11, 'DOSSIE': 15, 'EQUIPE': 2, 'CONFIG': 15 };
-  [['RADAR',23],['CAMINHO CRÍTICO',20],['PROJETOS',11],['DOSSIÊ',15],['EQUIPE',2]].forEach(function(par){
+  [['RADAR',23],['CAMINHO CRÍTICO',20],['PROJETOS',11],['DOSSIÊ',20],['EQUIPE',2]].forEach(function(par){
     var n = sheets[par[0]].getLastRow() - 1;
     if (n !== par[1]) erro(par[0] + ': semeou ' + n + ' linhas, esperado ' + par[1]);
   });
-  ok('semeadura completa: 23 editais, 20 etapas, 11 projetos, 15 documentos, 2 pessoas');
+  ok('semeadura completa: 23 editais, 20 etapas, 11 projetos, 20 documentos, 2 pessoas');
 
   // as colunas calculadas tem de estar preenchidas depois do recalculo
   var cab = CABECALHOS['RADAR'];

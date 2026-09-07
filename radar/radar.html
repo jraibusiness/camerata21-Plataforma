@@ -285,6 +285,10 @@ main{padding:clamp(20px,3.5vw,34px) clamp(14px,3vw,28px) 96px;max-width:1340px;m
 .doc{display:grid;grid-template-columns:1fr 120px 92px;gap:18px;align-items:center;
   padding:14px 0;border-bottom:1px solid rgba(166,151,115,.15);cursor:pointer}
 .doc:hover{background:rgba(239,213,180,.04)}
+.doc.trava{border-left:4px solid var(--sirene);padding-left:14px}
+.selo{display:inline-block;font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;
+  font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sirene);
+  border:1px solid var(--sirene);padding:2px 6px;vertical-align:3px;margin-left:8px}
 .doc h4{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:17px;line-height:1.25}
 .doc .quem{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
   letter-spacing:.16em;text-transform:uppercase;color:var(--latao);margin-top:6px}
@@ -697,6 +701,7 @@ function renderKpis() {
     kpi(k.filaHoje, 'Na fila hoje', grau(k.filaHoje), 'editais, caminho e dossiê') +
     kpi(k.semDono, 'Sem responsável', grau(k.semDono, 'alerta'), 'linha sem dono se perde') +
     kpi(k.etapasAtrasadas, 'Etapas atrasadas', grau(k.etapasAtrasadas, 'alerta'), 'caminho crítico') +
+    kpi(k.travando, 'Travando submissão', grau(k.travando, 'alerta'), 'nenhum edital pode ir hoje') +
     kpi(k.docsVencendo, 'Docs vencendo 30d', grau(k.docsVencendo), 'certidão vencida inabilita') +
     kpi(k.prioridadeA, 'Prioridade A ativa', 'info', 'score 12 ou mais, elegível') +
     kpi(k.bloqueados, 'Bloqueados', 'info', 'esperam PRONAC ou ProAC') +
@@ -856,18 +861,26 @@ function renderCaminho() {
 
 // ── Dossiê ──
 function renderDossie() {
-  var l = E.dossie.slice().sort(function (a, b) {
-    var x = a.diasVencer === null ? 99999 : a.diasVencer, y = b.diasVencer === null ? 99999 : b.diasVencer;
-    return x - y;
-  });
+  function peso(d) {
+    var trava = d.bloqueia && ((d.diasVencer !== null && d.diasVencer < 0) || d.ausente);
+    if (trava) return -100000 + (d.diasVencer === null ? 0 : d.diasVencer);
+    return d.diasVencer === null ? 99999 : d.diasVencer;
+  }
+  var l = E.dossie.slice().sort(function (a, b) { return peso(a) - peso(b); });
   $('#dossie').innerHTML = l.map(function (d) {
     var k = d.diasVencer === null ? 'na' : (d.diasVencer < 0 ? 'venc' : (d.diasVencer <= 30 ? 'perto' : ''));
-    return '<div class="doc" data-id="' + esc(d.id) + '">' +
-      '<div><h4>' + esc(d.documento) + '</h4><div class="quem">' + esc(d.titular) +
-        ' · ' + esc(d.onde) + ' · ' + esc(d.responsavel || 'sem dono') + '</div>' +
+    var trava = d.bloqueia && ((d.diasVencer !== null && d.diasVencer < 0) || d.ausente);
+    return '<div class="doc' + (trava ? ' trava' : '') + '" data-id="' + esc(d.id) + '">' +
+      '<div><h4>' + esc(d.documento) +
+        (trava ? ' <span class="selo">trava submissão</span>' : '') + '</h4>' +
+        '<div class="quem">' + esc(d.titular) + ' · ' + esc(d.onde) +
+        ' · ' + esc(d.responsavel || 'sem dono') +
+        (d.ondeEmitir ? ' · <a class="linkinha" href="https://' + esc(d.ondeEmitir.replace(/^https?:\/\//,'')) +
+          '" target="_blank" rel="noopener" onclick="event.stopPropagation()">emitir ↗</a>' : '') +
+        '</div>' +
         (d.obs ? '<div class="obs">' + esc(d.obs) + '</div>' : '') + '</div>' +
-      '<div class="val">' + (d.validadeBR || 'sem validade') + '</div>' +
-      '<div class="prazo ' + k + '">' + (d.diasVencer === null ? 'permanente' :
+      '<div class="val">' + (d.validadeBR || (d.ausente ? 'ausente' : 'sem validade')) + '</div>' +
+      '<div class="prazo ' + k + '">' + (d.diasVencer === null ? (d.ausente ? 'falta' : 'permanente') :
         (d.diasVencer < 0 ? 'vencido' : d.diasVencer + 'd')) + '</div></div>';
   }).join('');
   $$('.doc').forEach(function (el) { el.onclick = function () { abrir(el.dataset.id); }; });
@@ -1025,7 +1038,9 @@ function abrirCaminho(id) {
 function abrirDossie(id) {
   var d = E.dossie.filter(function (x) { return x.id === id; })[0]; if (!d) return;
   var h = '<h3>' + esc(d.documento) + '</h3><div class="orgx">' + esc(d.titular) + '</div>';
-  if (d.obs) h += '<div class="aviso ok" style="margin-bottom:22px">' + esc(d.obs) + '</div>';
+  if (d.ondeEmitir) h += '<div class="docs"><a href="https://' +
+    esc(d.ondeEmitir.replace(/^https?:\/\//,'')) + '" target="_blank" rel="noopener">Emitir agora ↗</a></div>';
+  if (d.obs) h += '<div class="aviso' + (d.bloqueia ? '' : ' ok') + '" style="margin-bottom:22px">' + esc(d.obs) + '</div>';
   h += '<label class="campo"><span>Validade</span><input id="dVal" type="date" value="' + esc(d.validade) + '">' +
     '<span class="dica">Vazio = documento permanente. Com validade preenchida, ele entra na fila trinta dias antes.</span></label>';
   h += '<label class="campo"><span>Onde está</span><input id="dOnde" value="' + esc(d.onde) + '"></label>';

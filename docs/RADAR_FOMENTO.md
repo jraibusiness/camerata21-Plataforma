@@ -411,7 +411,21 @@ Prob. · ⟨SCORE⟩ · ⟨PRI⟩ · Preparo · Gatilho manual · ⟨DATA-GATILH
 
 **CAMINHO CRÍTICO** — 20 etapas, Fase 0 → META. `% Concluído` alimenta as barras por fase.
 **PROJETOS** — 11 peças reutilizáveis. Nada se escreve do zero.
-**DOSSIÊ** — 15 documentos. Validade vazia = permanente. Preenchida = entra na fila 30 dias antes.
+**DOSSIÊ** — 20 documentos, 12 colunas. Validade vazia = permanente; preenchida =
+entra na fila 30 dias antes.
+
+- `Bloqueia submissão` é a coluna que muda o jogo. Documento marcado `SIM` que
+  esteja **vencido ou ausente** trava qualquer submissão — não adianta o projeto
+  estar pronto. Esses itens sobem ao topo do dossiê, ganham selo vermelho e
+  alimentam o KPI **Travando submissão**.
+- `Onde emitir` vira um botão *Emitir agora ↗*. Certidão vencida se resolve em
+  minutos, online e de graça: o atrito era não ter o link à mão.
+- O **mandato da representante legal** entra como documento com validade
+  (20/03/2027). Usa a mesma máquina de vencimento e avisa com antecedência que
+  todo edital assinado ou executado depois dessa data precisa de recondução.
+- **Números de controle, códigos de autenticidade, CNPJ, RG e CPF ficam fora do
+  `Seed.gs`.** Este repositório é público; esses campos vão preenchidos à mão na
+  planilha, que é privada e protegida por código de acesso.
 **EQUIPE** — quem acessa e quem recebe o quê.
 **CONFIG · LOG · OTP** — infraestrutura. O LOG guarda toda alteração: quem, o quê, quando, de → para.
 

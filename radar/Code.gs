@@ -94,8 +94,10 @@ function mapCaminhoSeed_(d, id) {
 function mapProjetoSeed_(d, id) {
   return [id, d[0], d[1], d[2], d[3], d[4], d[5], new Date()];
 }
+// [documento, titular, validade, onde está, onde emitir, responsável,
+//  bloqueia submissão, observação]
 function mapDossieSeed_(d, id) {
-  return [id, d[0], d[1], dt_(d[2]), '', '', d[3], d[4], d[5], new Date()];
+  return [id, d[0], d[1], dt_(d[2]), '', '', d[3], d[4], d[5], d[6], d[7], new Date()];
 }
 
 function formatarPlanilha_(ss) {
@@ -259,7 +261,12 @@ function lerDossie_() {
       id: o['ID'], linha: o._linha, documento: o['Documento'], titular: o['Titular'],
       validade: iso_(v), validadeBR: fmtBR_(v), diasVencer: d,
       semaforo: v ? semaforo_(d) : SEM.NA,
-      onde: o['Onde está'], responsavel: o['Responsável'], obs: o['Observação'],
+      onde: o['Onde está'], ondeEmitir: String(o['Onde emitir'] || '').trim(),
+      responsavel: o['Responsável'], obs: o['Observação'],
+      // Documento que bloqueia submissão e está vencido ou ausente trava o
+      // edital inteiro: não adianta o projeto estar pronto.
+      bloqueia: /^s/i.test(String(o['Bloqueia submissão'] || '')),
+      ausente: !v && /ausente|pendente|não consta|nao consta|a confirmar/i.test(String(o['Observação'] || '') + String(o['Onde está'] || '')),
       semValidade: !v
     };
   });
@@ -373,14 +380,20 @@ function montarFila_(opts) {
   });
 
   lerDossie_().forEach(function (x) {
-    if (x.diasVencer === null || x.diasVencer > janelaDossie) return;
+    var trava = x.bloqueia && x.ausente;
+    if (!trava && (x.diasVencer === null || x.diasVencer > janelaDossie)) return;
     itens.push({
       fonteAba: 'DOSSIÊ', id: x.id, titulo: x.documento, sub: x.titular,
-      motivo: x.diasVencer < 0 ? 'VENCIDO há ' + Math.abs(x.diasVencer) + 'd' : 'Vence em ' + x.diasVencer + 'd',
-      peso: x.diasVencer < 0 ? 0 : 1, pri: 'A', score: 0,
-      responsavel: x.responsavel, acao: 'Renovar o documento', status: x.onde,
-      prazoBR: x.validadeBR, gatilhoBR: '', dias: x.diasVencer,
-      semDono: !String(x.responsavel || '').trim(), link: ''
+      motivo: trava ? 'AUSENTE — trava submissão'
+            : (x.diasVencer < 0 ? 'VENCIDO há ' + Math.abs(x.diasVencer) + 'd' : 'Vence em ' + x.diasVencer + 'd'),
+      peso: (trava || x.diasVencer < 0) ? 0 : 1, pri: 'A', score: 0,
+      responsavel: x.responsavel, acao: x.bloqueia
+        ? 'Emitir ou renovar — sem este documento nenhum edital pode ser submetido'
+        : 'Renovar o documento',
+      status: x.onde, prazoBR: x.validadeBR, gatilhoBR: '',
+      dias: x.diasVencer === null ? -1 : x.diasVencer,
+      semDono: !String(x.responsavel || '').trim(),
+      link: x.ondeEmitir ? 'https://' + x.ondeEmitir.replace(/^https?:\/\//,'') : ''
     });
   });
 
@@ -400,6 +413,10 @@ function kpis_(radar, caminho, dossie, fila) {
     gatilhosVencidos: ativos.filter(function (x) { return !x.emEspera && x.diasGatilho !== null && x.diasGatilho < 0; }).length,
     semDono:     ativos.filter(function (x) { return x.semDono && x.pri !== 'C'; }).length,
     reprogramar: ativos.filter(function (x) { return x.cicloEncerrado; }).length,
+    // O número que manda no dossiê: quantos documentos impedem QUALQUER submissão hoje.
+    travando: dossie.filter(function (x) {
+      return x.bloqueia && ((x.diasVencer !== null && x.diasVencer < 0) || x.ausente);
+    }).length,
     docsVencendo: dossie.filter(function (x) { return x.diasVencer !== null && x.diasVencer <= cfgNum('alerta.dossieDias', 30); }).length,
     etapasAtrasadas: caminho.filter(function (x) { return x.atrasado; }).length,
     caminhoPct: caminho.length ? Math.round(caminho.reduce(function (a, x) { return a + x.pct; }, 0) / caminho.length) : 0,

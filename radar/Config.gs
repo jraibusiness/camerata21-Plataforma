@@ -49,7 +49,7 @@ const CABECALHOS = {
                'Observação','Atualizado em'],
 
   'DOSSIÊ': ['ID','Documento','Titular','Validade','Dias p/ vencer','Semáforo','Onde está',
-             'Responsável','Observação','Atualizado em'],
+             'Onde emitir','Responsável','Bloqueia submissão','Observação','Atualizado em'],
 
   'EQUIPE': ['Nome','E-mail','WhatsApp / chat Telegram','Papel','Digest diário','Pauta semanal','Ativo'],
 

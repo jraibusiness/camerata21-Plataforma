@@ -295,23 +295,93 @@ function SEED_PROJETOS_() { return [
 // ---- DOSSIÊ ---------------------------------------------------------------
 // [documento, titular, validade, onde está, responsável, observação]
 function SEED_DOSSIE_() { return [
-['Portaria nº 017/2026 (criação da OS-UZP)','Faculdade ZP','','Drive OS-UZP','Vitor',
- 'Assinada 24/07/2026. Documento fundador — anexo obrigatório em toda submissão'],
-['Cartão CNPJ com CNAEs 94.93-6-00 e 90.01-9-99','Faculdade ZP','','Tatiane Couto','Vitor',
- 'VERIFICAR: a IN da Rouanet exige CNAE compatível com a área do projeto'],
-['CND Federal','Faculdade ZP','','Drive OS-UZP','Vitor','Renovar antes de cada submissão'],
-['CRF / FGTS','Faculdade ZP','08/10/2026','Drive OS-UZP','Vitor','Validade curta — é o que mais vence sem ninguém notar'],
-['Certidão Estadual (inscritos e não inscritos)','Faculdade ZP','','Drive OS-UZP','Vitor',''],
-['Certidão de Tributos Mobiliários','Faculdade ZP','31/12/2026','Drive OS-UZP','Vitor',''],
-['Certidão de Tributos Imobiliários','Faculdade ZP','30/01/2027','Drive OS-UZP','Vitor',''],
-['Certidão Negativa Correcional de Entes Privados','Faculdade ZP','','Drive OS-UZP','Vitor',''],
-['Declaração de Experiência em Projetos Socioculturais','Faculdade ZP','','Drive OS-UZP','Vitor',''],
-['Estatuto social e ata da diretoria','Faculdade ZP','','Tatiane Couto','Vitor','Exigido por Sicredi e pela maioria das filas de patrocínio'],
-['RG e CPF de dois representantes legais','Vivian Vicente + 1','','Vivian Vicente','Vitor','Vivian é a signatária. Confirmar o segundo nome'],
-['Comprovante de endereço em SP há 2+ anos','Faculdade ZP','','Tatiane Couto','Vitor','Exigência específica do ProAC ICMS e do PROMAC'],
-['Portfólio e CV do maestro (jan/2026)','João','','Drive OS-UZP','João','Atualizar após 20/11 com o concerto da Consciência Negra'],
-['Perfil no Catálogo do Setor Musical (Ibermúsicas)','João','','ibermusicas.org','João','Os júris avaliam por ele. Completar até 05/09'],
-['Certidões do MEI Studio Kephra','João','','João','João','Necessárias para PNAB São Vicente e Funarte Aberta. São Caetano foi pela Faculdade']
+// [documento, titular, validade, onde está, onde emitir, responsável, bloqueia, observação]
+//
+// Dados conferidos por João Rocha na BASE DE CONHECIMENTO OPERACIONAL v1.0 (07/09/2026).
+// NÚMEROS DE CONTROLE, CÓDIGOS DE AUTENTICIDADE, CNPJ, RG E CPF FICAM DE FORA
+// DE PROPÓSITO: este repositório é público. Esses campos vão preenchidos à mão
+// na planilha, que é privada e protegida por código de acesso.
+
+['CPEN — Débitos Federais e Dívida Ativa da União','Faculdade ZP','24/01/2027','Drive OS-UZP',
+ 'regularize.rfb.gov.br','Vitor','SIM',
+ 'ATENÇÃO: é CPEN (Positiva com Efeitos de Negativa), não CND. Há débitos com exigibilidade ' +
+ 'suspensa, art. 151 do CTN. O efeito legal é idêntico ao da negativa (arts. 205 e 206), mas ' +
+ 'edital que exija literalmente "Certidão Negativa" abre margem para inabilitação formalista. ' +
+ 'Consultar a comissão do edital ANTES de submeter. Validade 180 dias.'],
+
+['CRF — FGTS','Faculdade ZP','10/08/2026','Drive OS-UZP','consulta-crf.caixa.gov.br','Vitor','SIM',
+ 'Validade de apenas 30 dias — é o que mais vence sem ninguém notar. Emissão online, gratuita, ' +
+ 'em minutos. Política: emitir sob demanda, no momento da submissão, não manter em estoque.'],
+
+['Certidão Conjunta de Tributos Mobiliários','Faculdade ZP','21/01/2026','Drive OS-UZP',
+ 'prefeitura.sp.gov.br/sf','Vitor','SIM',
+ 'Situação REGULAR, mas com créditos de exigibilidade suspensa por parcelamento e autos de ' +
+ 'infração inscritos em dívida ativa, objeto de acordo homologado e em vigor. Mesma sinalização ' +
+ 'da CPEN: sinalizar em toda checagem de elegibilidade. Validade 90 dias.'],
+
+['Certidão Conjunta de Tributos Imobiliários','Faculdade ZP','26/01/2027','Drive OS-UZP',
+ 'prefeitura.sp.gov.br/sf','Vitor','SIM','Validade 180 dias.'],
+
+['CND de Débitos Inscritos em Dívida Ativa Estadual','Faculdade ZP','29/08/2026','Drive OS-UZP',
+ 'dividaativa.pge.sp.gov.br','Vitor','SIM','PGE-SP. Validade 30 dias — tratar como just-in-time.'],
+
+['Certidão de Débitos Não Inscritos — Estadual','Faculdade ZP','30/12/2026','Drive OS-UZP',
+ 'pfe.fazenda.sp.gov.br','Vitor','SIM','SEFAZ-SP. Validade 180 dias.'],
+
+['Certidão Negativa Correcional de Entes Privados','Faculdade ZP','27/08/2026','Drive OS-UZP',
+ 'certidoes.cgu.gov.br','Vitor','SIM',
+ 'CGU — abrange ePAD, CGU-PJ, CEIS, CNEP e CEPIM. Validade 30 dias.'],
+
+['CNDT — Débitos Trabalhistas','Faculdade ZP','','AUSENTE do acervo','cndt-certidao.tst.jus.br','Vitor','SIM',
+ 'NÃO CONSTA NO ACERVO. Exigida na maioria dos editais. Emissão online, gratuita, imediata. ' +
+ 'Validade 180 dias. É a lacuna mais fácil de fechar da lista.'],
+
+['Mandato da representante legal — Vivian de Lima Vicente','Faculdade ZP','20/03/2027','Ata da AGE de 10/01/2026',
+ '','Vitor','SIM',
+ 'Presidente do Conselho Diretor, eleita em 10/01/2026, mandato até 20/03/2027. TODO edital cuja ' +
+ 'assinatura, contratação ou prestação de contas ocorra depois dessa data exige ata de recondução ' +
+ 'ou plano B de signatário. O Rouanet plurianual 2027 cai exatamente nesse caso. ' +
+ 'Alerta próprio a partir de 20/01/2027.'],
+
+['Cartão CNPJ','Faculdade ZP','','Drive OS-UZP','solucoes.receita.fazenda.gov.br','Vitor','NAO',
+ 'Sem validade formal, mas reemitir se tiver mais de 90 dias. Confirma os CNAEs culturais ' +
+ '94.93-6-00 e 90.01-9-99, que atendem a exigência de atividade cultural no objeto social.'],
+
+['Estatuto consolidado + Folha de Registro','Faculdade ZP','','Tatiane Couto','','Vitor','SIM',
+ 'Natureza jurídica 399-9, Associação Privada — habilita a Lei 13.019/2014 (MROSC). ' +
+ 'Exigido por Sicredi e pela maioria das filas de patrocínio.'],
+
+['Ata da AGE + Folha de Registro + Termo de Posse','Faculdade ZP','','Tatiane Couto','','Vitor','SIM',
+ 'Pacote de comprovação de poderes do representante legal. Quando o edital pedir "ato ' +
+ 'constitutivo e comprovação de poderes", o mínimo é: Estatuto + Folha do Estatuto + Ata da AGE ' +
+ '+ Folha da Ata + Termo de Posse + identidade da signatária.'],
+
+['Documento de identidade da signatária','Vivian de Lima Vicente','','Com a signatária','','Vitor','SIM',
+ 'CNH e comprovante de residência disponíveis. Números NÃO ficam registrados aqui — ' +
+ 'preencher direto na planilha se algum edital exigir no formulário.'],
+
+['Certidão negativa municipal de São Caetano do Sul','Faculdade ZP','','PENDENTE','portais.saocaetanodosul.sp.gov.br','Vitor','SIM',
+ 'Exigida pelo credenciamento nº 020/2026, já submetido. Pendente. ' +
+ 'Também pendente: cadastro de Vivian no SEI, com conta gov.br prata ou ouro.'],
+
+['Comprovante de endereço em SP há 2 anos ou mais','Faculdade ZP','','Tatiane Couto','','Vitor','NAO',
+ 'Exigência específica do ProAC ICMS e do PROMAC.'],
+
+['Demonstrações contábeis 2024 e 2025','Faculdade ZP','','A CONFIRMAR','','Dorival Faria','NAO',
+ 'Exigidas por editais de maior porte. Confirmar disponibilidade com o financeiro.'],
+
+['Declaração de Experiência em Projetos Socioculturais','Faculdade ZP','','Drive OS-UZP','','Vitor','NAO',
+ 'Pesa cerca de 25% da pontuação em editais que avaliam experiência do proponente. ' +
+ 'Não é papelada: é ponto.'],
+
+['Portfólio e CV do maestro','João','','Drive OS-UZP','','João','NAO',
+ 'Versão de janeiro de 2026. Atualizar depois de 20/11 com o concerto da Consciência Negra.'],
+
+['Perfil no Catálogo do Setor Musical (Ibermúsicas)','João','','ibermusicas.org','ibermusicas.org','João','NAO',
+ 'Os júris avaliam por ele. Completar antes das submissões de 01/10.'],
+
+['Certidões do MEI Studio Kephra','João','','Com João','','João','NAO',
+ 'Necessárias para PNAB São Vicente e Funarte Aberta. São Caetano foi pela Faculdade.']
 ];}
 
 // ---- EQUIPE ---------------------------------------------------------------
