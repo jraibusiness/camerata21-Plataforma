@@ -124,7 +124,52 @@ Copie a URL `/exec`. É o endereço do centro de controle.
 > **Armadilha conhecida:** colar código novo **não** republica. Para atualizar sem trocar
 > a URL: *Implantar → Gerenciar implantações → ✏️ → Versão: Nova versão → Implantar.*
 
-### 3.5 (Opcional) Rota bonita no domínio
+### 3.5 Alternativa ao copiar e colar: clasp
+
+Se preferir não colar arquivo por arquivo no editor, o `clasp` publica direto do
+repositório. **Rode na sua máquina**, não é preciso passar credencial a ninguém.
+
+```bash
+# 1. habilite a Apps Script API — sem isto, o clasp falha com "User has not enabled"
+#    https://script.google.com/home/usersettings
+
+# 2. instale e autentique (abre o navegador)
+npm install -g @google/clasp@2.4.2
+clasp login
+
+# 3. clone o repositório e entre nele
+git clone https://github.com/jraibusiness/camerata21-Plataforma.git
+cd camerata21-Plataforma
+git checkout claude/os-uzp-editais-platform-taibpk
+
+# 4a. projeto novo:
+clasp create --title "OS-UZP — Radar de Fomento" --type webapp --rootDir radar
+# 4b. ou, se você já criou o projeto pelo editor:
+cp .clasp.json.exemplo .clasp.json   # e cole o scriptId dentro
+
+# 5. envie os arquivos
+clasp push
+```
+
+O `scriptId` está na URL do editor: `script.google.com/d/<SCRIPT_ID>/edit`.
+
+**Duas armadilhas do clasp neste projeto:**
+
+1. **`clasp push` sobrescreve o remoto.** Se alguém editou pelo navegador, a
+   edição se perde. Rode `clasp pull` antes se houver dúvida.
+2. **`clasp deploy` sem argumento cria uma implantação NOVA, com URL nova.** Toda
+   a arquitetura de links depende de a URL `/exec` ser estável — é o que permite
+   trocar o deploy sem invalidar o link já mandado no WhatsApp. Para atualizar
+   mantendo a URL:
+   ```bash
+   clasp deployments                      # anote o deploymentId
+   clasp deploy -i <deploymentId> -d "descrição da versão"
+   ```
+
+Depois do primeiro `push`, ainda é preciso rodar **`setupRadar`** uma vez pelo
+editor: o clasp envia código, não executa função.
+
+### 3.6 (Opcional) Rota bonita no domínio
 No `_redirects` do Netlify, ao lado das rotas já existentes:
 ```
 /radar   [URL_GAS]/exec   302
