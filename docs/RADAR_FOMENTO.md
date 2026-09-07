@@ -133,41 +133,46 @@ passar credencial a ninguém.
 # 1. habilite a Apps Script API — sem isto o clasp falha com "User has not enabled"
 #    https://script.google.com/home/usersettings
 
-# 2. instale e autentique (abre o navegador)
 npm install -g @google/clasp@2.4.2
 clasp login
 
-# 3. clone o repositório
+# 2. traga o repositório. Se a pasta já existir de antes, NÃO clone de novo:
+#    entre nela e busque a branch, senão o checkout não acha nada.
 git clone https://github.com/jraibusiness/camerata21-Plataforma.git
 cd camerata21-Plataforma
+git fetch origin
 git checkout claude/os-uzp-editais-platform-taibpk
 
-# 4. entre na pasta do Radar — é ela que vira o projeto GAS
-cd radar
+# 3. crie o .clasp.json na RAIZ do repositório, apontando para radar/
+@'
+{ "scriptId": "COLE_O_SCRIPT_ID", "rootDir": "radar" }
+'@ | Set-Content .clasp.json -Encoding ascii
 
-# 5a. projeto novo:
-clasp create --title "OS-UZP - Radar de Fomento" --type webapp
-# 5b. ou, se o projeto já existe, escreva o .clasp.json à mão:
-'{ "scriptId": "COLE_O_SCRIPT_ID" }' | Set-Content .clasp.json -Encoding ascii
-
-# 6. envie
+# 4. envie, da raiz do repositório
 clasp push
 ```
 
-**Não use `--rootDir`.** No clasp 2.4.2 essa opção não significa "os fontes estão
-em tal pasta": ela move o próprio `.clasp.json` para dentro dela. Rodar
-`clasp create --rootDir radar` de fora do repositório faz o clasp criar o projeto
-no Drive e **em seguida** falhar com `ENOENT ... \radar\.clasp.json`, deixando um
-projeto órfão. Se isso acontecer, não rode `create` de novo — pegue o `scriptId`
-da URL que ele imprimiu e siga pelo passo 5b.
+Para um projeto novo, `clasp create --title "OS-UZP - Radar de Fomento" --type webapp`
+dentro de `radar/` — e depois mova o `.clasp.json` gerado para a raiz, acrescentando
+`"rootDir": "radar"`. O `scriptId` também está na URL do editor:
+`script.google.com/d/<SCRIPT_ID>/edit`.
 
-O `scriptId` está na URL do editor: `script.google.com/d/<SCRIPT_ID>/edit`.
-O `.clasp.json` é configuração de máquina e está no `.gitignore` — há um
-`radar/.clasp.json.exemplo` como modelo.
+**Nunca use `--rootDir` no `clasp create`.** No clasp 2.4.2 essa opção não diz "os
+fontes estão em tal pasta": ela move o próprio `.clasp.json` para dentro dela.
+Rodar `clasp create --rootDir radar` de uma pasta onde `radar/` não existe faz o
+clasp criar o projeto no Drive e **em seguida** falhar com
+`ENOENT ... \radar\.clasp.json`, deixando um projeto órfão. Se isso acontecer,
+não rode `create` de novo — pegue o `scriptId` da URL que ele imprimiu.
 
-**O que sobe.** Só o que o Apps Script aceita: `appsscript.json` e os arquivos
-`.gs` e `.html`. Rodando de dentro de `radar/`, são exatamente os seis que o
-projeto precisa. O próprio `.clasp.json` não é enviado.
+O campo `rootDir` **dentro** do `.clasp.json` é outra coisa, e é o que queremos:
+o `push` o lê de lá e procura o manifesto em `<rootDir>/appsscript.json`.
+
+O `.clasp.json` é configuração de máquina e está no `.gitignore`; há um
+`.clasp.json.exemplo` na raiz como modelo.
+
+**O que sobe.** Só o que o Apps Script aceita: `appsscript.json` e arquivos `.gs`
+e `.html`. Com `rootDir: "radar"`, são exatamente os seis do projeto. O próprio
+`.clasp.json` não é enviado.
 
 **Duas armadilhas do clasp neste projeto:**
 
@@ -183,8 +188,9 @@ projeto precisa. O próprio `.clasp.json` não é enviado.
    clasp deploy -i <deploymentId> -d "descrição da versão"
    ```
 
-Depois do primeiro `push`, ainda é preciso rodar **`setupRadar`** uma vez pelo
-editor: o clasp envia código, não executa função.
+Depois do primeiro `push`, ainda faltam dois passos que o clasp não faz: rodar
+**`setupRadar`** uma vez pelo editor (ele envia código, não executa função) e
+publicar em **Implantar → Nova implantação → App da Web**.
 
 ### 3.6 (Opcional) Rota bonita no domínio
 No `_redirects` do Netlify, ao lado das rotas já existentes:
