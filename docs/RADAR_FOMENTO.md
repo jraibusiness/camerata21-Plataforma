@@ -246,46 +246,85 @@ a tela de login e nada mais.
 repositório (publish directory `frontend`, branch a definir). Aí cada push
 publica sozinho, sem arrastar pasta. Exige configurar uma vez no Netlify.
 
-## 4. NOTIFICAÇÕES POR WHATSAPP — qual escolher
+## 4. NOTIFICAÇÕES INSTANTÂNEAS — qual canal
 
-O código traz três provedores atrás de uma única função (`enviarWhatsApp`). Troque em
-**CONFIG › `whatsapp.provedor`**. As chaves ficam em
-*Projeto → Configurações do projeto → Propriedades do script* — **nunca** na planilha
-nem no código versionado.
+O e-mail já funciona sozinho e não depende de nada disto. Esta seção é sobre o
+canal instantâneo, que é opcional e complementar.
 
-### Comparação honesta
+O código traz cinco provedores atrás de uma única função (`enviarWhatsApp`).
+Troque em **CONFIG › `whatsapp.provedor`**. As chaves ficam em
+*Projeto → Configurações do projeto → Propriedades do script* — **nunca** na
+planilha nem no código versionado.
 
-| | **CallMeBot** | **Meta Cloud API** | **Twilio** |
+### Situação verificada em 07/09/2026
+
+| | Custo | Setup | Estado hoje |
 |---|---|---|---|
-| Custo | grátis | grátis até 1.000 conversas de serviço/mês | ~US$ 0,005–0,05/msg |
-| Setup | 2 minutos | 1–2 horas (Business Manager, verificação) | 30 minutos |
-| Precisa de número dedicado | não | **sim** (número que sai do WhatsApp comum) | não (sandbox) ou sim |
-| Template pré-aprovado | não | sim, fora da janela de 24h | sim |
-| Serve para quantas pessoas | 2–5 | ilimitado | ilimitado |
-| Risco | serviço de terceiro, sem SLA | nenhum (oficial) | nenhum |
+| **CallMeBot** | grátis | 2 min | ❌ **bot lotado**, não aceita novos cadastros. O número saiu do ar da página |
+| **TextMeBot** | demo 2 dias, depois US$ 10/ano por destinatário ou US$ 60/ano ilimitado | 10 min | ✅ funcionando |
+| **Telegram** | grátis para sempre | 5 min | ✅ funcionando — mas não é WhatsApp |
+| **Meta Cloud API** | grátis até 1.000 conversas de serviço/mês | 1–2 h | ✅ oficial, porém exige número dedicado e template aprovado |
+| **Twilio** | pago por mensagem | 30 min | ✅ funcionando |
+
+O CallMeBot continua implementado: quando abrir vaga, é trocar uma linha.
 
 ### Recomendação
 
-**Comece com CallMeBot.** Vocês são duas pessoas. O ganho de um canal oficial é zero neste
-tamanho, e o custo é uma tarde de Business Manager mais um número de telefone que você
-perde para uso pessoal. Migre para a Meta Cloud API se e quando o report passar a ir para
-a Faculdade, o Reitor e patrocinadores — aí o número oficial passa a valer a pena, e a
-migração é trocar uma linha na aba CONFIG.
+**Comece pela demo grátis do TextMeBot.** Ela prova o caminho inteiro — o
+gatilho das 7h, a montagem do texto, a entrega no celular — sem gastar nada. Se
+a mensagem chegar e for útil, US$ 10 por ano por pessoa é ruído no orçamento de
+uma orquestra que persegue Rouanet. Se não for útil, você descobriu de graça.
 
-**Configurar o CallMeBot (por pessoa, 2 minutos):**
-1. Salve o contato **+34 644 51 95 23**.
-2. Mande a mensagem exata: `I allow callmebot to send me messages`
-3. O bot responde com uma `apikey`.
-4. No GAS → *Propriedades do script* → adicione
-   `CALLMEBOT_5511999999999` = a apikey daquela pessoa.
-5. Em **CONFIG**, ponha `whatsapp.provedor` = `callmebot`.
-6. Rode a função **`testarWhatsApp`** no editor para confirmar.
+**A Meta Cloud API é o destino certo quando escalar** — quando o report passar a
+ir para o Reitor ou para patrocinadores. Aí o número oficial e o template
+aprovado deixam de ser burocracia e viram credibilidade. Migrar é trocar o valor
+de `whatsapp.provedor`.
 
-**Meta Cloud API:** propriedades `META_TOKEN`, `META_PHONE_ID` e, se for enviar fora da
-janela de 24h, `META_TEMPLATE` (nome de um template aprovado, corpo com um parâmetro `{{1}}`).
-**Twilio:** `TWILIO_SID`, `TWILIO_TOKEN`, `TWILIO_FROM` (ex.: `whatsapp:+14155238886`).
+**O Telegram é a saída honesta se não quiser pagar nada.** Grátis, oficial,
+sem template, sem limite prático. O custo não é técnico, é comportamental: no
+Brasil as pessoas não abrem o Telegram. Um alerta que ninguém vê não é alerta.
 
----
+### TextMeBot
+
+1. Cadastre-se em [textmebot.com](https://textmebot.com/) e peça a chave de demo.
+2. A chave chega por e-mail, junto com um link para vincular o WhatsApp.
+3. No GAS → *Propriedades do script* → adicione
+   `TEXTMEBOT_5511999999999` = a chave daquela pessoa
+   (ou `TEXTMEBOT_KEY` se uma chave servir para todos).
+4. Em **CONFIG**, ponha `whatsapp.provedor` = `textmebot`.
+5. Rode **`testarWhatsApp`** no editor. Ele tenta enviar para todo mundo da aba
+   EQUIPE e escreve no log quem recebeu e quem falhou.
+
+### Telegram
+
+1. No Telegram, fale com **@BotFather** → `/newbot` → guarde o token.
+2. *Propriedades do script* → `TELEGRAM_TOKEN` = o token.
+3. **Cada pessoa manda uma mensagem qualquer para o bot.** Sem isso o Telegram
+   não deixa o bot escrever primeiro — é regra da plataforma.
+4. Rode **`descobrirChatsTelegram`** no editor: ele lista o `chat_id` de quem
+   escreveu.
+5. Ponha o `chat_id` de cada pessoa na coluna **WhatsApp / chat Telegram** da aba
+   EQUIPE, no lugar do número.
+6. Em **CONFIG**, `whatsapp.provedor` = `telegram`. Rode `testarWhatsApp`.
+
+### Meta Cloud API
+
+Propriedades `META_TOKEN`, `META_PHONE_ID` e `META_TEMPLATE`. O report diário é
+mensagem **iniciada pelo sistema**, fora da janela de 24 h — então precisa de um
+template aprovado, com o corpo em um único parâmetro (`{{1}}`), que recebe o
+texto montado. Sem `META_TEMPLATE` o código envia texto livre, que só funciona
+dentro da janela de 24 h.
+
+### Twilio
+
+Propriedades `TWILIO_SID`, `TWILIO_TOKEN`, `TWILIO_FROM`
+(ex.: `whatsapp:+14155238886`).
+
+### Quando nada está configurado
+
+Com `whatsapp.provedor = nenhum`, o Radar não tenta enviar nada e registra isso
+no log. **O e-mail continua saindo normalmente** — nenhuma falha de canal
+instantâneo derruba o report.
 
 ## 5. A ROTINA
 
@@ -511,9 +550,13 @@ por sede, então a verificação é formalidade).
 
 ## 12. O QUE FALTA DECIDIR
 
-- [x] ~~E-mail e WhatsApp do Vitor~~ — no seed. **Falta o WhatsApp do João**; o e-mail
-      dele é preenchido sozinho pela conta que executar `setupRadar()`
-- [ ] Provedor de WhatsApp — recomendação: CallMeBot agora, Meta quando escalar
+- [x] ~~E-mail e WhatsApp do Vitor~~ — no seed. **Falta o WhatsApp do João** na
+      aba EQUIPE da planilha; o e-mail dele foi preenchido sozinho no setup
+- [ ] **Escolher o canal instantâneo.** O CallMeBot, que era a recomendação,
+      está com o bot lotado e não aceita cadastro. Alternativas verificadas em
+      §4: TextMeBot (demo grátis, depois US$ 10/ano por pessoa), Telegram
+      (grátis, mas ninguém abre no Brasil) ou Meta Cloud API (oficial, setup
+      maior). O e-mail funciona independentemente disso
 - [x] ~~Credenciamento São Caetano~~ — **submetido em nome da Faculdade**, não pelo MEI.
       Gatilho em 14/09 (resultado preliminar); final em 28/09
 - [x] ~~Confirmar regulamento da Funarte Aberta~~ — fluxo contínuo até 30/04/2027,

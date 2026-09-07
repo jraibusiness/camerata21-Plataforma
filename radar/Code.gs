@@ -281,6 +281,9 @@ function lerEquipe_() {
     .map(function (r) {
       return {
         nome: String(r[0]).trim(), email: String(r[1]).trim().toLowerCase(),
+        // destino = valor cru (o chat_id do Telegram pode ser negativo);
+        // whatsapp = só dígitos, para os provedores de telefone.
+        destino: String(r[2]).trim(),
         whatsapp: String(r[2]).replace(/\D/g, ''), papel: String(r[3]).trim(),
         digest: /^s/i.test(String(r[4])), pauta: /^s/i.test(String(r[5])),
         ativo: /^s/i.test(String(r[6]))

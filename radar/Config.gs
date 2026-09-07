@@ -50,7 +50,7 @@ const CABECALHOS = {
   'DOSSIÊ': ['ID','Documento','Titular','Validade','Dias p/ vencer','Semáforo','Onde está',
              'Responsável','Observação','Atualizado em'],
 
-  'EQUIPE': ['Nome','E-mail','WhatsApp','Papel','Digest diário','Pauta semanal','Ativo'],
+  'EQUIPE': ['Nome','E-mail','WhatsApp / chat Telegram','Papel','Digest diário','Pauta semanal','Ativo'],
 
   'CONFIG': ['Chave','Valor','Descrição'],
 
@@ -73,7 +73,7 @@ const CONFIG_PADRAO = [
   ['alerta.dossieDias',      '30',   'Antecedência (dias) para alertar sobre validade de documento'],
   ['score.corteA',           '12',   'SCORE mínimo para prioridade A (atacar)'],
   ['score.corteB',           '8',    'SCORE mínimo para prioridade B (avaliar)'],
-  ['whatsapp.provedor',      'nenhum','nenhum | callmebot | meta | twilio  (ver docs/RADAR_FOMENTO.md)'],
+  ['whatsapp.provedor',      'nenhum','nenhum | textmebot | telegram | callmebot | meta | twilio (ver docs/RADAR_FOMENTO.md §4)'],
   ['calendar.sincronizar',   'NAO',  'SIM = cria eventos de DATA-GATILHO no Google Calendar'],
   ['calendar.id',            '',     'ID do calendário dedicado (deixe vazio para criar no setup)'],
   ['app.url',                '',     'URL /exec do web app — preenchida automaticamente no 1º acesso']

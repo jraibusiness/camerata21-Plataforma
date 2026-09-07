@@ -72,9 +72,9 @@ function enviarDigestDiario() {
       });
     } catch (e) { Logger.log('e-mail ' + m.email + ': ' + e); }
 
-    if (m.whatsapp) {
-      try { enviarWhatsApp(m.whatsapp, textoWhatsApp_(m, fila, minhas, k)); }
-      catch (e) { Logger.log('whatsapp ' + m.whatsapp + ': ' + e); }
+    if (m.destino) {
+      try { enviarWhatsApp(m.destino, textoWhatsApp_(m, fila, minhas, k)); }
+      catch (e) { Logger.log('mensagem para ' + m.nome + ': ' + e); }
     }
   });
   return 'enviado para ' + equipe.length + ' pessoa(s) · ' + fila.length + ' item(ns)';
@@ -115,9 +115,9 @@ function enviarPautaSemanal() {
         htmlBody: html, name: 'Radar de Fomento · OS-UZP'
       });
     } catch (e) { Logger.log('pauta ' + m.email + ': ' + e); }
-    if (m.whatsapp) {
+    if (m.destino) {
       try {
-        enviarWhatsApp(m.whatsapp,
+        enviarWhatsApp(m.destino,
           '*RITUAL DE SEGUNDA · 20 MIN*\n' +
           'Radar OS-UZP — ' + fmtBR_(hoje_()) + '\n\n' +
           '1. RADAR: ' + k.gatilhosVencidos + ' gatilho(s) vencido(s), ' + k.prioridadeA + ' prioridade A ativa(s)\n' +
@@ -125,7 +125,7 @@ function enviarPautaSemanal() {
           '3. CAMINHO: ' + k.etapasAtrasadas + ' etapa(s) atrasada(s) · ' + k.caminhoPct + '% do plano\n' +
           '4. SEM DONO: ' + k.semDono + ' linha(s) A/B sem responsável\n\n' +
           'Pauta completa: ' + urlApp_());
-      } catch (e) { Logger.log('pauta whatsapp: ' + e); }
+      } catch (e) { Logger.log('pauta, mensagem para ' + m.nome + ': ' + e); }
     }
   });
   return 'pauta enviada';
@@ -389,20 +389,96 @@ function emailCodigo_(nome, code) {
 }
 
 // ============================================================
-// 4. WHATSAPP — três provedores atrás de uma única função
+// 4. MENSAGEM INSTANTÂNEA — vários provedores, uma função
 //    Configure em CONFIG › whatsapp.provedor e guarde as chaves
 //    em Projeto → Configurações → Propriedades do script.
+//
+//    Situação em 07/09/2026:
+//      callmebot  · GRÁTIS, mas o bot está LOTADO e não aceita
+//                   novos cadastros. Volta a funcionar quando abrir vaga.
+//      textmebot  · demo de 2 dias, depois US$ 10/ano por destinatário
+//                   ou US$ 60/ano ilimitado. Funciona hoje.
+//      telegram   · grátis, oficial, sem template, cadastro em 5 minutos.
+//                   Não é WhatsApp — é a troca honesta.
+//      meta       · oficial do WhatsApp, grátis até 1.000 conversas de
+//                   serviço/mês, mas exige número dedicado e template
+//                   aprovado para mensagem iniciada pelo sistema.
+//      twilio     · pago por mensagem.
 // ============================================================
-function enviarWhatsApp(numero, texto) {
+function enviarWhatsApp(destino, texto) {
   var prov = String(cfg('whatsapp.provedor', 'nenhum')).toLowerCase();
-  numero = String(numero).replace(/\D/g, '');
-  if (!numero) return { ok: false, msg: 'sem número' };
+  var bruto = String(destino || '').trim();
+  var numero = bruto.replace(/\D/g, '');
+  if (!bruto) return { ok: false, msg: 'sem destino' };
 
   if (prov === 'callmebot') return waCallMeBot_(numero, texto);
+  if (prov === 'textmebot') return waTextMeBot_(numero, texto);
+  if (prov === 'telegram')  return tgEnviar_(bruto, texto);
   if (prov === 'meta')      return waMeta_(numero, texto);
   if (prov === 'twilio')    return waTwilio_(numero, texto);
-  Logger.log('WhatsApp desativado (whatsapp.provedor = nenhum).');
+  Logger.log('Mensagem instantânea desativada (whatsapp.provedor = nenhum).');
   return { ok: false, msg: 'provedor não configurado' };
+}
+
+// --- TextMeBot · funciona hoje, pago depois da demo de 2 dias ---
+// Cadastre-se em textmebot.com, vincule o WhatsApp pelo link que chega por
+// e-mail, e guarde a chave como TEXTMEBOT_<NÚMERO> (uma por pessoa) ou
+// TEXTMEBOT_KEY (uma para todos).
+function waTextMeBot_(numero, texto) {
+  var key = segredo_('TEXTMEBOT_' + numero) || segredo_('TEXTMEBOT_KEY');
+  if (!key) return { ok: false, msg: 'sem apikey TextMeBot para ' + numero };
+  var url = 'https://api.textmebot.com/send.php?recipient=%2B' + numero +
+            '&apikey=' + encodeURIComponent(key) +
+            '&text=' + encodeURIComponent(texto);
+  var r = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+  var corpo = r.getContentText();
+  // O TextMeBot responde 200 mesmo em erro; a palavra "Success" é o sinal real.
+  var ok = r.getResponseCode() < 300 && !/error|invalid|expired/i.test(corpo);
+  return { ok: ok, msg: corpo.slice(0, 200) };
+}
+
+// --- Telegram · grátis, oficial, sem template ---
+// 1. No Telegram, fale com @BotFather → /newbot → guarde o token.
+// 2. Cada pessoa manda uma mensagem qualquer para o bot (senão ele não pode
+//    escrever primeiro — regra do Telegram, não nossa).
+// 3. Rode descobrirChatsTelegram() no editor para ver os IDs.
+// 4. Ponha o ID de cada pessoa na coluna WhatsApp da aba EQUIPE.
+// Propriedade: TELEGRAM_TOKEN
+function tgEnviar_(chatId, texto) {
+  var token = segredo_('TELEGRAM_TOKEN');
+  if (!token) return { ok: false, msg: 'TELEGRAM_TOKEN ausente' };
+  var r = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+    method: 'post', contentType: 'application/json',
+    payload: JSON.stringify({ chat_id: chatId, text: texto, parse_mode: 'Markdown' }),
+    muteHttpExceptions: true
+  });
+  return { ok: r.getResponseCode() < 300, msg: r.getContentText().slice(0, 300) };
+}
+
+// Descobre o chat_id de quem já mandou mensagem para o bot.
+function descobrirChatsTelegram() {
+  var token = segredo_('TELEGRAM_TOKEN');
+  if (!token) { Logger.log('Falta a propriedade TELEGRAM_TOKEN.'); return; }
+  var r = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/getUpdates',
+                            { muteHttpExceptions: true });
+  var d = JSON.parse(r.getContentText());
+  if (!d.ok) { Logger.log('Erro: ' + r.getContentText()); return; }
+  if (!d.result.length) {
+    Logger.log('Ninguém escreveu para o bot ainda. Cada pessoa precisa mandar ' +
+               'uma mensagem qualquer para ele antes de aparecer aqui.');
+    return;
+  }
+  var vistos = {};
+  d.result.forEach(function (u) {
+    var c = (u.message && u.message.chat) || (u.channel_post && u.channel_post.chat);
+    if (c && !vistos[c.id]) {
+      vistos[c.id] = true;
+      Logger.log('chat_id ' + c.id + '  ·  ' +
+                 [c.first_name, c.last_name, c.username && '@' + c.username]
+                   .filter(function (x) { return x; }).join(' '));
+    }
+  });
+  Logger.log('\nCopie o chat_id para a coluna WhatsApp da aba EQUIPE.');
 }
 
 // --- A) CallMeBot · grátis, 2 minutos de setup, ideal para 2–5 pessoas ---
@@ -452,10 +528,16 @@ function waTwilio_(numero, texto) {
 }
 
 function testarWhatsApp() {
-  var m = lerEquipe_().filter(function (x) { return x.ativo && x.whatsapp; })[0];
-  if (!m) { Logger.log('Nenhum WhatsApp cadastrado na aba EQUIPE.'); return; }
-  var r = enviarWhatsApp(m.whatsapp, '✅ Teste do Radar de Fomento OS-UZP. Se você recebeu isto, o canal está ativo.');
-  Logger.log(JSON.stringify(r));
+  var prov = cfg('whatsapp.provedor', 'nenhum');
+  var equipe = lerEquipe_().filter(function (x) { return x.ativo && x.destino; });
+  if (!equipe.length) { Logger.log('Ninguém com destino preenchido na aba EQUIPE.'); return; }
+  Logger.log('Provedor configurado: ' + prov);
+  equipe.forEach(function (m) {
+    var r = enviarWhatsApp(m.destino,
+      '✅ Teste do Radar de Fomento OS-UZP.\n' +
+      'Se você recebeu isto, o canal está ativo e o report das 7h vem por aqui.');
+    Logger.log(m.nome + ' (' + m.destino + '): ' + (r.ok ? 'ENVIADO' : 'FALHOU') + ' — ' + r.msg);
+  });
 }
 
 function corta_(s, n) {
