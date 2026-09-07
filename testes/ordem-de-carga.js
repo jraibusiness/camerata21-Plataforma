@@ -4,7 +4,7 @@ const H = require('./harness.js');
 global.sheets = H.sheets; global.Sheet = H.Sheet;
 global.FS = require('fs'); global.DIR = __dirname;
 const fs = require('fs'), path = require('path');
-const REPO = path.resolve(__dirname, '..');
+const REPO = path.resolve(__dirname, '..', 'radar');
 
 const arquivos = fs.readdirSync(REPO).filter(f => f.endsWith('.gs')).sort();
 console.log('ordem de carga (como no Apps Script): ' + arquivos.join(' → ') + '\n');

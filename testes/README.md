@@ -5,7 +5,7 @@ arquivos rodam em Node e servem para pegar, antes do `clasp push`, as duas
 classes de erro que só apareceriam depois de publicar.
 
 ```bash
-node radar/testes/ordem-de-carga.js
+node testes/ordem-de-carga.js
 ```
 
 ## ordem-de-carga.js

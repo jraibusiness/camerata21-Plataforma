@@ -1,0 +1,7 @@
+# O clasp envia tudo sob rootDir (radar/). Só devem subir os arquivos do projeto
+# Apps Script: appsscript.json, os .gs e o radar.html. Qualquer outra coisa que
+# apareça ali — teste, rascunho, node_modules — fica de fora por estas regras.
+**/node_modules/**
+**/testes/**
+**/*.test.js
+**/*.exemplo
