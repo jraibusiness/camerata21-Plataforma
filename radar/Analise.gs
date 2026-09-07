@@ -185,7 +185,10 @@ function limparHTML_(html) {
 // ============================================================
 // 3. O MODELO — Gemini por padrão, com alternativas
 // ============================================================
-var IA_MODELO_PADRAO = 'gemini-2.5-flash';
+// Sem padrão fixo de propósito: em 07/09/2026 o melhor disponível era
+// gemini-3.8-flash, enquanto qualquer nome que eu tivesse escrito meses antes
+// já estaria velho. Quem escolhe é usarModeloRecomendado(), perguntando à API.
+var IA_MODELO_PADRAO = '';
 
 function chamarIA_(prompt, doc) {
   var prov = String(cfg('ia.provedor', 'gemini')).toLowerCase();
@@ -199,6 +202,8 @@ function iaGemini_(prompt, doc) {
   var key = segredo_('GEMINI_API_KEY') || segredo_('GEMINI_API');
   if (!key) throw new Error('Falta a propriedade GEMINI_API_KEY nas Propriedades do script.');
   var modelo = cfg('ia.modelo', IA_MODELO_PADRAO);
+  if (!modelo) throw new Error('Nenhum modelo escolhido. Rode usarModeloRecomendado() ' +
+                               'no editor do Apps Script — ele consulta a API e grava sozinho.');
 
   var partes = [{ text: prompt }];
   if (doc) {

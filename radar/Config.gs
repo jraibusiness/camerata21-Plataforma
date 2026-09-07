@@ -80,7 +80,7 @@ const CONFIG_PADRAO = [
   ['calendar.id',            '',     'ID do calendário dedicado (deixe vazio para criar no setup)'],
   ['app.url',                '',     'URL /exec do web app — preenchida automaticamente no 1º acesso'],
   ['ia.provedor',            'gemini','gemini | glm | claude | nenhum'],
-  ['ia.modelo',              'gemini-2.5-flash','Nome do modelo. Rode listarModelosIA() para ver os que sua chave alcança']
+  ['ia.modelo',              '','Deixe vazio e rode usarModeloRecomendado() — nome de modelo muda, não vale fixar']
 ];
 
 // -------- Semáforo: vocabulário único em toda a plataforma --------

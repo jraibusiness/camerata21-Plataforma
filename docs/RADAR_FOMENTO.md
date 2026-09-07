@@ -373,11 +373,19 @@ execução que ultrapasse 20/03/2027.
 2. GAS → ⚙️ *Configurações do projeto* → *Propriedades do script* →
    `GEMINI_API_KEY` = a chave.
 3. Em **CONFIG**, confira `ia.provedor` = `gemini`.
-4. Rode **`listarModelosIA()`** no editor: ele pergunta à API quais modelos a sua
-   chave alcança e lista. Copie um para `ia.modelo`.
+4. Rode **`usarModeloRecomendado()`** no editor. Ele consulta a API, ranqueia o
+   que a sua chave alcança e grava a escolha na aba CONFIG. Para ver o
+   raciocínio e as alternativas antes, rode `listarModelosIA()`.
 
-O passo 4 existe porque nomes de modelo mudam. Em vez de fixar um no código e
-quebrar meses depois, a plataforma pergunta.
+O passo 4 existe porque nome de modelo muda. **Não há padrão fixo no código**, e
+isso não é omissão: em 07/09/2026 o melhor disponível era `gemini-3.8-flash`, e
+qualquer nome escrito meses antes já estaria obsoleto. A plataforma pergunta.
+
+O ranqueamento descarta por família o que não serve para ler edital — voz,
+imagem, música, robótica, uso de computador, pesquisa profunda — e ordena o
+resto por: aceitar PDF, contexto longo, JSON fiel, latência baixa e camada
+gratuita. Isso aponta para **flash**; pro custa caro para o ganho e lite erra
+mais em texto jurídico longo.
 
 **Alternativas:** `ia.provedor` aceita `glm` (você tem créditos; não lê PDF por
 este caminho) e `claude` (`ANTHROPIC_API_KEY`). A camada gratuita do Gemini tem
