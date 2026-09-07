@@ -126,42 +126,59 @@ Copie a URL `/exec`. É o endereço do centro de controle.
 
 ### 3.5 Alternativa ao copiar e colar: clasp
 
-Se preferir não colar arquivo por arquivo no editor, o `clasp` publica direto do
-repositório. **Rode na sua máquina**, não é preciso passar credencial a ninguém.
+O `clasp` publica direto do repositório. **Rode na sua máquina** — não é preciso
+passar credencial a ninguém.
 
-```bash
-# 1. habilite a Apps Script API — sem isto, o clasp falha com "User has not enabled"
+```powershell
+# 1. habilite a Apps Script API — sem isto o clasp falha com "User has not enabled"
 #    https://script.google.com/home/usersettings
 
 # 2. instale e autentique (abre o navegador)
 npm install -g @google/clasp@2.4.2
 clasp login
 
-# 3. clone o repositório e entre nele
+# 3. clone o repositório
 git clone https://github.com/jraibusiness/camerata21-Plataforma.git
 cd camerata21-Plataforma
 git checkout claude/os-uzp-editais-platform-taibpk
 
-# 4a. projeto novo:
-clasp create --title "OS-UZP — Radar de Fomento" --type webapp --rootDir radar
-# 4b. ou, se você já criou o projeto pelo editor:
-cp .clasp.json.exemplo .clasp.json   # e cole o scriptId dentro
+# 4. entre na pasta do Radar — é ela que vira o projeto GAS
+cd radar
 
-# 5. envie os arquivos
+# 5a. projeto novo:
+clasp create --title "OS-UZP - Radar de Fomento" --type webapp
+# 5b. ou, se o projeto já existe, escreva o .clasp.json à mão:
+'{ "scriptId": "COLE_O_SCRIPT_ID" }' | Set-Content .clasp.json -Encoding ascii
+
+# 6. envie
 clasp push
 ```
 
+**Não use `--rootDir`.** No clasp 2.4.2 essa opção não significa "os fontes estão
+em tal pasta": ela move o próprio `.clasp.json` para dentro dela. Rodar
+`clasp create --rootDir radar` de fora do repositório faz o clasp criar o projeto
+no Drive e **em seguida** falhar com `ENOENT ... \radar\.clasp.json`, deixando um
+projeto órfão. Se isso acontecer, não rode `create` de novo — pegue o `scriptId`
+da URL que ele imprimiu e siga pelo passo 5b.
+
 O `scriptId` está na URL do editor: `script.google.com/d/<SCRIPT_ID>/edit`.
+O `.clasp.json` é configuração de máquina e está no `.gitignore` — há um
+`radar/.clasp.json.exemplo` como modelo.
+
+**O que sobe.** Só o que o Apps Script aceita: `appsscript.json` e os arquivos
+`.gs` e `.html`. Rodando de dentro de `radar/`, são exatamente os seis que o
+projeto precisa. O próprio `.clasp.json` não é enviado.
 
 **Duas armadilhas do clasp neste projeto:**
 
 1. **`clasp push` sobrescreve o remoto.** Se alguém editou pelo navegador, a
-   edição se perde. Rode `clasp pull` antes se houver dúvida.
+   edição se perde. Rode `clasp pull` antes se houver dúvida. Na primeira vez ele
+   pergunta se pode sobrescrever o manifesto — responda `y`.
 2. **`clasp deploy` sem argumento cria uma implantação NOVA, com URL nova.** Toda
    a arquitetura de links depende de a URL `/exec` ser estável — é o que permite
    trocar o deploy sem invalidar o link já mandado no WhatsApp. Para atualizar
    mantendo a URL:
-   ```bash
+   ```powershell
    clasp deployments                      # anote o deploymentId
    clasp deploy -i <deploymentId> -d "descrição da versão"
    ```
