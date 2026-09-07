@@ -76,9 +76,10 @@ function pad_(n) { return (n < 10 ? '0' : '') + n; }
 
 // seed → linha completa da planilha (colunas calculadas ficam vazias)
 function mapRadarSeed_(d, id) {
+  // d[19] = gatilho manual (override), d[20] = notas
   return [id, d[0], d[1], d[2], d[3], d[4], dt_(d[5]), '', d[6], d[7], d[8],
-          d[9], d[10], d[11], d[12], d[13], '', '', d[14], '', '', '',
-          d[15], d[16], d[17], '', d[18], '', new Date()];
+          d[9], d[10], d[11], d[12], d[13], '', '', d[14], dt_(d[19] || ''), '', '', '',
+          d[15], d[16], d[17], d[20] || '', d[18], '', new Date()];
 }
 function mapCaminhoSeed_(d, id) {
   return [id, d[0], d[1], d[2], d[3], dt_(d[4]), dt_(d[5]), '', d[6], d[7], d[8],
@@ -96,12 +97,12 @@ function formatarPlanilha_(ss) {
   var r = ss.getSheetByName(ABAS.radar);
   if (r.getMaxRows() > 1) {
     // colunas calculadas → fundo cinza, não editar à mão
-    [8, 17, 18, 20, 21, 22].forEach(function (c) {
+    [8, 17, 18, 21, 22, 23].forEach(function (c) {
       r.getRange(2, c, r.getMaxRows() - 1, 1).setBackground(cinza);
     });
     // campos que o Vitor mantém semanalmente → fundo creme
-    r.getRange(2, 23, r.getMaxRows() - 1, 4).setBackground(creme);
-    r.setColumnWidth(2, 260); r.setColumnWidth(10, 300); r.setColumnWidth(25, 280);
+    r.getRange(2, 24, r.getMaxRows() - 1, 4).setBackground(creme);
+    r.setColumnWidth(2, 260); r.setColumnWidth(10, 300); r.setColumnWidth(26, 280);
   }
   var d = ss.getSheetByName(ABAS.dossie);
   if (d.getMaxRows() > 1) {
@@ -182,7 +183,11 @@ function lerRadar_() {
     var pri = s >= corteA ? 'A' : (s >= corteB ? 'B' : 'C');
     var prazo = meiaNoite_(o['Prazo']);
     var preparo = Number(o['Preparo (dias)']) || 0;
-    var gatilho = prazo ? somaDias_(prazo, -preparo) : meiaNoite_(o['DATA-GATILHO']);
+    // "Gatilho manual" vence o cálculo. É o que permite trazer para perto um edital
+    // de fluxo contínuo cujo prazo é distante — a Funarte Aberta vai até abr/2027,
+    // mas a decisão de ocupar a sala é deste semestre.
+    var manual = meiaNoite_(o['Gatilho manual']);
+    var gatilho = manual || (prazo ? somaDias_(prazo, -preparo) : null);
     var dR = prazo ? dias_(prazo) : null;
     var dG = gatilho ? dias_(gatilho) : null;
     var status = String(o['Status'] || '').toUpperCase();
@@ -201,6 +206,7 @@ function lerRadar_() {
       facil: Number(o['Facil.']) || 0, prob: Number(o['Prob.']) || 0,
       score: s, pri: pri,
       preparo: preparo, gatilho: iso_(gatilho), gatilhoBR: fmtBR_(gatilho), diasGatilho: dG,
+      gatilhoManual: iso_(manual),
       semaforo: semaforo_(dG !== null ? dG : dR),
       responsavel: o['Responsável'], status: o['Status'],
       proximaAcao: o['Próxima ação'], notas: o['Notas'], fonte: o['Fonte'],
@@ -289,9 +295,9 @@ function recalcularTudo() {
       sh.getRange(x.linha, 8).setValue(x.diasRestantes === null ? '—' : x.diasRestantes);
       sh.getRange(x.linha, 17).setValue(x.score);
       sh.getRange(x.linha, 18).setValue(x.pri);
-      sh.getRange(x.linha, 20).setValue(x.gatilho ? meiaNoite_(x.gatilho + 'T12:00:00') : '—');
-      sh.getRange(x.linha, 21).setValue(x.diasGatilho === null ? '—' : x.diasGatilho);
-      sh.getRange(x.linha, 22).setValue(x.semaforo);
+      sh.getRange(x.linha, 21).setValue(x.gatilho ? meiaNoite_(x.gatilho + 'T12:00:00') : '—');
+      sh.getRange(x.linha, 22).setValue(x.diasGatilho === null ? '—' : x.diasGatilho);
+      sh.getRange(x.linha, 23).setValue(x.semaforo);
     });
 
     var cs = aba_(ABAS.caminho);
@@ -508,7 +514,7 @@ function salvarCampo(token, id, campo, valor) {
 
   var antes = alvo[campo];
   var novo = valor;
-  if (/^(Prazo|Início|Fim|Validade|Adiado até|DATA-GATILHO)$/.test(campo)) {
+  if (/^(Prazo|Início|Fim|Validade|Adiado até|Gatilho manual)$/.test(campo)) {
     novo = valor ? meiaNoite_(valor + 'T12:00:00') : '';
   } else if (/^(Eleg\.|Ader\.|Valor|Facil\.|Prob\.|Preparo \(dias\)|% Concluído|Ordem)$/.test(campo)) {
     novo = Number(valor) || 0;
@@ -530,9 +536,9 @@ function recalcularLinha_(aba, id) {
       sh.getRange(x.linha, 8).setValue(x.diasRestantes === null ? '—' : x.diasRestantes);
       sh.getRange(x.linha, 17).setValue(x.score);
       sh.getRange(x.linha, 18).setValue(x.pri);
-      sh.getRange(x.linha, 20).setValue(x.gatilho ? meiaNoite_(x.gatilho + 'T12:00:00') : '—');
-      sh.getRange(x.linha, 21).setValue(x.diasGatilho === null ? '—' : x.diasGatilho);
-      sh.getRange(x.linha, 22).setValue(x.semaforo);
+      sh.getRange(x.linha, 21).setValue(x.gatilho ? meiaNoite_(x.gatilho + 'T12:00:00') : '—');
+      sh.getRange(x.linha, 22).setValue(x.diasGatilho === null ? '—' : x.diasGatilho);
+      sh.getRange(x.linha, 23).setValue(x.semaforo);
     } else if (aba === ABAS.caminho) {
       var c = lerCaminho_().filter(function (r) { return r.id === id; })[0]; if (!c) return;
       var cs = aba_(ABAS.caminho);
@@ -556,7 +562,7 @@ function novoEdital(token, d) {
   sh.appendRow([id, d.instrumento || '(sem nome)', d.orgao || '', d.tipo || '', d.periodicidade || '',
     d.janela || '', d.prazo ? meiaNoite_(d.prazo + 'T12:00:00') : '', '',
     d.proponente || '', d.prerequisito || '', d.match || '',
-    0, 0, 0, 0, 0, '', '', Number(d.preparo) || 30, '', '', '',
+    0, 0, 0, 0, 0, '', '', Number(d.preparo) || 30, d.gatilho ? meiaNoite_(d.gatilho + 'T12:00:00') : '', '', '', '',
     d.responsavel || '', d.status || '0. Novo — pontuar', d.proximaAcao || 'Pontuar os 5 critérios',
     d.notas || '', d.fonte || '', '', new Date()]);
   log_(u.email, ABAS.radar, id, 'NOVO', '', d.instrumento || '');

@@ -38,7 +38,7 @@ const CABECALHOS = {
   'RADAR': ['ID','Instrumento','Órgão / Empresa','Tipo','Periodicidade','Janela típica',
             'Prazo','Dias rest.','Proponente elegível','Pré-requisito bloqueante','Projeto-match',
             'Eleg.','Ader.','Valor','Facil.','Prob.','SCORE','PRI',
-            'Preparo (dias)','DATA-GATILHO','Dias p/ gatilho','Semáforo',
+            'Preparo (dias)','Gatilho manual','DATA-GATILHO','Dias p/ gatilho','Semáforo',
             'Responsável','Status','Próxima ação','Notas','Fonte','Adiado até','Atualizado em'],
 
   'CAMINHO CRÍTICO': ['ID','Fase','Ordem','Entregável','Por que existe','Início','Fim','Dias p/ fim',

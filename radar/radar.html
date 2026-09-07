@@ -80,7 +80,9 @@ a{color:var(--farol);text-decoration:none}
   border:1px solid var(--linha);color:var(--marfim);padding:14px 15px;font-size:16px;
   font-weight:400;border-radius:0}
 .campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--farol);outline:none}
-.campo .dica{display:block;font-size:11.5px;color:var(--dim-2);margin-top:7px;line-height:1.6}
+.campo>span.dica{display:block;font-family:Roboto,system-ui,sans-serif;font-weight:300;
+  font-size:11.5px;letter-spacing:0;text-transform:none;color:var(--dim-2);
+  margin:7px 0 0;line-height:1.6}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;
   padding:13px 24px;background:var(--farol);color:var(--roxo);
   font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:11.5px;
@@ -518,6 +520,7 @@ var $ = function (s) { return document.querySelector(s); };
 var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function dias(n){ return Math.abs(n) === 1 ? '1 dia' : Math.abs(n) + ' dias'; }
 
 // ─────────── O SÍMBOLO ───────────
 // Três arcos em defasagem de 26°, geometria idêntica à do brandkit v5 (4a/4b).
@@ -795,7 +798,7 @@ function renderRadar() {
       '<td data-r="Prazo" class="dias ' + (r.diasRestantes !== null && r.diasRestantes < 0 ? 'neg' : '') + '">' +
         (r.prazoBR || '<span class="sub">fluxo contínuo</span>') +
         (r.diasRestantes !== null ? '<div class="sub">' +
-          (r.diasRestantes < 0 ? 'ciclo encerrado' : r.diasRestantes + ' dias') + '</div>' : '') + '</td>' +
+          (r.diasRestantes < 0 ? 'ciclo encerrado' : dias(r.diasRestantes)) + '</div>' : '') + '</td>' +
       '<td data-r="Responsável" class="st">' + (r.responsavel ? esc(r.responsavel) :
         '<span style="color:var(--sirene)">sem dono</span>') + '</td>' +
       '<td data-r="Status" class="st">' + esc(r.status) + '</td></tr>';
@@ -911,11 +914,13 @@ function abrirRadar(id) {
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
     '<label class="campo"><span>Prazo final</span><input id="dPrazo" type="date" value="' + esc(r.prazo) + '"></label>' +
     '<label class="campo"><span>Preparo (dias)</span><input id="dPreparo" type="number" min="0" value="' + r.preparo + '"></label></div>' +
-    (r.prazo ? '' :
-      '<label class="campo"><span>Data-gatilho (manual)</span><input id="dGatilho" type="date" value="' + esc(r.gatilho) + '">' +
-      '<span class="dica">Fluxo contínuo não tem prazo para subtrair: sem uma data-gatilho definida à mão, esta linha nunca entra na fila.</span></label>') +
+    '<label class="campo"><span>Gatilho manual</span><input id="dGatilho" type="date" value="' + esc(r.gatilhoManual) + '">' +
+      '<span class="dica">' + (r.prazo
+        ? 'Preenchido, vence o cálculo. Use quando o prazo é distante mas a decisão é de agora — fluxo contínuo com data-limite lá na frente.'
+        : 'Fluxo contínuo não tem prazo para subtrair: sem uma data aqui, esta linha nunca entra na fila.') +
+      '</span></label>' +
     '<div class="aviso ok" style="margin-bottom:20px">Data-gatilho calculada: <b>' + (r.gatilhoBR || '—') + '</b>' +
-    (r.diasGatilho !== null ? ' — ' + (r.diasGatilho < 0 ? Math.abs(r.diasGatilho) + ' dias atrás' : 'em ' + r.diasGatilho + ' dias') : '') +
+    (r.diasGatilho !== null ? ' — ' + (r.diasGatilho < 0 ? dias(r.diasGatilho) + ' atrás' : 'em ' + dias(r.diasGatilho)) : '') +
     '<br><span style="font-size:11.5px;color:var(--dim-2)">prazo menos preparo. É esta data que manda, não o prazo.</span></div>';
   h += '<label class="campo"><span>Notas</span><textarea id="dNotas" rows="3">' + esc(r.notas) + '</textarea></label>';
 
@@ -946,7 +951,7 @@ function abrirRadar(id) {
     if ($('#dNotas').value !== r.notas) mud.push(['Notas', $('#dNotas').value]);
     if ($('#dPrazo').value !== r.prazo) mud.push(['Prazo', $('#dPrazo').value]);
     if (Number($('#dPreparo').value) !== r.preparo) mud.push(['Preparo (dias)', Number($('#dPreparo').value)]);
-    if ($('#dGatilho') && $('#dGatilho').value !== r.gatilho) mud.push(['DATA-GATILHO', $('#dGatilho').value]);
+    if ($('#dGatilho') && $('#dGatilho').value !== r.gatilhoManual) mud.push(['Gatilho manual', $('#dGatilho').value]);
     salvarLote(id, mud);
   };
   $('#drAdiar').onclick = function () { acao('adiar', [TOKEN, id, 7], 'Adiado por sete dias.'); };

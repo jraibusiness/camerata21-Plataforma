@@ -18,12 +18,18 @@ function dt_(br) {                       // '13/10/2026' -> Date
 // ---- RADAR ----------------------------------------------------------------
 // [instrumento, órgão, tipo, periodicidade, janela, prazo, proponente,
 //  pré-requisito, projeto-match, eleg, ader, valor, facil, prob,
-//  preparo, responsável, status, próxima ação, fonte]
+//  preparo, responsável, status, próxima ação, fonte,
+//  (opcional) data-gatilho manual, (opcional) notas]
+// Prazos reconfirmados em fonte primária em 06/09/2026 — ver as notas linha a linha.
 function SEED_RADAR_() { return [
 ['Rouanet nas Favelas 2','MinC / Vale / CUFA','Incentivo c/ patrocinador garantido','Edições esparsas (2023, 2026)','Ago–Out','13/10/2026','Faculdade ZP',
  "Execução obrigatória em favela/comunidade urbana (Censo 2022). Verificar se 'localidade' = município ou território",
  'OS-UZP em território periférico de SP + coral',3,3,2,2,3,30,'João','1. Verificar elegibilidade',
- 'Ler o edital nº 6/2026 e fechar o portão binário de elegibilidade','gov.br/cultura › editais › rouanet-nas-favelas-2'],
+ 'Ler o edital nº 6/2026 e fechar o portão binário de elegibilidade','gov.br/cultura › editais › rouanet-nas-favelas-2','',
+ 'CONFIRMADO 06/09/2026: janela 15/08 a 13/10/2026. R$ 10 mi para no mínimo 50 propostas, teto de R$ 200 mil por projeto. ' +
+ 'São Paulo está entre as oito cidades contempladas (Belém, BH, DF, Recife, Rio, São Luís, SP, Vitória). ' +
+ 'Inscrição pelo Salic: tipicidade "Editais Compartilhados", tipologia "Programa Rouanet nas Favelas - 2026". ' +
+ 'O portão continua aberto: confirmar se "localidade" é o município ou o território de favela.'],
 
 ['Lei Rouanet — plano plurianual','MinC','Incentivo fiscal federal','Anual','01/02 a 31/10','31/10/2026','Faculdade ZP (Assoc. Privada)',
  'Decisão pendente: PRONAC no CNPJ da IES ou aguardar PJ própria. Checar 3 prestações de contas abertas',
@@ -33,12 +39,19 @@ function SEED_RADAR_() { return [
 ['ProAC ICMS','SEC-SP','Incentivo fiscal estadual','FLUXO CONTÍNUO','Ininterrupto','','Faculdade ZP',
  'Comprovante de endereço em SP há 2+ anos. Limite de projetos por proponente',
  'Temporada 2027 OS-UZP (módulo)',3,3,3,2,2,45,'Vitor','3. Cadastrar proponente',
- 'Cadastrar a Faculdade ZP como proponente — destrava Ambev, Renner e MAPFRE','proac-icms.cultura.sp.gov.br'],
+ 'Cadastrar a Faculdade ZP como proponente — destrava Ambev, Renner e MAPFRE','proac-icms.cultura.sp.gov.br','15/09/2026',
+ 'CONFIRMADO 06/09/2026: inscrição ininterrupta, não há prazo a subtrair. Limite global de R$ 100 mi em 2026 ' +
+ '(Resolução SFP-06, DOE de 11/05/2026). A data-gatilho de 15/09 não é arbitrária: é o início da etapa 11 do ' +
+ 'CAMINHO CRÍTICO (submeter projeto ao ProAC, 15/09 a 31/10). Se aquela etapa mudar de data, mude esta também.'],
 
 ['Ibermúsicas — Prêmio composição Orquestra Sinfônica','SEGIB / Funarte','Prêmio de criação','Anual','15/06 a 01/10','01/10/2026','João (PF, compositor)',
  'Perfil completo no Catálogo do Setor. Um único projeto por chamada',
  'Obra sinfônica de João',3,3,1,3,2,20,'João','4. Selecionar obra',
- 'Completar perfil no Catálogo do Setor Musical e escolher a obra','ibermusicas.org › convocatorias'],
+ 'Completar perfil no Catálogo do Setor Musical e escolher a obra','ibermusicas.org › convocatorias','',
+ 'CONFIRMADO 06/09/2026: janela de 15/06 a 01/10/2026 em todas as chamadas, exceto a do Arts Council England ' +
+ '(encerrou em 31/07). Prêmio de USD 2.500, uma obra premiada por país, estreia pela Orquestra Sinfônica Nacional ' +
+ 'de Cuba ou pela Filarmônica Nacional da Venezuela, com circulação posterior nos países membros. ' +
+ 'A edição de 15 anos tem 15 chamadas — o RADAR mapeou cinco. Vale varrer as outras dez antes de 01/10.'],
 
 ['Ibermúsicas — Repertório ibero-americano','SEGIB / Funarte','Apoio à gravação','Anual','15/06 a 01/10','01/10/2026','OS-UZP / Faculdade ZP',
  'Obra precisa constar do Catálogo Ibero-Americano de Partituras',
@@ -65,10 +78,15 @@ function SEED_RADAR_() { return [
  'Formação de câmara na Baixada Santista',3,2,1,2,2,30,'João','7. Ler edital',
  'Ler o edital e confirmar o critério de vínculo territorial','prosas.com.br › edital 17385'],
 
-['Credenciamento São Caetano nº 020/2026','SECULT/SEEDUC São Caetano','Credenciamento 36 meses','Único (36 meses)','VERIFICAR','','MEI Studio Kephra',
- 'Preservar CNPJ da Faculdade para submissões maiores',
- '3 propostas de câmara',3,2,2,2,2,20,'Vitor','8. Confirmar prazo',
- 'Confirmar a data-limite em fonte primária','VERIFICAR — pauta do Vitor'],
+['Credenciamento São Caetano nº 020/2026','SECULT São Caetano','Credenciamento 36 meses','Único (36 meses)','18/08 a 01/09/2026','','Faculdade ZP',
+ 'SUBMETIDO. Habilita apresentações remuneradas nas escolas da rede municipal por 36 meses',
+ 'Propostas de câmara nas escolas da rede',3,2,2,2,2,0,'Vitor','SUBMETIDO — resultado preliminar 14/09',
+ 'Conferir o resultado preliminar em 14/09 e, havendo o que contestar, protocolar recurso antes do final em 28/09',
+ 'portais.saocaetanodosul.sp.gov.br › secult › editais','14/09/2026',
+ 'Inscrito em nome da Faculdade — não pelo MEI, como se previa. Linguagens aceitas: música, teatro, dança, circo ' +
+ 'e cultura popular; inscrições encerradas em 01/09/2026. Resultado preliminar 14/09 e final 28/09, datas ' +
+ 'informadas pelo Vitor a partir do edital: o portal da prefeitura estava fora do ar em 06/09/2026 e não deu ' +
+ 'para reconfirmar em fonte primária. Conferir no dia.'],
 
 ['PROMAC-SP (ISS/IPTU)','Pref. São Paulo','Incentivo fiscal municipal','Anual','Mar–Mai','26/05/2026','Faculdade ZP',
  'Sede em SP há 2+ anos. PRAZO 2026 ENCERRADO',
@@ -80,10 +98,15 @@ function SEED_RADAR_() { return [
  'Programa de concerto OS-UZP',3,3,1,2,2,30,'Vitor','9. Agendar ciclo 2027',
  'Monitorar a abertura da próxima temporada bienal','bndes.gov.br › espaco-cultural-bndes'],
 
-['Funarte Aberta','Funarte','Ocupação de espaço','Fluxo contínuo','Até abr/2027','','Faculdade ZP ou MEI',
- 'Sem cachê — cede o espaço. VERIFICAR regulamento',
- 'Concerto de câmara / recital comentado',3,2,1,2,2,20,'Vitor','10. Verificar',
- 'Ler o regulamento e decidir se compensa o custo de produção','VERIFICAR — gov.br/funarte'],
+['Funarte Aberta 2026 — Complexo SP','Funarte','Ocupação de espaço','Fluxo contínuo','30/03/2026 a 30/04/2027','30/04/2027','Faculdade ZP · MEI · PF',
+ 'Sem cachê: a Funarte cede o espaço. Mas a bilheteria vai integralmente ao proponente (teto de R$ 100 por ingresso, meia-entrada obrigatória)',
+ 'Concerto de câmara / recital comentado',3,2,1,2,2,20,'Vitor','10. Escolher sala e data',
+ 'Escolher a sala, fechar a data e submeter pelo Prosas','prosas.com.br › editais › 17666-funarte-aberta-2026-complexo-funarte-sp','',
+ 'CONFIRMADO 06/09/2026: fluxo contínuo até 30/04/2027, ou enquanto houver pauta. Elegíveis PF, PJ com ou sem ' +
+ 'fins lucrativos, MEI e EI. Salas do Complexo SP: Sala 38, Ateliê Alex Vallauri, Sala Carlos Miranda, ' +
+ 'Sala Renée Gumiel, Galeria Mário Schenberg, Espaço Waly Salomão e Pátio — são espaços de câmara, não cabe sinfônica. ' +
+ 'ATENÇÃO: a nota de Valor está em 1 porque a planilha registrava só "sem cachê". Com bilheteria integral há ' +
+ 'receita real. Repontuar é decisão do João.'],
 
 ['Petrobras Cultural — Circuitos','Petrobras','Patrocínio direto','Anual','VERIFICAR','','Faculdade ZP',
  'SUBMETIDO. Corrigir cadastro (Raphael Vicente / classificação)',
@@ -238,8 +261,8 @@ function SEED_PROJETOS_() { return [
  'Rota RJ fechada por exigência de sede. Entra como produto do PRONAC da OS-UZP'],
 ['Obra sinfônica de João (a definir)','Orquestra','A selecionar','Prêmio Ibermúsicas · Catálogo Ibero-Americano','João (Studio Kephra)',
  'Candidatura pessoal, identidade Studio Kephra'],
-['Três propostas de câmara','Câmara','A escrever','São Caetano · PNAB São Vicente · Funarte Aberta','MEI Studio Kephra',
- 'Manter no MEI para preservar o CNPJ da Faculdade'],
+['Propostas de câmara','Câmara','A escrever','São Caetano (credenciado) · PNAB São Vicente · Funarte Aberta','Faculdade ZP e MEI Studio Kephra',
+ 'São Caetano foi submetido pela Faculdade. PNAB São Vicente e Funarte Aberta seguem cabendo ao MEI'],
 ['Registro audiovisual da OS-UZP','—','Material bruto 16/08','Rubrica dentro do PRONAC · Ibermúsicas projetos virtuais','Faculdade ZP',
  'NÃO perseguir editais de audiovisual: exigem produtora com registro'],
 ['Base de doadores PF','—','34 contatos (Brevo)','Todo pedido de patrocínio e prestação de contas','Faculdade ZP',
@@ -265,13 +288,15 @@ function SEED_DOSSIE_() { return [
 ['Comprovante de endereço em SP há 2+ anos','Faculdade ZP','','Tatiane Couto','Vitor','Exigência específica do ProAC ICMS e do PROMAC'],
 ['Portfólio e CV do maestro (jan/2026)','João','','Drive OS-UZP','João','Atualizar após 20/11 com o concerto da Consciência Negra'],
 ['Perfil no Catálogo do Setor Musical (Ibermúsicas)','João','','ibermusicas.org','João','Os júris avaliam por ele. Completar até 05/09'],
-['Certidões do MEI Studio Kephra','João','','João','João','Necessárias para São Caetano, PNAB São Vicente e Funarte']
+['Certidões do MEI Studio Kephra','João','','João','João','Necessárias para PNAB São Vicente e Funarte Aberta. São Caetano foi pela Faculdade']
 ];}
 
 // ---- EQUIPE ---------------------------------------------------------------
 // Preencha e-mail e WhatsApp na planilha. WhatsApp em formato internacional:
 // 5511999999999 (sem +, sem espaços, sem traços).
+// O e-mail do João fica em branco de propósito: setupRadar() preenche com a conta
+// que executar o script, que é a mesma que vai receber os avisos. Falta o WhatsApp dele.
 function SEED_EQUIPE_() { return [
-['João Rocha','', '', 'Maestro · decide prioridade e mérito artístico','SIM','SIM','SIM'],
-['Vitor',     '', '', 'Gestão · mantém RADAR e DOSSIÊ, controla prazos','SIM','SIM','SIM']
+['João Rocha','','',                     'Maestro · decide prioridade e mérito artístico','SIM','SIM','SIM'],
+['Vitor','vitor.a.m.lopes@gmail.com','5513974145085','Gestão · mantém RADAR e DOSSIÊ, controla prazos','SIM','SIM','SIM']
 ];}

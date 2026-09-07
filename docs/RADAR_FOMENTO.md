@@ -231,16 +231,21 @@ Se você alterar `digest.hora` ou `pauta.hora`, rode **`instalarGatilhos`** de n
 
 Cinco abas de conteúdo, três de infraestrutura. **Coluna cinza é calculada — não sobrescrever.**
 
-**RADAR** — o mapa. 23 linhas.
+**RADAR** — o mapa. 23 linhas, 30 colunas.
 `ID · Instrumento · Órgão · Tipo · Periodicidade · Janela · Prazo · ⟨Dias rest.⟩ ·
 Proponente · Pré-requisito bloqueante · Projeto-match · Eleg. · Ader. · Valor · Facil. ·
-Prob. · ⟨SCORE⟩ · ⟨PRI⟩ · Preparo · ⟨DATA-GATILHO⟩ · ⟨Dias p/ gatilho⟩ · ⟨Semáforo⟩ ·
-Responsável · Status · Próxima ação · Notas · Fonte · Adiado até · Atualizado em`
+Prob. · ⟨SCORE⟩ · ⟨PRI⟩ · Preparo · Gatilho manual · ⟨DATA-GATILHO⟩ · ⟨Dias p/ gatilho⟩ ·
+⟨Semáforo⟩ · Responsável · Status · Próxima ação · Notas · Fonte · Adiado até · Atualizado em`
 
 - `SCORE` = Eleg. + Ader. + Valor + Facil. + Prob. (máx. 15)
 - `PRI` = A (≥12, atacar) · B (8–11, avaliar) · C (<8, arquivar)
-- `DATA-GATILHO` = Prazo − Preparo. **Sem prazo (fluxo contínuo), preencha à mão** —
-  há um campo para isso na tela de detalhe; sem ele a linha nunca entra na fila.
+- `DATA-GATILHO` = Prazo − Preparo. Calculada, não editar.
+- **`Gatilho manual` vence o cálculo.** Dois casos pedem essa coluna:
+  1. **Fluxo contínuo sem prazo** — não há o que subtrair. Sem uma data aqui, a linha
+     nunca entra na fila. É o caso do ProAC ICMS.
+  2. **Prazo distante, decisão de agora** — a Funarte Aberta vai até 30/04/2027, então o
+     cálculo joga o gatilho para abril e a oportunidade some por sete meses. Preencher
+     aqui traz a linha de volta para o semestre em que a decisão realmente cabe.
 - `Adiado até` tira a linha da fila até a data, sem apagar nada.
 - `Eleg. = 0` marca **bloqueado**: não é falta de mérito, é pré-requisito faltando.
   São as cinco filas de patrocínio que esperam o PRONAC ou o ProAC. É o pipeline de 2027.
@@ -355,7 +360,28 @@ O favicon é o **monograma Z**: campo roxo, filete e Z em Farol.
 
 ---
 
-## 10. LIMITES E ARMADILHAS
+## 10. PROVENIÊNCIA DOS PRAZOS
+
+A planilha v1.0 avisava: *"prazos e regras verificados em 21/08/2026 nas fontes oficiais.
+Editais são alterados e prorrogados: reconfirmar no site do órgão antes de qualquer
+submissão."* Em **06/09/2026** os itens de janela curta foram reconferidos em fonte
+primária. O que cada linha traz na coluna `Notas`:
+
+| Instrumento | Situação em 06/09/2026 |
+|---|---|
+| **Rouanet nas Favelas 2** | Confirmado: 15/08 a **13/10/2026**. R$ 10 mi, mín. 50 propostas, teto de R$ 200 mil. São Paulo está entre as oito cidades. Submissão pelo Salic, tipicidade "Editais Compartilhados", tipologia "Programa Rouanet nas Favelas - 2026". **O portão de elegibilidade continua aberto** — falta ler o edital e decidir se "localidade" é o município ou o território de favela |
+| **Ibermúsicas** | Confirmado: **01/10/2026** em todas as chamadas, menos a do Arts Council England (encerrou em 31/07). Prêmio de USD 2.500, estreia por orquestra nacional, circulação nos países membros. A edição tem **15 chamadas**; o RADAR mapeou cinco |
+| **ProAC ICMS** | Confirmado: inscrição **ininterrupta**, sem prazo. R$ 100 mi em 2026 (Resolução SFP-06, DOE 11/05/2026) |
+| **Funarte Aberta** | Confirmado: fluxo contínuo até **30/04/2027**, ou enquanto houver pauta. Elegíveis PF, PJ com ou sem fins lucrativos, MEI e EI. Sem cachê, mas **bilheteria integral ao proponente** (teto R$ 100/ingresso). Salas do Complexo SP são de câmara — não cabe sinfônica. Inscrição pelo Prosas, edital 17666 |
+| **São Caetano nº 020/2026** | **Submetido**, em nome da Faculdade. Datas de resultado (14/09 preliminar, 28/09 final) informadas pelo Vitor a partir do edital: o portal da prefeitura estava fora do ar e não deu para reconfirmar. **Conferir no dia** |
+
+Seguem marcados `VERIFICAR`, sem urgência de janela: PNAB Cultura Vicentina, cadastro do
+Petrobras Circuitos, requisitos de MAPFRE e Claro, e a Lei Estadual do RJ (já inelegível
+por sede, então a verificação é formalidade).
+
+---
+
+## 11. LIMITES E ARMADILHAS
 
 | Item | Realidade |
 |---|---|
@@ -371,13 +397,24 @@ O favicon é o **monograma Z**: campo roxo, filete e Z em Farol.
 
 ---
 
-## 11. O QUE FALTA DECIDIR
+## 12. O QUE FALTA DECIDIR
 
-- [ ] E-mail e WhatsApp do Vitor (aba EQUIPE)
+- [x] ~~E-mail e WhatsApp do Vitor~~ — no seed. **Falta o WhatsApp do João**; o e-mail
+      dele é preenchido sozinho pela conta que executar `setupRadar()`
 - [ ] Provedor de WhatsApp — recomendação: CallMeBot agora, Meta quando escalar
-- [ ] Confirmar prazo do Credenciamento São Caetano nº 020/2026 (hoje `VERIFICAR`)
-- [ ] Confirmar regulamento da Funarte Aberta (hoje `VERIFICAR`)
-- [ ] Definir data-gatilho manual do **ProAC ICMS** — é fluxo contínuo, então não tem
-      prazo para subtrair; hoje ele só aparece pela etapa 1 do caminho crítico
+- [x] ~~Credenciamento São Caetano~~ — **submetido em nome da Faculdade**, não pelo MEI.
+      Gatilho em 14/09 (resultado preliminar); final em 28/09
+- [x] ~~Confirmar regulamento da Funarte Aberta~~ — fluxo contínuo até 30/04/2027,
+      confirmado em fonte primária
+- [x] ~~Data-gatilho do ProAC ICMS~~ — 15/09, herdada da etapa 11 do caminho crítico
+- [ ] **Funarte Aberta: escolher a sala e a data.** O cálculo joga o gatilho para
+      10/04/2027; assim que houver uma data pretendida, preencher `Gatilho manual`
+- [ ] **Funarte Aberta: repontuar `Valor`.** Está em 1 porque a planilha registrava só
+      "sem cachê". A bilheteria é integralmente repassada ao proponente — há receita.
+      Decisão do João, um clique na gaveta
+- [ ] **Ibermúsicas: varrer as outras dez chamadas** antes de 01/10. A edição de 15 anos
+      tem 15 convocatórias; o RADAR mapeou cinco
+- [ ] Rodar `setupRadar()` **antes** de qualquer edição manual na planilha — a semeadura
+      só preenche aba vazia, então mudanças no `Seed.gs` não alcançam uma base já criada
 - [x] ~~Aprovar ou vetar o vermelho **Sirene** da camada de estado~~ — aprovado em
       06/09/2026, com o escopo fechado descrito em §9.3
