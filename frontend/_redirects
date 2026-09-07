@@ -1,2 +1,14 @@
-/inscricao https://script.google.com/macros/s/AKfycbwH6V4XsMQzfvXeaVlopyJZCMNFskAcB8abq3mZZ-c-t61NkWSGz2GJeKFOosJ2jDQxaQ/exec?page=cadastro 302
-/admin https://script.google.com/macros/s/AKfycbwH6V4XsMQzfvXeaVlopyJZCMNFskAcB8abq3mZZ-c-t61NkWSGz2GJeKFOosJ2jDQxaQ/exec?page=admin 302
+# Netlify · camerata21.com
+# Regra da casa: os links divulgados apontam para o domínio próprio, nunca para
+# a URL do Google. Se a implantação do Apps Script mudar, edita-se só este
+# arquivo — os links já mandados no WhatsApp continuam valendo.
+
+# ── Camerata 21 · inscrição de instrumentistas ──
+/inscricao   https://script.google.com/macros/s/AKfycbwH6V4XsMQzfvXeaVlopyJZCMNFskAcB8abq3mZZ-c-t61NkWSGz2GJeKFOosJ2jDQxaQ/exec?page=cadastro   302
+/admin       https://script.google.com/macros/s/AKfycbwH6V4XsMQzfvXeaVlopyJZCMNFskAcB8abq3mZZ-c-t61NkWSGz2GJeKFOosJ2jDQxaQ/exec?page=admin      302
+
+# ── OS-UZP · Radar de Fomento (editais e prazos) ──
+# Implantado em 07/09/2026. Acesso por código de 6 dígitos, só para e-mails
+# listados na aba EQUIPE da planilha do Radar.
+/radar       https://script.google.com/macros/s/AKfycbxzFStUEaa4CG5B2lP4TdXoUeAsUoGM_wxqMtupfx7VFIcFvBM5AUA_LXaOM1Fz2-9k/exec                   302
+/fomento     https://script.google.com/macros/s/AKfycbxzFStUEaa4CG5B2lP4TdXoUeAsUoGM_wxqMtupfx7VFIcFvBM5AUA_LXaOM1Fz2-9k/exec                   302

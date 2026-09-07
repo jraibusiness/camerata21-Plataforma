@@ -37,7 +37,7 @@ Este repositório reúne duas plataformas da orquestra, ambas em GAS + Google Sh
 | Módulo | O que faz | Onde |
 |---|---|---|
 | **Inscrições Camerata 21** | Captação de instrumentistas, logística e dashboard de naipes | `Code.gs`, `frontend/` |
-| **Radar de Fomento OS-UZP** | Centro de controle de editais, leis de incentivo, caminho crítico e dossiê documental — com report diário por e-mail e WhatsApp | `radar/` · manual em [`docs/RADAR_FOMENTO.md`](docs/RADAR_FOMENTO.md) |
+| **Radar de Fomento OS-UZP** | Centro de controle de editais, leis de incentivo, caminho crítico e dossiê documental — com report diário por e-mail e WhatsApp | `radar/` · manual em [`docs/RADAR_FOMENTO.md`](docs/RADAR_FOMENTO.md) · no ar em `camerata21.com/radar` |
 
 ## 🏗️ Arquitetura
 
@@ -73,7 +73,8 @@ Este repositório reúne duas plataformas da orquestra, ambas em GAS + Google Sh
 │   ├── HANDOFF.md            # Documento técnico de handoff (arquitetura, planilha, pendências)
 │   ├── RADAR_FOMENTO.md      # Manual do Radar: implantação, WhatsApp, rotina, modelo de dados
 │   └── ARQUITETURA_E_ESCOPO.md
-├── _redirects                # Redirecionamentos Netlify (aponta para o deployment GAS ativo)
+├── testes/                    # Suíte que roda em Node antes do clasp push
+├── _redirects                # Cópia de referência das rotas Netlify (a que vale é frontend/_redirects)
 └── README.md                 # Este arquivo
 ```
 

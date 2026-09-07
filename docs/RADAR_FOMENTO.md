@@ -192,15 +192,52 @@ Depois do primeiro `push`, ainda faltam dois passos que o clasp não faz: rodar
 **`setupRadar`** uma vez pelo editor (ele envia código, não executa função) e
 publicar em **Implantar → Nova implantação → App da Web**.
 
-### 3.6 (Opcional) Rota bonita no domínio
-No `_redirects` do Netlify, ao lado das rotas já existentes:
-```
-/radar   [URL_GAS]/exec   302
-```
-Assim `camerata21.com/radar` abre o centro de controle, e trocar o deploy do GAS não
-invalida o link já mandado no WhatsApp.
+### 3.6 Link no domínio próprio (Netlify)
 
----
+**No ar desde 07/09/2026:** `camerata21.com/radar` → o web app do Radar.
+Alternativa: `camerata21.com/fomento`. As duas apontam para a mesma implantação.
+
+**Por que não divulgar a URL do Google.** Trocar a implantação do Apps Script
+troca a URL `/exec`. Se os links divulgados apontarem para o Google, cada
+redeploy invalida tudo que já foi mandado no WhatsApp. Apontando para o domínio
+próprio, edita-se uma linha do `_redirects` e os links continuam valendo.
+
+**Como está montado.** O site `camerata21.com` é servido pelo Netlify a partir da
+pasta `frontend/` deste repositório, por deploy manual (arrastar a pasta). O
+arquivo `frontend/_redirects` define as rotas:
+
+```
+/inscricao   <URL_GAS_CAMERATA>/exec?page=cadastro   302
+/admin       <URL_GAS_CAMERATA>/exec?page=admin      302
+/radar       <URL_GAS_RADAR>/exec                    302
+/fomento     <URL_GAS_RADAR>/exec                    302
+```
+
+Há uma cópia idêntica em `_redirects`, na raiz, só para referência — **a que vale
+é a de dentro da pasta que você arrasta.**
+
+**Para publicar uma mudança de rota:**
+
+1. Edite `frontend/_redirects`.
+2. Abra o site no Netlify (`warm-custard-e097e1.netlify.app`) → **Deploys** →
+   **Deploy manually**.
+3. Arraste a pasta `frontend/` inteira. O Netlify substitui o site todo, então a
+   pasta precisa conter também o `index.html` — e contém.
+4. Confira: `curl -I https://camerata21.com/radar` tem de responder `302`.
+
+**O `index.html` funciona nos dois lugares** — no Netlify e servido pelo Apps
+Script. Ele traz um `<?= execUrl ?>` dentro de um `<script>`, com guarda: no
+Netlify a string fica literal, não contém `script.google.com`, e a função sai na
+primeira linha. Não mexa nessa guarda.
+
+**Sobre expor o Radar num domínio público.** A rota é pública, o conteúdo não: o
+Radar exige código de seis dígitos enviado por e-mail, e só aceita endereços
+listados na aba EQUIPE. Quem abrir `camerata21.com/radar` sem estar na lista vê
+a tela de login e nada mais.
+
+**Alternativa, se quiser deploy automático:** ligar o site do Netlify a este
+repositório (publish directory `frontend`, branch a definir). Aí cada push
+publica sozinho, sem arrastar pasta. Exige configurar uma vez no Netlify.
 
 ## 4. NOTIFICAÇÕES POR WHATSAPP — qual escolher
 
