@@ -500,11 +500,16 @@ function getEstado(token) {
   };
 }
 
-var ABA_POR_PREFIXO_ = { R: ABAS.radar, C: ABAS.caminho, P: ABAS.projetos, D: ABAS.dossie };
+// NÃO transformar em constante de topo: o Apps Script avalia os arquivos .gs em
+// ordem alfabética, então Code.gs carrega antes de Config.gs e ABAS ainda não
+// existe. Dentro de função, só é lido na hora da chamada.
+function abaDoId_(id) {
+  return ({ R: ABAS.radar, C: ABAS.caminho, P: ABAS.projetos, D: ABAS.dossie })[String(id).charAt(0)];
+}
 
 function salvarCampo(token, id, campo, valor) {
   var u = sessao_(token);
-  var aba = ABA_POR_PREFIXO_[String(id).charAt(0)];
+  var aba = abaDoId_(id);
   if (!aba) throw new Error('ID desconhecido: ' + id);
   var t = tabela_(aba);
   var alvo = t.linhas.filter(function (o) { return o['ID'] === id; })[0];
@@ -643,8 +648,8 @@ function paginaAcaoRapida_(p) {
       else if (acao === 'feito')  { forcarCampo_(id, 'Status', 'Concluído'); forcarCampo_(id, '% Concluído', 100); titulo = 'Marcado como concluído'; msg = id + ' foi concluído.'; }
       else if (acao === 'meu')    { titulo = 'Abra o Radar'; msg = 'Assumir responsabilidade exige login. Abra o Radar para atribuir.'; }
       else { msg = 'Ação desconhecida.'; }
-      recalcularLinha_(ABA_POR_PREFIXO_[String(id).charAt(0)], id);
-      log_('link-rápido', ABA_POR_PREFIXO_[String(id).charAt(0)], id, acao, '', '');
+      recalcularLinha_(abaDoId_(id), id);
+      log_('link-rápido', abaDoId_(id), id, acao, '', '');
     } catch (err) {
       titulo = 'Não foi possível concluir'; msg = err.message;
     }
@@ -666,7 +671,7 @@ function paginaAcaoRapida_(p) {
 }
 
 function forcarCampo_(id, campo, valor) {
-  var aba = ABA_POR_PREFIXO_[String(id).charAt(0)];
+  var aba = abaDoId_(id);
   if (!aba) throw new Error('ID desconhecido.');
   var t = tabela_(aba);
   var alvo = t.linhas.filter(function (o) { return o['ID'] === id; })[0];
