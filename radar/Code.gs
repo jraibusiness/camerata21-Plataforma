@@ -79,6 +79,46 @@ function semear_(ss, aba, prefixo, dados, mapper) {
 
 function pad_(n) { return (n < 10 ? '0' : '') + n; }
 
+// ============================================================
+// MIGRAÇÃO — quando as colunas mudam
+// ------------------------------------------------------------
+// setupRadar() só semeia aba vazia, de propósito: rodar duas vezes
+// não pode duplicar nada. O efeito colateral é que, quando o esquema
+// ganha colunas, uma planilha já criada continua no formato velho.
+//
+// Esta função reconstrói as QUATRO abas de conteúdo a partir do
+// Seed.gs. Preserva EQUIPE, CONFIG, LOG, OTP e ANÁLISE.
+//
+// APAGA O QUE VOCÊ TIVER EDITADO NAS ABAS RADAR, CAMINHO CRÍTICO,
+// PROJETOS E DOSSIÊ. Use quando o conteúdo ainda é o semeado —
+// tipicamente logo depois de instalar. Depois disso, prefira
+// acrescentar as colunas à mão.
+// ============================================================
+function ressemearConteudo() {
+  var ss = ss_();
+  [[ABAS.radar, 'R', SEED_RADAR_(), mapRadarSeed_],
+   [ABAS.caminho, 'C', SEED_CAMINHO_(), mapCaminhoSeed_],
+   [ABAS.projetos, 'P', SEED_PROJETOS_(), mapProjetoSeed_],
+   [ABAS.dossie, 'D', SEED_DOSSIE_(), mapDossieSeed_]].forEach(function (t) {
+    var nome = t[0], sh = ss.getSheetByName(nome), cab = CABECALHOS[nome];
+    if (!sh) sh = ss.insertSheet(nome);
+    sh.clear();
+    if (sh.getMaxColumns() < cab.length) {
+      sh.insertColumnsAfter(sh.getMaxColumns(), cab.length - sh.getMaxColumns());
+    }
+    sh.getRange(1, 1, 1, cab.length).setValues([cab])
+      .setFontWeight('bold').setBackground('#0B1B3D').setFontColor('#FFB800');
+    sh.setFrozenRows(1);
+    var linhas = t[2].map(function (d, i) { return t[3](d, t[1] + pad_(i + 1)); });
+    if (linhas.length) sh.getRange(2, 1, linhas.length, linhas[0].length).setValues(linhas);
+    Logger.log('  ' + nome + ': ' + linhas.length + ' linhas, ' + cab.length + ' colunas');
+  });
+  formatarPlanilha_(ss);
+  recalcularTudo();
+  Logger.log('\n✅ Conteúdo reconstruído. EQUIPE, CONFIG, LOG, OTP e ANÁLISE intactas.');
+  return 'ok';
+}
+
 // seed → linha completa da planilha (colunas calculadas ficam vazias)
 function mapRadarSeed_(d, id) {
   // d[19] = gatilho manual (override), d[20] = notas,

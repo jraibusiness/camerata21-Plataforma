@@ -326,6 +326,66 @@ Com `whatsapp.provedor = nenhum`, o Radar não tenta enviar nada e registra isso
 no log. **O e-mail continua saindo normalmente** — nenhuma falha de canal
 instantâneo derruba o report.
 
+## 4-bis. LEITURA ASSISTIDA DOS EDITAIS
+
+### O que faz e o que não faz
+
+A plataforma abre o edital — página HTML ou PDF — lê o texto e extrai **dez campos
+factuais**, citando o trecho de origem. O resultado fica guardado na aba
+**ANÁLISE**, então relê só quando você pedir.
+
+**Não pontua.** Os cinco critérios de score continuam humanos. *"O score é
+calculado, não opinado"* é o princípio que sustenta a planilha desde a v1.0;
+deixar um modelo opinar afinidade contradiz isso e corrói a confiança no número.
+O modelo entrega os insumos que hoje só se obtêm lendo o PDF — quem decide é João.
+
+**Regra antialucinação:** o modelo responde só a partir do texto recebido. Campo
+que não constar vem como *"NÃO ENCONTRADO NO TEXTO"*. Num painel de prazos,
+invenção com confiança é pior que campo vazio.
+
+### Os dez campos, e por que estes
+
+Os seis primeiros vieram da lista de João. Os quatro últimos entraram por
+inversão do problema: o desperdício mais caro da operação não é perder um edital
+bom — é **escrever proposta para edital em que se é inelegível**. Então o resumo
+começa pelo que desqualifica.
+
+| # | Campo | Por que existe |
+|---|---|---|
+| 1 | **Impedimentos literais** | Sede, CNAE, projeto já aprovado. Captura o problema da CPEN: edital que exija "Certidão Negativa" ao pé da letra é risco real, e só o texto revela |
+| 2 | Quem pode propor | O portão binário |
+| 3 | Objeto e formação exigida | Sinfônica, câmara, compositor individual, palestra |
+| 4 | Valor e teto | — |
+| 5 | **Contrapartida obrigatória** | Custo escondido na letra miúda que derruba orçamento |
+| 6 | **Documentos exigidos** | Cruza com o DOSSIÊ e diz o que falta |
+| 7 | Prazo no edital | Não substitui o registrado: **confere** e avisa se divergir |
+| 8 | **Vigência de execução** | O mandato da representante legal termina em 20/03/2027 |
+| 9 | Prestação de contas | Há três PRONACs em aberto limitando a carteira |
+| 10 | Próximo passo | — |
+
+Três verificações automáticas rodam sobre a extração: divergência de prazo entre
+planilha e edital; menção a "Certidão Negativa" quando a nossa federal é CPEN; e
+execução que ultrapasse 20/03/2027.
+
+### Configurar
+
+1. Gere uma chave em [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+2. GAS → ⚙️ *Configurações do projeto* → *Propriedades do script* →
+   `GEMINI_API_KEY` = a chave.
+3. Em **CONFIG**, confira `ia.provedor` = `gemini`.
+4. Rode **`listarModelosIA()`** no editor: ele pergunta à API quais modelos a sua
+   chave alcança e lista. Copie um para `ia.modelo`.
+
+O passo 4 existe porque nomes de modelo mudam. Em vez de fixar um no código e
+quebrar meses depois, a plataforma pergunta.
+
+**Alternativas:** `ia.provedor` aceita `glm` (você tem créditos; não lê PDF por
+este caminho) e `claude` (`ANTHROPIC_API_KEY`). A camada gratuita do Gemini tem
+limite por minuto e por dia — por isso `analisarPendentes()` para em oito por
+execução e espera entre chamadas.
+
+---
+
 ## 5. A ROTINA
 
 ### Todo dia útil, 7h — report diário
@@ -438,6 +498,9 @@ Rode pelo editor do Apps Script quando precisar:
 | Função | Quando |
 |---|---|
 | `setupRadar()` | uma vez, na instalação (idempotente) |
+| `ressemearConteudo()` | depois de uma atualização que mude colunas — reconstrói RADAR, CAMINHO, PROJETOS e DOSSIÊ a partir do código. **Apaga edições manuais nessas quatro abas**; preserva EQUIPE, CONFIG, LOG, OTP e ANÁLISE |
+| `listarModelosIA()` | ver quais modelos a sua chave do Gemini alcança |
+| `analisarPendentes()` | ler em lote os editais ainda sem análise (máx. 8 por execução) |
 | `instalarGatilhos()` | depois de mudar `digest.hora` ou `pauta.hora` |
 | `recalcularTudo()` | forçar recálculo das colunas cinza agora |
 | `testarDigestAgora()` | ver o report do dia sem esperar as 7h |

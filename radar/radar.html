@@ -362,6 +362,21 @@ main{padding:clamp(20px,3.5vw,34px) clamp(14px,3vw,28px) 96px;max-width:1340px;m
   font-size:12px;color:var(--dim-2);line-height:1.5}
 .linkinha{color:var(--farol);font-size:11px;letter-spacing:.06em;white-space:nowrap}
 .linkinha:hover{color:var(--marfim);text-decoration:underline}
+/* ── Leitura assistida ── */
+.ia{border-top:1px solid var(--linha);margin-top:26px;padding-top:22px}
+.ia-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.ia-hd h4{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:10px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--latao);flex:1}
+.ia-campo{padding:12px 0;border-bottom:1px solid rgba(166,151,115,.15)}
+.ia-campo dt{font-family:'Roboto Condensed',Arial,sans-serif;font-weight:700;font-size:9px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--latao);margin-bottom:5px}
+.ia-campo dd{font-size:12.5px;line-height:1.65;color:var(--dim);white-space:pre-wrap}
+.ia-campo dd.vazio{color:var(--dim-2);font-style:italic}
+.ia-aviso{background:rgba(255,92,99,.1);border-left:3px solid var(--sirene);padding:12px 14px;
+  font-size:12.5px;line-height:1.6;margin-bottom:16px}
+.ia-rodape{font-size:11px;color:var(--dim-2);margin-top:14px;line-height:1.6}
+.ia-resp{background:rgba(0,0,0,.26);border-left:3px solid var(--latao);padding:14px 16px;
+  font-size:13px;line-height:1.7;margin-top:12px;white-space:pre-wrap}
 .acoes-drawer{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
 .acoes-drawer .btn{width:auto;flex:1;min-width:140px}
 
@@ -974,7 +989,22 @@ function abrirRadar(id) {
     '<button class="btn" id="drSalvar">Salvar</button>' +
     '<button class="btn ghost" id="drAdiar">Adiar 7 dias</button></div>';
 
+  // Leitura assistida — só faz sentido se houver o que ler.
+  h += '<div class="ia" id="iaBloco">' +
+    '<div class="ia-hd"><h4>Leitura do edital</h4>' +
+      ((r.link || r.documento)
+        ? '<button class="btn mini ghost" id="iaLer">Ler agora</button>'
+        : '') + '</div>' +
+    '<div id="iaCorpo">' +
+      ((r.link || r.documento)
+        ? '<p style="font-size:12.5px;color:var(--dim-2);line-height:1.7">' +
+          'A plataforma abre o edital, lê o texto e extrai dez campos factuais, citando o trecho ' +
+          'de origem. Não pontua: os cinco critérios de score continuam seus.</p>'
+        : '<p style="font-size:12.5px;color:var(--dim-2)">Cadastre um link ou documento acima para poder ler.</p>') +
+    '</div></div>';
+
   abrirDrawer('Radar · ' + id, h);
+  if (r.link || r.documento) ligarIA(id);
 
   $$('[data-sc]').forEach(function (s) { s.onchange = function () {
     var t = 0; $$('[data-sc]').forEach(function (x) { t += Number(x.value); });
@@ -1077,6 +1107,72 @@ function abrirProjeto(id) {
     if ($('#dReap').value !== p.reaproveitavel) mud.push(['Reaproveitável em', $('#dReap').value]);
     if ($('#dObs').value !== p.obs) mud.push(['Observação', $('#dObs').value]);
     salvarLote(id, mud);
+  };
+}
+
+// ─────────── LEITURA ASSISTIDA ───────────
+var IA_ROTULOS = [
+  ['impedimentos','Impedimentos literais'], ['proponente','Quem pode propor'],
+  ['objeto','Objeto e formação exigida'],   ['valor','Valor e teto'],
+  ['contrapartida','Contrapartida obrigatória'], ['documentos','Documentos exigidos'],
+  ['prazo','Prazo no edital'],              ['vigencia','Vigência de execução'],
+  ['contas','Prestação de contas'],         ['passo','Próximo passo']
+];
+
+function ligarIA(id) {
+  var bt = $('#iaLer'); if (!bt) return;
+  bt.onclick = function () { lerComIA(id, bt.dataset.feito === '1'); };
+  google.script.run.withSuccessHandler(function (d) {
+    if (d) pintarIA(id, d);
+  }).withFailureHandler(function () {}).analisarEditalSeExistir(TOKEN, id);
+}
+
+function lerComIA(id, forcar) {
+  var bt = $('#iaLer');
+  bt.disabled = true; bt.textContent = 'Lendo…';
+  $('#iaCorpo').innerHTML = '<p style="font-size:12.5px;color:var(--dim-2)">' +
+    'Abrindo o documento e lendo. Um edital longo leva de dez a trinta segundos.</p>';
+  google.script.run.withSuccessHandler(function (d) {
+    bt.disabled = false; pintarIA(id, d);
+  }).withFailureHandler(function (e) {
+    bt.disabled = false; bt.textContent = 'Tentar de novo';
+    $('#iaCorpo').innerHTML = '<div class="ia-aviso">' + esc(e.message) + '</div>';
+  }).analisarEdital(TOKEN, id, !!forcar);
+}
+
+function pintarIA(id, d) {
+  var bt = $('#iaLer');
+  if (bt) { bt.textContent = 'Reler'; bt.dataset.feito = '1'; }
+  var h = '';
+  if (d._divergencias) h += '<div class="ia-aviso"><b>Atenção</b><br>' + esc(d._divergencias) + '</div>';
+  IA_ROTULOS.forEach(function (c, i) {
+    var v = String(d[c[0]] || '');
+    var vazio = !v || /NÃO ENCONTRADO NO TEXTO/i.test(v);
+    h += '<div class="ia-campo"><dt>' + (i + 1) + ' · ' + c[1] + '</dt>' +
+         '<dd' + (vazio ? ' class="vazio"' : '') + '>' +
+         esc(vazio ? 'Não encontrado no texto do edital.' : v) + '</dd></div>';
+  });
+  h += '<div class="ia-rodape">Lido em ' + esc(d._quando || '—') + ' por ' + esc(d._modelo || '—') +
+       (d._cache ? ' · guardado na aba ANÁLISE' : '') + '<br>' +
+       'Extração automática do texto em <a href="' + esc(d._fonte || '#') + '" target="_blank" rel="noopener">' +
+       'documento original ↗</a>. Confira antes de submeter.</div>';
+  h += '<label class="campo" style="margin-top:20px"><span>Perguntar ao edital</span>' +
+       '<input id="iaP" placeholder="Ex.: exige contrapartida de recursos próprios?"></label>' +
+       '<button class="btn ghost" id="iaPerg" style="width:auto">Perguntar</button>' +
+       '<div id="iaRespArea"></div>';
+  $('#iaCorpo').innerHTML = h;
+  $('#iaP').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#iaPerg').click(); });
+  $('#iaPerg').onclick = function () {
+    var q = $('#iaP').value.trim(); if (!q) return;
+    var b = this; b.disabled = true; b.textContent = 'Consultando…';
+    $('#iaRespArea').innerHTML = '';
+    google.script.run.withSuccessHandler(function (r) {
+      b.disabled = false; b.textContent = 'Perguntar';
+      $('#iaRespArea').innerHTML = '<div class="ia-resp">' + esc(r.resposta) + '</div>';
+    }).withFailureHandler(function (e) {
+      b.disabled = false; b.textContent = 'Perguntar';
+      $('#iaRespArea').innerHTML = '<div class="ia-aviso">' + esc(e.message) + '</div>';
+    }).perguntarEdital(TOKEN, id, q);
   };
 }
 

@@ -31,7 +31,8 @@ const ABAS = {
   equipe:   'EQUIPE',
   config:   'CONFIG',
   log:      'LOG',
-  otp:      'OTP'
+  otp:      'OTP',
+  analise:  'ANÁLISE'
 };
 
 const CABECALHOS = {
@@ -77,7 +78,9 @@ const CONFIG_PADRAO = [
   ['whatsapp.provedor',      'nenhum','nenhum | textmebot | telegram | callmebot | meta | twilio (ver docs/RADAR_FOMENTO.md §4)'],
   ['calendar.sincronizar',   'NAO',  'SIM = cria eventos de DATA-GATILHO no Google Calendar'],
   ['calendar.id',            '',     'ID do calendário dedicado (deixe vazio para criar no setup)'],
-  ['app.url',                '',     'URL /exec do web app — preenchida automaticamente no 1º acesso']
+  ['app.url',                '',     'URL /exec do web app — preenchida automaticamente no 1º acesso'],
+  ['ia.provedor',            'gemini','gemini | glm | claude | nenhum'],
+  ['ia.modelo',              'gemini-2.5-flash','Nome do modelo. Rode listarModelosIA() para ver os que sua chave alcança']
 ];
 
 // -------- Semáforo: vocabulário único em toda a plataforma --------
