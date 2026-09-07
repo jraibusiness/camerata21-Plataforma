@@ -221,7 +221,7 @@ function cartaoItem_(i, comAcoes) {
     acoes = '<div style="margin-top:14px;font-family:' + FT_ROTULO + ';font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;">' +
       '<a href="' + linkAcao_('feito', i.id) + '" style="color:' + CORES.marfim + ';text-decoration:none;margin-right:18px;">Concluído</a>' +
       '<a href="' + linkAcao_('adiar7', i.id) + '" style="color:' + CORES.latao + ';text-decoration:none;margin-right:18px;">Adiar 7d</a>' +
-      (linkExterno_(i.link) ? '<a href="' + esc_(linkExterno_(i.link)) + '" style="color:' + CORES.latao + ';text-decoration:none;">Fonte</a>' : '') +
+      (i.link ? '<a href="' + esc_(i.link) + '" style="color:' + CORES.farol + ';text-decoration:none;">Abrir edital ↗</a>' : '') +
       '</div>';
   }
   return '' +

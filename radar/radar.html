@@ -345,6 +345,19 @@ main{padding:clamp(20px,3.5vw,34px) clamp(14px,3vw,28px) 96px;max-width:1340px;m
 .score-out{display:flex;align-items:baseline;gap:14px;margin:14px 0 26px;font-size:12px;color:var(--dim-2)}
 .score-out b{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:38px;
   color:var(--farol);line-height:1}
+/* Barra de documentos — o que tira a plataforma de "mapa" e a põe em "mesa de
+   trabalho": o edital a um toque, sem sair para outra aba do navegador. */
+.docs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px}
+.docs a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:11px 18px;
+  background:var(--farol);color:var(--roxo);font-family:'Roboto Condensed',Arial,sans-serif;
+  font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;transition:.15s}
+.docs a:hover{background:var(--marfim)}
+.docs a.sec{background:none;border:1px solid var(--linha-forte);color:var(--marfim)}
+.docs a.sec:hover{border-color:var(--marfim);background:rgba(239,213,180,.08)}
+.docs .nao{display:inline-flex;align-items:center;min-height:44px;padding:11px 0;
+  font-size:12px;color:var(--dim-2);line-height:1.5}
+.linkinha{color:var(--farol);font-size:11px;letter-spacing:.06em;white-space:nowrap}
+.linkinha:hover{color:var(--marfim);text-decoration:underline}
 .acoes-drawer{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
 .acoes-drawer .btn{width:auto;flex:1;min-width:140px}
 
@@ -725,6 +738,8 @@ function renderFila() {
           (i.semDono ? 'Sem responsável — atribuir agora' : esc(i.responsavel)) + '</div></div>' +
         '<div class="btns">' +
           '<button class="btn mini ghost" data-ab="' + esc(i.id) + '">Abrir</button>' +
+          (i.link ? '<a class="btn mini ghost" href="' + esc(i.link) + '" target="_blank" rel="noopener" ' +
+                    'onclick="event.stopPropagation()">Edital ↗</a>' : '') +
           '<button class="btn mini ghost" data-ad="' + esc(i.id) + '">Adiar 7d</button>' +
           (i.semDono ? '<button class="btn mini" data-assumir="' + esc(i.id) + '">É meu</button>' : '') +
         '</div></article>';
@@ -792,7 +807,10 @@ function renderRadar() {
         '<span class="dias ' + cls + '">' + (r.gatilhoBR || (r.emEspera ? 'em espera' : '—')) + '</span>' +
         (r.diasGatilho !== null ? '<div class="sub" style="margin-left:16px">' +
           (r.diasGatilho < 0 ? Math.abs(r.diasGatilho) + 'd atrás' : 'em ' + r.diasGatilho + 'd') + '</div>' : '') + '</td>' +
-      '<td data-r="Edital" class="nome">' + esc(r.instrumento) + '<small>' + esc(r.orgao) + ' · ' + esc(r.tipo) + '</small></td>' +
+      '<td data-r="Edital" class="nome">' + esc(r.instrumento) +
+        (r.link ? ' <a class="linkinha" href="' + esc(r.link) + '" target="_blank" rel="noopener" ' +
+                  'onclick="event.stopPropagation()" title="Abrir o edital">↗</a>' : '') +
+        '<small>' + esc(r.orgao) + ' · ' + esc(r.tipo) + '</small></td>' +
       '<td data-r="Score"><span class="tagpri p' + esc(r.pri) + '">' + esc(r.pri) + '</span> ' +
         '<span class="num sub">' + r.score + '/15</span></td>' +
       '<td data-r="Prazo" class="dias ' + (r.diasRestantes !== null && r.diasRestantes < 0 ? 'neg' : '') + '">' +
@@ -900,6 +918,13 @@ function abrirRadar(id) {
             ['facil','Facil.','Facili'],['prob','Prob.','Probab']];
   var h = '<h3>' + esc(r.instrumento) + '</h3><div class="orgx">' + esc(r.orgao) + ' · ' + esc(r.tipo) + '</div>';
 
+  // Os documentos vêm primeiro: decidir sem ler o edital é chutar.
+  h += '<div class="docs">' +
+    (r.link ? '<a href="' + esc(r.link) + '" target="_blank" rel="noopener">Abrir edital ↗</a>' : '') +
+    (r.documento ? '<a class="sec" href="' + esc(r.documento) + '" target="_blank" rel="noopener">Regulamento ↗</a>' : '') +
+    (!r.link && !r.documento ? '<span class="nao">Sem link cadastrado — cole um abaixo.</span>' : '') +
+    '</div>';
+
   h += '<div class="scores">' + cs.map(function (c) {
     return '<div class="sc"><label>' + c[2] + '</label><select data-sc="' + c[1] + '">' +
       [0,1,2,3].map(function (n) { return '<option value="' + n + '"' + (r[c[0]] === n ? ' selected' : '') + '>' + n + '</option>'; }).join('') +
@@ -923,6 +948,10 @@ function abrirRadar(id) {
     (r.diasGatilho !== null ? ' — ' + (r.diasGatilho < 0 ? dias(r.diasGatilho) + ' atrás' : 'em ' + dias(r.diasGatilho)) : '') +
     '<br><span style="font-size:11.5px;color:var(--dim-2)">prazo menos preparo. É esta data que manda, não o prazo.</span></div>';
   h += '<label class="campo"><span>Notas</span><textarea id="dNotas" rows="3">' + esc(r.notas) + '</textarea></label>';
+  h += '<label class="campo"><span>Link do edital</span><input id="dLink" type="url" placeholder="https://…" value="' + esc(r.link) + '">' +
+       '<span class="dica">Página oficial da chamada. É o que abre no botão do topo.</span></label>';
+  h += '<label class="campo"><span>Documento / regulamento</span><input id="dDoc" type="url" placeholder="https://… ou link do Drive" value="' + esc(r.documento) + '">' +
+       '<span class="dica">O PDF em si. Vale link do Google Drive — abra o arquivo, Compartilhar, copiar link.</span></label>';
 
   h += info('Proponente', esc(r.proponente)) + info('Pré-requisito', esc(r.prerequisito)) +
        info('Projeto-match', esc(r.match)) + info('Periodicidade', esc(r.periodicidade) + ' · ' + esc(r.janela)) +
@@ -952,6 +981,8 @@ function abrirRadar(id) {
     if ($('#dPrazo').value !== r.prazo) mud.push(['Prazo', $('#dPrazo').value]);
     if (Number($('#dPreparo').value) !== r.preparo) mud.push(['Preparo (dias)', Number($('#dPreparo').value)]);
     if ($('#dGatilho') && $('#dGatilho').value !== r.gatilhoManual) mud.push(['Gatilho manual', $('#dGatilho').value]);
+    if ($('#dLink').value !== r.link) mud.push(['Link', $('#dLink').value]);
+    if ($('#dDoc').value !== r.documento) mud.push(['Documento', $('#dDoc').value]);
     salvarLote(id, mud);
   };
   $('#drAdiar').onclick = function () { acao('adiar', [TOKEN, id, 7], 'Adiado por sete dias.'); };
@@ -1072,7 +1103,8 @@ $('#btnNovo').onclick = function () {
     '<label class="campo"><span>Proponente elegível</span><input id="nProp" placeholder="Faculdade ZP · MEI Studio Kephra · João (PF)"></label>' +
     '<label class="campo"><span>Pré-requisito bloqueante</span><textarea id="nPre" rows="2" placeholder="Sede? CNAE? Projeto já aprovado? — as três exigências que mais eliminam"></textarea></label>' +
     '<label class="campo"><span>Responsável</span>' + selResp('') + '</label>' +
-    '<label class="campo"><span>Fonte</span><input id="nFonte" placeholder="site oficial ou link"></label>' +
+    '<label class="campo"><span>Link do edital</span><input id="nLink" type="url" placeholder="https://…"></label>' +
+    '<label class="campo"><span>Fonte</span><input id="nFonte" placeholder="como você achou — órgão, indicação, busca"></label>' +
     '<div class="aviso ok">Entra com score zero e status <b>0. Novo — pontuar</b>.</div>' +
     '<div class="acoes-drawer"><button class="btn" id="nSalvar">Adicionar ao Radar</button></div>';
   abrirDrawer('Captura rápida', h);
@@ -1086,7 +1118,8 @@ $('#btnNovo').onclick = function () {
       instrumento: $('#nInstr').value.trim(), orgao: $('#nOrgao').value.trim(),
       prazo: $('#nPrazo').value, preparo: $('#nPreparo').value,
       proponente: $('#nProp').value.trim(), prerequisito: $('#nPre').value.trim(),
-      responsavel: $('#dResp').value, fonte: $('#nFonte').value.trim()
+      responsavel: $('#dResp').value, fonte: $('#nFonte').value.trim(),
+      link: $('#nLink').value.trim()
     });
   };
 };

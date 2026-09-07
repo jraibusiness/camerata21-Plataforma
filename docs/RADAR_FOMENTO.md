@@ -382,11 +382,12 @@ Se você alterar `digest.hora` ou `pauta.hora`, rode **`instalarGatilhos`** de n
 
 Cinco abas de conteúdo, três de infraestrutura. **Coluna cinza é calculada — não sobrescrever.**
 
-**RADAR** — o mapa. 23 linhas, 30 colunas.
+**RADAR** — o mapa. 23 linhas, 32 colunas.
 `ID · Instrumento · Órgão · Tipo · Periodicidade · Janela · Prazo · ⟨Dias rest.⟩ ·
 Proponente · Pré-requisito bloqueante · Projeto-match · Eleg. · Ader. · Valor · Facil. ·
 Prob. · ⟨SCORE⟩ · ⟨PRI⟩ · Preparo · Gatilho manual · ⟨DATA-GATILHO⟩ · ⟨Dias p/ gatilho⟩ ·
-⟨Semáforo⟩ · Responsável · Status · Próxima ação · Notas · Fonte · Adiado até · Atualizado em`
+⟨Semáforo⟩ · Responsável · Status · Próxima ação · Notas · Fonte · **Link** ·
+**Documento** · Adiado até · Atualizado em`
 
 - `SCORE` = Eleg. + Ader. + Valor + Facil. + Prob. (máx. 15)
 - `PRI` = A (≥12, atacar) · B (8–11, avaliar) · C (<8, arquivar)
@@ -397,6 +398,13 @@ Prob. · ⟨SCORE⟩ · ⟨PRI⟩ · Preparo · Gatilho manual · ⟨DATA-GATILH
   2. **Prazo distante, decisão de agora** — a Funarte Aberta vai até 30/04/2027, então o
      cálculo joga o gatilho para abril e a oportunidade some por sete meses. Preencher
      aqui traz a linha de volta para o semestre em que a decisão realmente cabe.
+- `Link` é a **página oficial** da chamada e `Documento` é o **PDF/regulamento**.
+  Os dois viram botões no topo da gaveta, abrindo em nova aba — inclusive no
+  celular. Também aparecem como `↗` na tabela e como botão nos cartões da fila e
+  do e-mail. Sem isso a plataforma diz o que fazer mas não deixa fazer: era
+  preciso abrir outra aba e caçar o edital de novo a cada consulta.
+  Os 19 links semeados foram verificados um a um em 07/09/2026; `Documento`
+  aceita link do Google Drive, para o caso de vocês já terem o PDF baixado.
 - `Adiado até` tira a linha da fila até a data, sem apagar nada.
 - `Eleg. = 0` marca **bloqueado**: não é falta de mérito, é pré-requisito faltando.
   São as cinco filas de patrocínio que esperam o PRONAC ou o ProAC. É o pipeline de 2027.

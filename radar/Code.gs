@@ -81,10 +81,11 @@ function pad_(n) { return (n < 10 ? '0' : '') + n; }
 
 // seed → linha completa da planilha (colunas calculadas ficam vazias)
 function mapRadarSeed_(d, id) {
-  // d[19] = gatilho manual (override), d[20] = notas
+  // d[19] = gatilho manual (override), d[20] = notas,
+  // d[21] = link da página oficial, d[22] = link do documento/PDF
   return [id, d[0], d[1], d[2], d[3], d[4], dt_(d[5]), '', d[6], d[7], d[8],
           d[9], d[10], d[11], d[12], d[13], '', '', d[14], dt_(d[19] || ''), '', '', '',
-          d[15], d[16], d[17], d[20] || '', d[18], '', new Date()];
+          d[15], d[16], d[17], d[20] || '', d[18], d[21] || '', d[22] || '', '', new Date()];
 }
 function mapCaminhoSeed_(d, id) {
   return [id, d[0], d[1], d[2], d[3], dt_(d[4]), dt_(d[5]), '', d[6], d[7], d[8],
@@ -215,6 +216,7 @@ function lerRadar_() {
       semaforo: semaforo_(dG !== null ? dG : dR),
       responsavel: o['Responsável'], status: o['Status'],
       proximaAcao: o['Próxima ação'], notas: o['Notas'], fonte: o['Fonte'],
+      link: String(o['Link'] || '').trim(), documento: String(o['Documento'] || '').trim(),
       adiadoAte: iso_(adiado),
       bloqueado: Number(o['Eleg.']) === 0,
       dormente: dormente, emEspera: emEspera,
@@ -353,7 +355,7 @@ function montarFila_(opts) {
       responsavel: x.responsavel, acao: x.proximaAcao, status: x.status,
       prazoBR: x.prazoBR, gatilhoBR: x.gatilhoBR,
       dias: x.diasGatilho !== null ? x.diasGatilho : x.diasRestantes,
-      semDono: x.semDono, link: x.fonte
+      semDono: x.semDono, link: x.link || x.documento || ''
     });
   });
 
@@ -577,7 +579,7 @@ function novoEdital(token, d) {
     d.proponente || '', d.prerequisito || '', d.match || '',
     0, 0, 0, 0, 0, '', '', Number(d.preparo) || 30, d.gatilho ? meiaNoite_(d.gatilho + 'T12:00:00') : '', '', '', '',
     d.responsavel || '', d.status || '0. Novo — pontuar', d.proximaAcao || 'Pontuar os 5 critérios',
-    d.notas || '', d.fonte || '', '', new Date()]);
+    d.notas || '', d.fonte || '', d.link || '', d.documento || '', '', new Date()]);
   log_(u.email, ABAS.radar, id, 'NOVO', '', d.instrumento || '');
   recalcularLinha_(ABAS.radar, id);
   return { ok: true, id: id };
