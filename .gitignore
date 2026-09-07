@@ -2,3 +2,12 @@ node_modules/
 package-lock.json
 .DS_Store
 .clasp.json
+
+# ── Dados pessoais: nunca no repositório ──
+# Este repositório é PÚBLICO. Nada de dado de músico, certidão, CNPJ, RG,
+# conta bancária ou identificador de pessoa entra aqui. A fonte de verdade
+# desses dados é a planilha, que é privada e protegida por código de acesso.
+*.csv
+Inscrições*
+BASE_DE_CONHECIMENTO*
+*_PRIVADO*
