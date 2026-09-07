@@ -1,0 +1,28 @@
+# ============================================================
+# Netlify — configuração do site camerata21.com
+# ------------------------------------------------------------
+# Com este arquivo no repositório, o Netlify se configura sozinho
+# ao conectar: não é preciso digitar nada no painel.
+#
+# A CORRENTE, para quem pegar isto no futuro:
+#   domínio (Squarespace)  →  hospedagem (Netlify)  →  app (Apps Script)
+# O domínio é só o endereço; quem guarda e entrega os arquivos é o
+# Netlify; e o Netlify redireciona /inscricao, /admin e /radar para
+# os web apps do Google.
+# ============================================================
+
+[build]
+  # A pasta que vira o site. É o conteúdo dela que fica público.
+  publish = "frontend"
+  # Site estático: não há nada para compilar.
+  command = ""
+
+# As rotas ficam em frontend/_redirects — arquivo único, fácil de ler.
+# Não duplique as regras aqui, senão vira duas fontes de verdade.
+
+[build.processing]
+  skip_processing = true
+
+# Deploy de pré-visualização para cada pull request, sem tocar no site real.
+[context.deploy-preview]
+  publish = "frontend"
