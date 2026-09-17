@@ -1,0 +1,5 @@
+# Listas de contato não entram no Git.
+osm_raw.json
+prospects.csv
+prospects_com_email.csv
+*.log
