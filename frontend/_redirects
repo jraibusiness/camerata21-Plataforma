@@ -17,3 +17,14 @@
 # listados na aba EQUIPE da planilha do Radar.
 /radar       https://script.google.com/macros/s/AKfycbxzFStUEaa4CG5B2lP4TdXoUeAsUoGM_wxqMtupfx7VFIcFvBM5AUA_LXaOM1Fz2-9k/exec                   302!
 /fomento     https://script.google.com/macros/s/AKfycbxzFStUEaa4CG5B2lP4TdXoUeAsUoGM_wxqMtupfx7VFIcFvBM5AUA_LXaOM1Fz2-9k/exec                   302!
+
+# ── OS-UZP · pesquisa de satisfação do instrumentista ──
+# No ar desde 28/09/2026 (@113). Entra pela porta da plataforma: e-mail e
+# código de seis dígitos. Existe para o e-mail e o WhatsApp carregarem
+# "camerata21.com/pesquisa" em vez de 130 caracteres de URL do Google.
+#
+# ⚠️ O slug é /pesquisa, mas a rota do Apps Script é ?page=satisfacao — e a
+# diferença é de propósito: ?page=pesquisa é a TELA ANTIGA, da plataforma
+# anterior, que continua no ar. Apontar para lá serviria a pesquisa errada.
+/pesquisa    https://script.google.com/macros/s/AKfycbwH6V4XsMQzfvXeaVlopyJZCMNFskAcB8abq3mZZ-c-t61NkWSGz2GJeKFOosJ2jDQxaQ/exec?page=satisfacao   302!
+/satisfacao  https://script.google.com/macros/s/AKfycbwH6V4XsMQzfvXeaVlopyJZCMNFskAcB8abq3mZZ-c-t61NkWSGz2GJeKFOosJ2jDQxaQ/exec?page=satisfacao   302!
